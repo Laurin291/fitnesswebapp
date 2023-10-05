@@ -1,13 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:900i');
+
+:root {
+  --secondary: #6d15df;
+  --bg:  white;
+  --bg-accent: white;
+  --text-color: #dadce1;
+  --nav-size: 60px;
+  --border: 1px solid #474a4d;
+  --border-radius: 8px;
+  --speed: 500ms;
+}
+h1,h2,h3 {
+  margin: 0;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  color: white;
+  font-family: 'Poppins';
+  background: #008B00;
+  font-size:20px;
+  color: black;
+}
+nav {
+  padding: 10px 20px;
+  text-align: center;
+}
+nav a {
+  color: black;
+  margin: 10px;
+  display: inline-block;
+}
+nav h1 {
+  color: black;
+}
+.page {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+body {
+  margin: 0;
+  background: white;
+  font-family: roboto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: black;
+}
+
+a {
+  color: black;
+  text-decoration: none;;
+}
+
+/* Top Navigation Bar */
+
+/* <nav> */
+.navbar {
+  height: var(--nav-size);
+  border-bottom: var(--border);
+  background-color: lightgrey;
+}
+
+/* <ul> */
+.navbar-nav {
+  max-width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  background-color: lightgrey;
+}
+
+/* <li> */
+.nav-item {
+  width: calc(var(--nav-size) * 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgrey;
+}
+
+/* Icon Button */
+.icon-button {
+  --button-size: calc(var(--nav-size) * 0.5);
+  width: var(--button-size);
+  height: var(--button-size);
+  background-color: #484a4d;
+  border-radius: 50%;
+  padding: 5px;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 300ms;
+}
+
+.icon-button:hover {
+  filter: brightness(1.2);
+}
+
+.icon-button svg {
+  fill: black;
+  width: 20px;
+  height: 20px;
+}
+
+
+/* Dropdown Menu */
+
+.dropdown {
+  position: absolute;
+  top: 58px;
+  width: 300px;
+  transform: translateX(-45%);
+  background-color:black;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  overflow: hidden;
+  transition: height var(--speed) ease;
+}
+
+.menu {
+  width: 100%;
+}
+
+.menu-item {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius);
+  transition: background var(--speed);
+  padding: 0.5rem;
+}
+
+.menu-item .icon-button {
+  margin-right: 0.5rem;
+}
+
+
+.menu-item .icon-button:hover {
+  filter: none;
+}
+
+.menu-item:hover {
+  background-color: #525357;
+}
+
+.icon-right {
+  margin-left: auto;
+}
+
+/* CSSTransition classes  */
+.menu-primary-enter {
+  position: absolute;
+  transform: translateX(-110%);
+}
+.menu-primary-enter-active {
+  transform: translateX(0%);
+  transition: all var(--speed) ease;
+}
+.menu-primary-exit {
+  position: absolute;
+}
+.menu-primary-exit-active {
+  transform: translateX(-110%);
+  transition: all var(--speed) ease;
+}
+
+
+.menu-secondary-enter {
+  transform: translateX(110%);
+}
+.menu-secondary-enter-active {
+  transform: translateX(0%);
+  transition: all var(--speed) ease;
+}
+.menu-secondary-exit {
+
+}
+.menu-secondary-exit-active {
+  transform: translateX(110%);
+  transition: all var(--speed) ease;
+}
+
+#trainingsplandivs{
+  background: white;
+  border-width: 2px;
+  border-radius: 0.5em;
+  border-color: #151616;
+  color: black;
+
+}
+
+#options{
+  width: 100px;
+  font-size: 20px;
+  color: black;
+  position: relative;
+  left:30px;
+}
+
+#options2{
+  width: 200px;
+  font-size: 20px;
+  color: black;
+  margin-left: 15px;
+  margin-bottom: 150px;
+}
+
+#Exercise{
+  margin-left: 45px;
+  color: black;
+}
+
+
+#back{
+  float: right;
+  height: 35px;
+  width: 100px;
+  font-size: 30px;
+  color: black;
+}
+
+#fr{
+  display: flex;
+  flex-direction: row;
+  color: black;
+  margin-left: 200px;
+  margin-top: 200px;
+}
+
+
+
+#Tagesbezeichnung{
+  color: black;
+}
+
+#headline{
+  background-color: white;
+  border-style:groove;
+}
+#sidenavbar {
+  height: 100%;
+  width: 7em;
+  color: black;
+  border-style:groove;
+  position: relative;
+  float:left;
+}
+#content{
+
+}
+
+
+
+#info{
+  margin-top: 236%;
+}
+
+
+#ch{
+  margin-left: 320px;
+  color: black;
+}
+
+
+#fr2{
+  margin-left:600px;
+  height: 40px;
+  width: 100px;
+}
+
+
+#effort{
+  margin-left: 200px;
+  width: 150px;
+  height: 20px;
+  margin-bottom: 60px;
+  font-size: 30px;
+}
+
+
+
+
+.effortbox{
+  margin-left: 200px;
+  width: 150px;
+  border-style: solid;
+  height: 20px;
+  margin-bottom: 20px;
+}
+
+
+#trainingsplanform{
+  height: 50%;
+  width: auto;
+}
+#trainingsplananzeige{
+  height: 50%;
+  width: auto;
+}
+
+
+
