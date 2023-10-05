@@ -115,22 +115,42 @@ export default function DropdownCheckbox() {
         <>
             <div id="content">
                 <div id="trainingsplananzeige">
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Dessert (100g serving)</TableCell>
-                                    <TableCell align="right">Calories</TableCell>
-                                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
+                    <div className="trtagdivs">
+                        <p className="trtagcontent">Tag1</p>
+                        <p className="trtagcontent">Montag</p>
+                        <p className="trtagcontent">Push</p>
+                    </div>
+                    <div className="trtagdivs">
+                        <p className="trtagcontent">Tag1</p>
+                        <p className="trtagcontent">Montag</p>
+                        <p className="trtagcontent">Push</p>
+                    </div>
+                    <div className="trtagdivs">
+                        <p className="trtagcontent">Tag1</p>
+                        <p className="trtagcontent">Montag</p>
+                        <p className="trtagcontent">Push</p>
+                    </div>
+                    <div className="trtagdivs">
+                        <p className="trtagcontent">Tag1</p>
+                        <p className="trtagcontent">Montag</p>
+                        <p className="trtagcontent">Push</p>
+                    </div>
+                    <div className="trtagdivs">
+                        <p className="trtagcontent">Tag1</p>
+                        <p className="trtagcontent">Montag</p>
+                        <p className="trtagcontent">Push</p>
+                    </div>
+                    <div className="trtagdivs">
+                        <p className="trtagcontent">Tag1</p>
+                        <p className="trtagcontent">Montag</p>
+                        <p className="trtagcontent">Push</p>
+                    </div>
+                    <div className="trtagdivs">
+                        <p className="trtagcontent">Tag1</p>
+                        <p className="trtagcontent">Montag</p>
+                        <p className="trtagcontent">Push</p>
+                    </div>
 
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
 
                 </div>
                 <form onSubmit={handleSubmit} id="trainingsplanform">
