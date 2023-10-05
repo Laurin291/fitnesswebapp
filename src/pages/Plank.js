@@ -1,14 +1,12 @@
 import React, {useState} from 'react'
 import data from "../data.js";
-import {Select} from "@supabase/ui";
 import {Link} from "react-router-dom";
-import Plankanimation from "./Plankanimation.js";
 import {Button} from "@material-ui/core";
 import {ButtonGroup} from "@mui/material";
 
 export default function Plank() {
-    const [value, setValue] = useState();
-    const [numChildren, setNumChildren] = useState(0)
+    const [setValue] = useState();
+    const [setNumChildren] = useState(0)
     const data2 = data.get('uebungen')
     const addComponent = () => {
         setNumChildren(data2.length)

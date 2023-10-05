@@ -41,7 +41,7 @@ function MyTimer({expiryTimestamp}) {
     return (
         <div style={{textAlign: 'center', color: "black"}}>
             <div style={{fontSize: '100px'}}>
-                <span>{minutes}</span>:<span>{seconds}</span>
+                <span>{minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
             <p>{isRunning ? 'Running' : 'Not running'}</p>
             <Button variant="contained" onClick={start}>Start</Button>
