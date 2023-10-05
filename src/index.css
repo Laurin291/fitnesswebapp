@@ -245,8 +245,15 @@ a {
 
 
 
-#Tagesbezeichnung{
+.tagesbezeichnung{
   color: black;
+  margin-left: 3%;
+  scale: 200%;
+}
+.uebungauswählen{
+  margin-left: 25%;
+  margin-top: 5%;
+  scale: 200%;
 }
 
 
@@ -284,18 +291,28 @@ a {
   margin-bottom: 20px;
 }
 
-#headline{
+#uppernavbar{
   background-color: white;
   border-style:groove;
+  height: 4em;
+  display: flex;
+  justify-content: center;
+}
+
+#headline{
+  margin-top: 1%;
 }
 #sidenavbar {
   height: 100%;
+  min-height: 86vh;
   width: 7em;
   color: black;
   border-style:groove;
   position: relative;
   float:left;
+  top: 0;
 }
+
 #content{
   display: flex;
   flex-direction: column;
@@ -304,7 +321,7 @@ a {
 
 
 #info{
-  margin-top: 234%;
+
 }
 #trainingsplanform{
   position: relative;
@@ -317,10 +334,9 @@ a {
 
 #trainingsplananzeige{
   position: relative;
-  display:flex;
-  flex-direction: row;
   justify-content: center;
-  height: 50%;
+  border-bottom-color: darkgrey;
+  border-bottom-style: dotted;
 
 }
 
@@ -329,7 +345,7 @@ a {
   width: 6em;
   margin-left: 2%;
   margin-right: 2%;
-  margin-top: 5%;
+  margin-top: 2%;
 
 }
 .trtagcontent{
@@ -342,4 +358,25 @@ a {
 
 }
 
+#divs{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.ueberschrift{
+  margin-left: 3%;
+  margin-top: 2%;
+}
+
+ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  margin-left: 10%;
+}
+
+.plusicon{
+  margin-left:14%
+}
 

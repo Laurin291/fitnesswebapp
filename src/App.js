@@ -14,8 +14,8 @@ import Plankanimation from "./pages/Plankanimation";
 function App() {
     return (
         <BrowserRouter>
-            <nav id="headline">
-                <h1>Übungen</h1>
+            <nav id="uppernavbar">
+                <h1 id="headline">FitnessApp</h1>
             </nav>
 
             <nav id="sidenavbar">
