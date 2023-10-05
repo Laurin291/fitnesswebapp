@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../fitnesswebapp.iml" filepath="$PROJECT_DIR$/../fitnesswebapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/DA_FitnessWebApp.iml" filepath="$PROJECT_DIR$/.idea/DA_FitnessWebApp.iml" />
     </modules>
   </component>
 </project>

@@ -249,27 +249,7 @@ a {
   color: black;
 }
 
-#headline{
-  background-color: white;
-  border-style:groove;
-}
-#sidenavbar {
-  height: 100%;
-  width: 7em;
-  color: black;
-  border-style:groove;
-  position: relative;
-  float:left;
-}
-#content{
 
-}
-
-
-
-#info{
-  margin-top: 236%;
-}
 
 
 #ch{
@@ -304,14 +284,39 @@ a {
   margin-bottom: 20px;
 }
 
+#headline{
+  background-color: white;
+  border-style:groove;
+}
+#sidenavbar {
+  height: 100%;
+  width: 7em;
+  color: black;
+  border-style:groove;
+  position: relative;
+  float:left;
+}
+#content{
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+#info{
+  margin-top: 236%;
+}
 
 #trainingsplanform{
-  height: 50%;
-  width: auto;
+  position: relative;
+  top: 0;
+
+
+
 }
 #trainingsplananzeige{
-  height: 50%;
-  width: auto;
+  position: relative;
+  bottom: 0;
 }
 
 
