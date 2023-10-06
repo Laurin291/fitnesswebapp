@@ -1,21 +1,9 @@
 import React, {useState} from 'react'
-import data from "../data.js";
 import {Link} from "react-router-dom";
 import {Button} from "@material-ui/core";
 import {ButtonGroup} from "@mui/material";
 
 export default function Plank() {
-    const [setValue] = useState();
-    const [setNumChildren] = useState(0)
-    const data2 = data.get('uebungen')
-    const addComponent = () => {
-        setNumChildren(data2.length)
-    }
-
-    function handleChange(e) {
-        addComponent()
-        setValue(e.target.value);
-    }
 
     return (
         <>
@@ -32,6 +20,7 @@ export default function Plank() {
                             <Button>150</Button>
                             <Button>180</Button>
                         </ButtonGroup>
+
                     </div>
                     <Button id="navac" variant="outlined">
                         <Link to="/Plankanimation">Start</Link>
