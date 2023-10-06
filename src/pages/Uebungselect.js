@@ -1,114 +1,153 @@
-import {useState} from 'react'
-import {Button, Checkbox, Divider, Dropdown, IconClipboard, IconCopy, IconTrash, Select, Typography} from '@supabase/ui'
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import data from "../data.js";
-import React from 'react';
-import {ReactComponent as PlusIcon} from '../icons/plus-circle-fill.svg';
-import {Link} from "react-router-dom";
-import { useNavigate} from "react-router-dom";
-//import {ReactComponent as BackIcon} from '../icons/back.svg';
 
-
-// eslint-disable-next-line react-hooks/rules-of-hooks
-
-export default function DropdownCheckbox() {
-    const data2 = data.get('uebungen')
-    const [numChildren, setNumChildren] = useState(0)
-    const [value, setValue] = useState("Beine");
-    let items = []
-    let selectedItems =[]
-
-
-    const Checkbox=({label}) =>{
-        return (
-            <div className="checkbox-wrapper">
-                <label onChange={checkstate} id={label}>
-                    <input type="checkbox" />
-                    <span>{label}</span>
-                </label>
-            </div>
-        );
+function createData(name, kategorie) {
+    return {
+        name,
+        kategorie,
+        erklaerung: [
+            {
+                date: '2020-01-05',
+                customerId: '11091700',
+                amount: 3,
+            },
+            {
+                date: '2020-01-02',
+                customerId: 'Anonymous',
+                amount: 1,
+            },
+        ],
     };
+}
 
 
-    const ChildComponent = (otto) => {
-        const data3 = data.getbyID(otto.number, value, "uebungen")
-        return (<div> {data3 && data3.length > 0 && data3.map((userObj, index) => (
-            <p id="ch"> <Checkbox label={userObj.Name}></Checkbox></p>
-        ))}
-        </div>)
-    }
-
-    for (let i = 0; i <= numChildren; i++) {
-        items.push(<ChildComponent key={i} number={i}/>)
-    }
-
-    const addComponent = () => {
-        setNumChildren(data2.length)
-    }
-    function handleChange(e){
-        addComponent()
-        setValue(e.target.value);
-    }
-
-    const ParentComponent = ({children, addComponent}) => {
-        return (
-            <>
-                <div>{children}</div>
-            </>
-        )
-    }
-
-    const [checked, setChecked] = useState(false)
-
-    const Backbutton= () =>{
-        let navigate = useNavigate();
-        return (
-            <>
-                <button onClick={() => navigate(-1)} id="back">Back</button>
-            </>
-        );
-    }
-
-    //Funktion um die ausgewählten Übungen zu speichern und wenn sie nicht mehr ausgewählt sind sie zu löschen
-    function checkstate(e){
-
-        if (e.target.checked && !selectedItems.includes(e.currentTarget.id)){
-            selectedItems.push(e.currentTarget.id)
-        }else if (selectedItems.includes(e.currentTarget.id)){
-            const newSelectedItems = selectedItems.filter(function (item) {
-                return item !== e.currentTarget.id;
-            });
-            selectedItems = newSelectedItems
-        }
-        console.log(JSON.stringify(selectedItems))
-        console.log(window.localStorage.getItem("items"))
-    }
-
-    function submitAction(){
-        window.localStorage.clear()
-        window.localStorage.setItem("items", JSON.stringify(selectedItems));
-
-
-    }
+function Row(props) {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
 
     return (
-        <>
-            <div id="navaa">
-                <h1>Select your exercises <Backbutton>Back</Backbutton></h1>
-                <Select  id="options" onChange={handleChange} >
-                    <Select.Option>Beine</Select.Option>
-                    <Select.Option>Brust</Select.Option>
-                    <Select.Option>Rücken</Select.Option>
-                    <Select.Option>Schultern</Select.Option>
-                    <Select.Option>Bizeps</Select.Option>
-                    <Select.Option>Trizpes</Select.Option>
+        <React.Fragment>
+            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                <TableCell>
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => setOpen(!open)}
+                    >
+                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                    {row.name}
+                </TableCell>
+                <TableCell align="right">
+                    {row.name}
+                </TableCell>
+                <TableCell align="right">
+                    {row.kategorie}
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 1 }}>
+                            <Typography variant="h6" gutterBottom component="div">
+                                History
+                            </Typography>
+                            <Table size="small" aria-label="purchases">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Date</TableCell>
+                                        <TableCell>Customer</TableCell>
+                                        <TableCell align="right">Amount</TableCell>
+                                        <TableCell align="right">Total price ($)</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {row.erklaerung.map((historyRow) => (
+                                        <TableRow key={historyRow.date}>
+                                            <TableCell component="th" scope="row">
+                                                {historyRow.date}
+                                            </TableCell>
+                                            <TableCell>{historyRow.customerId}</TableCell>
+                                            <TableCell align="right">{historyRow.amount}</TableCell>
+                                            <TableCell align="right">
+                                                {Math.round(historyRow.amount * row.price * 100) / 100}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </React.Fragment>
+    );
+}
 
-                </Select>
 
-                <ParentComponent addComponent={addComponent}>{items} </ParentComponent>
-                <Link to="/create"> <input type="submit" value="Submit" id="ch" onClick={submitAction}></input></Link>
-            </div>
-        </>
 
-    )
+
+function rows(){
+    const data2 = data.get('uebungen')
+    let numzeilen = 0;
+    const zeile =[]
+    zeile.push(createData('adw','awda'))
+    zeile.push(createData('adw','awda'))
+    zeile.push(createData('adw','awda'))
+    zeile.push(createData('adw','awda'))
+
+
+
+    if (data2 != null) {
+        numzeilen = data2.length
+        console.log(numzeilen)
+
+        zeile.push(createData('Brustpresse', 'Brust'))
+
+    }
+
+
+    return zeile
+}
+
+
+
+export default function CollapsibleTable() {
+    return (
+        <div id="content">
+        <TableContainer component={Paper}>
+            <Table aria-label="collapsible table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell />
+                        <TableCell>Name</TableCell>
+                        <TableCell>Kategorie</TableCell>
+
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows().map((row) => (
+                        <Row key={row.name} row={row} />
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+        </div>
+    );
 }

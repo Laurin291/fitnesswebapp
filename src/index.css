@@ -248,12 +248,12 @@ a {
 .tagesbezeichnung{
   color: black;
   margin-left: 3%;
-  scale: 200%;
+  scale: 150%;
 }
 .uebungauswählen{
   margin-left: 25%;
   margin-top: 5%;
-  scale: 200%;
+  scale: 150%;
 }
 
 
@@ -317,6 +317,10 @@ a {
   display: flex;
   flex-direction: column;
 }
+#content2{
+  display: flex;
+  float: right;
+}
 
 
 
@@ -377,6 +381,40 @@ ul {
 }
 
 .plusicon{
-  margin-left:14%
+ margin-left: 8%;
 }
 
+#submitButton{
+  margin-left:auto;
+  margin-right: 5em;
+  display: block;
+}
+
+.trainingsplanname{
+ margin: 2%;
+}
+
+.css-bhp9pd-MuiPaper-root-MuiCard-root {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.87);
+  -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 45vh;
+}
+
+.css-abna4k-MuiList-root {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background-color: #fff;
+  overflow: auto;
+
+}
