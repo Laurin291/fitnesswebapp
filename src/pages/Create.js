@@ -11,10 +11,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
 export default function DropdownCheckbox() {
-    const data2 = data.get('uebungen')
     const [numChildren, setNumChildren] = useState(0)
     const [value, setValue] = useState("Beine");
     const [Trainingsplanname, setTrainingsplanname] = useState('')
@@ -115,96 +115,100 @@ export default function DropdownCheckbox() {
         <>
             <div id="content">
                 <div id="trainingsplananzeige">
-                    <div className="trtagdivs">
-                        <p className="trtagcontent">Tag1</p>
-                        <p className="trtagcontent">Montag</p>
-                        <p className="trtagcontent">Push</p>
-                    </div>
-                    <div className="trtagdivs">
-                        <p className="trtagcontent">Tag1</p>
-                        <p className="trtagcontent">Montag</p>
-                        <p className="trtagcontent">Push</p>
-                    </div>
-                    <div className="trtagdivs">
-                        <p className="trtagcontent">Tag1</p>
-                        <p className="trtagcontent">Montag</p>
-                        <p className="trtagcontent">Push</p>
-                    </div>
-                    <div className="trtagdivs">
-                        <p className="trtagcontent">Tag1</p>
-                        <p className="trtagcontent">Montag</p>
-                        <p className="trtagcontent">Push</p>
-                    </div>
-                    <div className="trtagdivs">
-                        <p className="trtagcontent">Tag1</p>
-                        <p className="trtagcontent">Montag</p>
-                        <p className="trtagcontent">Push</p>
-                    </div>
-                    <div className="trtagdivs">
-                        <p className="trtagcontent">Tag1</p>
-                        <p className="trtagcontent">Montag</p>
-                        <p className="trtagcontent">Push</p>
-                    </div>
-                    <div className="trtagdivs">
-                        <p className="trtagcontent">Tag1</p>
-                        <p className="trtagcontent">Montag</p>
-                        <p className="trtagcontent">Push</p>
-                    </div>
+                    <h1 className="ueberschrift">Mein derzeitiger Trainingsplan</h1>
+                    <div id="divs">
+                        <div className="trtagdivs">
+                            <p className="trtagcontent">Tag1</p>
+                            <p className="trtagcontent">Montag</p>
+                            <p className="trtagcontent">Push</p>
+                        </div>
+                        <div className="trtagdivs">
+                            <p className="trtagcontent">Tag1</p>
+                            <p className="trtagcontent">Montag</p>
+                            <p className="trtagcontent">Push</p>
+                        </div>
+                        <div className="trtagdivs">
+                            <p className="trtagcontent">Tag1</p>
+                            <p className="trtagcontent">Montag</p>
+                            <p className="trtagcontent">Push</p>
+                        </div>
+                        <div className="trtagdivs">
+                            <p className="trtagcontent">Tag1</p>
+                            <p className="trtagcontent">Montag</p>
+                            <p className="trtagcontent">Push</p>
+                        </div>
+                        <div className="trtagdivs">
+                            <p className="trtagcontent">Tag1</p>
+                            <p className="trtagcontent">Montag</p>
+                            <p className="trtagcontent">Push</p>
+                        </div>
+                        <div className="trtagdivs">
+                            <p className="trtagcontent">Tag1</p>
+                            <p className="trtagcontent">Montag</p>
+                            <p className="trtagcontent">Push</p>
+                        </div>
+                        <div className="trtagdivs">
+                            <p className="trtagcontent">Tag1</p>
+                            <p className="trtagcontent">Montag</p>
+                            <p className="trtagcontent">Push</p>
+                        </div>
 
-
+                    </div>
                 </div>
                 <form onSubmit={handleSubmit} id="trainingsplanform">
                     <div>
                         <div>
-                            <h1>Create new Trainingsplan</h1>
+                            <h1 className="ueberschrift">Create new Trainingsplan</h1>
                             <label htmlFor="Trainingsplanname">Traingsplan Name:</label>
                             <input type="text" id="Trainingsplanname" value={Trainingsplanname}
                                    onChange={(e) => setTrainingsplanname(e.target.value)}></input>
                         </div>
-                        <label htmlFor="Tagesbezeichnung" id="Tagesbezeichnung">Tagbezeichnung</label>
+                        <label htmlFor="Tagesbezeichnung" className="tagesbezeichnung">Tagbezeichnung</label>
                         <label htmlFor="Exercise" id="Exercise">Choose your Exercises</label>
-                        <li><input type="text" id="Tagesbezeichnung" value={Tgsbz1}
-                                   onChange={(e) => setTgsbz1(e.target.value)}>
-                        </input><input type="text" id="otto" disabled value={getText("1")}></input><Link
-                            to={'/uebungselect/' + "1"}><PlusIcon onClick={clearLocalStorage}/></Link>
+                        <ul>
+                        {/* day1 *********************************************** */}
+                        <li>
+                            <input type="text" className="tagesbezeichnung" value={Tgsbz1} onChange={(e) => setTgsbz1(e.target.value)}></input>
+                            <input type="text" className="uebungauswählen" disabled value={getText("1")}></input>
+                            <Link to={'/uebungselect/' + "1"}><PlusIcon onClick={clearLocalStorage} class="plusicon"/></Link>
                         </li>
-
-                        <li><input type="text" id="Tagesbezeichnung" value={Tgsbz2}
-                                   onChange={(e) => setTgsbz2(e.target.value)}>
-                        </input><input type="text" disabled value={getText("2")}></input><Link
-                            to={'/uebungselect/' + "2"}><PlusIcon/></Link>
+                        {/* day2 *********************************************** */}
+                        <li>
+                            <input type="text" className="tagesbezeichnung" value={Tgsbz2}  onChange={(e) => setTgsbz2(e.target.value)}></input>
+                            <input type="text" className="uebungauswählen" disabled value={getText("2")}></input>
+                            <Link to={'/uebungselect/' + "2"}><PlusIcon class="plusicon"/></Link>
                         </li>
-
-                        <li><input type="text" id="Tagesbezeichnung" value={Tgsbz3}
-                                   onChange={(e) => setTgsbz3(e.target.value)}>
-                        </input><input type="text" disabled value={getText("3")}></input><Link
-                            to={'/uebungselect/' + "3"}><PlusIcon/></Link>
+                        {/* day3 *********************************************** */}
+                        <li>
+                            <input type="text" className="tagesbezeichnung" value={Tgsbz3} onChange={(e) => setTgsbz3(e.target.value)}></input>
+                            <input type="text" className="uebungauswählen" disabled value={getText("3")}></input>
+                            <Link to={'/uebungselect/' + "3"}><PlusIcon class="plusicon"/></Link>
                         </li>
-
-                        <li><input type="text" id="Tagesbezeichnung" value={Tgsbz4}
-                                   onChange={(e) => setTgsbz4(e.target.value)}>
-                        </input><input type="text" disabled value={getText("4")}></input><Link
-                            to={'/uebungselect/' + "4"}><PlusIcon/></Link>
+                        {  /* day4 *********************************************** */}
+                        <li>
+                            <input type="text" className="tagesbezeichnung" value={Tgsbz4} onChange={(e) => setTgsbz4(e.target.value)}></input>
+                            <input type="text" className="uebungauswählen" disabled value={getText("4")}></input>
+                            <Link to={'/uebungselect/' + "4"}><PlusIcon class="plusicon"/></Link>
                         </li>
-
-                        <li><input type="text" id="Tagesbezeichnung" value={Tgsbz5}
-                                   onChange={(e) => setTgsbz5(e.target.value)}>
-                        </input><input type="text" disabled value={getText("5")}></input><Link
-                            to={'/uebungselect/' + "5"}><PlusIcon/></Link>
+                        {/* day5 *********************************************** */}
+                        <li>
+                            <input type="text" className="tagesbezeichnung" value={Tgsbz5} onChange={(e) => setTgsbz5(e.target.value)}></input>
+                            <input type="text" className="uebungauswählen" disabled value={getText("5")}></input>
+                            <Link to={'/uebungselect/' + "5"}><PlusIcon class="plusicon"/></Link>
                         </li>
-
-                        <li><input type="text" id="Tagesbezeichnung" value={Tgsbz6}
-                                   onChange={(e) => setTgsbz6(e.target.value)}>
-                        </input><input type="text" disabled value={getText("6")}></input><Link
-                            to={'/uebungselect/' + "6"}><PlusIcon/></Link>
+                        {/* day6 *********************************************** */}
+                        <li>
+                        <input type="text" className="tagesbezeichnung" value={Tgsbz6} onChange={(e) => setTgsbz6(e.target.value)}></input>
+                        <input type="text" className="uebungauswählen" disabled value={getText("6")}></input>
+                        <Link to={'/uebungselect/' + "6"}><PlusIcon class="plusicon"/></Link>
                         </li>
-
-                        <li><input type="text" id="Tagesbezeichnung" value={Tgsbz7}
-                                   onChange={(e) => setTgsbz7(e.target.value)}>
-                        </input><input type="text" disabled value={getText("7")}></input><Link
-                            to={'/uebungselect/' + "7"}><PlusIcon/></Link>
+                        {/* day7 *********************************************** */}
+                        <li>
+                            <input type="text" className="tagesbezeichnung" value={Tgsbz7} onChange={(e) => setTgsbz7(e.target.value)}></input>
+                            <input type="text" className="uebungauswählen" disabled value={getText("7")}></input>
+                            <Link to={'/uebungselect/' + "7"}><PlusIcon class="plusicon"/></Link>
                         </li>
-
+                            </ul>
                         <button>Submit</button>
 
                         {formError && <p className="error">{formError}</p>}
@@ -218,7 +222,3 @@ export default function DropdownCheckbox() {
     )
 }
 
-
-//for (let i = 0; i < data2.length; i++) {
-//     item.push(<Typography.Text  children={}/>)
-// }
