@@ -33,7 +33,7 @@ function App() {
                 <Route path="/:id" element={<Update />} />
                 <Route path="/uebungselect/:number" element={<Uebungselect/>} />
                 <Route path="/Fahrrad" element={<Fahrrad/>} />
-                <Route path="/CyclingArea" element={<CyclingArea/>} />
+                <Route path="/CyclingArea/:difficulty" element={<CyclingArea/>} />
                 <Route path="/Plank" element={<Plank/>} />
                 <Route path="Plankanimation" element={<Plankanimation/>} />
             </Routes>

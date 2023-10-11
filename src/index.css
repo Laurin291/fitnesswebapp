@@ -206,7 +206,7 @@ a {
 }
 
 #options{
-  width: 100px;
+  width: 150px;
   font-size: 20px;
   color: black;
   position: relative;
@@ -415,4 +415,3 @@ ul {
   overflow: auto;
 
 }
-
