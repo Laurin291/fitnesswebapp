@@ -415,3 +415,21 @@ ul {
   overflow: auto;
 
 }
+/*
+Plank
+ */
+
+#plankstarthome{
+  margin-left: 0px;
+}
+.auswahlButton {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.ausgewaehlt {
+  background-color: #ccc;
+}
