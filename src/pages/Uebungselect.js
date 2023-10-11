@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Checkbox from '@mui/material/Checkbox';
 import data from "../data.js";
 
 function createData(name, kategorie) {
@@ -38,10 +39,20 @@ function createData(name, kategorie) {
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
+    const labelId = `enhanced-table-checkbox-1`;
 
     return (
         <React.Fragment>
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+                <TableCell padding="checkbox">
+                    <Checkbox
+                        color="primary"
+                        checked={isItemSelected}
+                        inputProps={{
+                            'aria-labelledby': labelId,
+                        }}
+                    />
+                    </TableCell>
                 <TableCell>
                     <IconButton
                         aria-label="expand row"
@@ -54,10 +65,7 @@ function Row(props) {
                 <TableCell component="th" scope="row">
                     {row.name}
                 </TableCell>
-                <TableCell align="right">
-                    {row.name}
-                </TableCell>
-                <TableCell align="right">
+                <TableCell align="left">
                     {row.kategorie}
                 </TableCell>
             </TableRow>
@@ -102,23 +110,25 @@ function Row(props) {
 
 
 
+function isItemSelected(){
+    return false
+}
 
 function rows(){
     const data2 = data.get('uebungen')
     let numzeilen = 0;
     const zeile =[]
-    zeile.push(createData('adw','awda'))
-    zeile.push(createData('adw','awda'))
-    zeile.push(createData('adw','awda'))
-    zeile.push(createData('adw','awda'))
+
 
 
 
     if (data2 != null) {
         numzeilen = data2.length
-        console.log(numzeilen)
+        console.log(data2[1].Name)
+        for (let i = 0; i < data2.length; i++){
+            zeile.push(createData(data2[i].Name, data2[i].Kategorie))
+        }
 
-        zeile.push(createData('Brustpresse', 'Brust'))
 
     }
 
@@ -135,6 +145,7 @@ export default function CollapsibleTable() {
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
+                        <TableCell />
                         <TableCell />
                         <TableCell>Name</TableCell>
                         <TableCell>Kategorie</TableCell>
