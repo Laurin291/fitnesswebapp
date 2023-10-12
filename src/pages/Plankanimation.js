@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useTimer} from 'react-timer-hook';
 import {Button} from "@material-ui/core";
+import {Link} from "react-router-dom";
 
 function MyTimer({expiryTimestamp, setIsTimer2Running}) {
 
@@ -22,7 +23,10 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
             latestTotalSecondsRef.current = totalSeconds;
             pause();
             setIsTimer2Running(true);
-            setTimeout(() => {resume();setIsTimer2Running(false);}, 10000);
+            setTimeout(() => {
+                resume();
+                setIsTimer2Running(false);
+            }, 10000);
 
         }
     }, [pause, resume, totalSeconds, setIsTimer2Running]);
@@ -54,7 +58,7 @@ function MyTimer2({expiryTimestamp, isRunning}) {
         pause,
         resume,
         restart,
-        isRunning:isRunning2
+        isRunning: isRunning2
     } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called')});
 
     useEffect(() => {
@@ -66,7 +70,7 @@ function MyTimer2({expiryTimestamp, isRunning}) {
 
         } else {
             console.log("Notrunning")
-           resume()
+            resume()
         }
         if (seconds === 0 && !isRunning) {
             // Der Timer ist abgelaufen und läuft, also setzen wir ihn auf 10 Sekunden zurück
@@ -74,7 +78,7 @@ function MyTimer2({expiryTimestamp, isRunning}) {
             expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 10);
             restart(expiryTimestamp)
         }
-    }, [isRunning, pause, resume,totalSeconds,restart]);
+    }, [isRunning, pause, resume, totalSeconds, restart]);
     return (
         <div style={{textAlign: 'center', color: "black"}}>
             <div style={{fontSize: '50px'}}>
@@ -89,16 +93,19 @@ export default function App() {
     const time = new Date();
     const timer = new Date();
     time.setSeconds(time.getSeconds() + 120); // 2 minutes timer
+
     timer.setSeconds(timer.getSeconds() + 10); // 10 Sekunden pause
 
     const [isTimer2Running, setIsTimer2Running] = useState(false);
 
-
-
     return (
         <div>
+            <Button id="plankstarthome" variant="outlined">
+                <Link to="/">Home</Link>
+            </Button>
             <MyTimer expiryTimestamp={time} setIsTimer2Running={setIsTimer2Running}/>
             <MyTimer2 expiryTimestamp={timer} isRunning={isTimer2Running}/>
+
         </div>
     );
 }
