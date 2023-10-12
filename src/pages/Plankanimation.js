@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useTimer} from 'react-timer-hook';
 import {Button} from "@material-ui/core";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 function MyTimer({expiryTimestamp, setIsTimer2Running}) {
 
@@ -26,7 +26,7 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
             setTimeout(() => {
                 resume();
                 setIsTimer2Running(false);
-            }, 10000);
+            }, 11000);
 
         }
     }, [pause, resume, totalSeconds, setIsTimer2Running]);
@@ -38,14 +38,6 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
                 <span>{minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
             <p>{isRunning ? 'Running' : 'Not running'}</p>
-            <Button variant="contained" onClick={start}>Start</Button>
-            <Button variant="contained" onClick={pause}>Pause</Button>
-            <Button variant="contained" onClick={() => {
-                // Restarts to 10 minutes timer
-                const time = new Date();
-                time.setSeconds(time.getSeconds() + 120);
-                restart(time);
-            }}>Restart</Button>
         </div>
     );
 }
@@ -90,11 +82,11 @@ function MyTimer2({expiryTimestamp, isRunning}) {
 }
 
 export default function App() {
-    const time = new Date();
-    const timer = new Date();
-    time.setSeconds(time.getSeconds() + 120); // 2 minutes timer
-
-    timer.setSeconds(timer.getSeconds() + 10); // 10 Sekunden pause
+    const {time} = useParams()
+    const timer1 = new Date();
+    const timer2 = new Date();
+    timer1.setSeconds(timer1.getSeconds() + parseInt(time)); // timer
+    timer2.setSeconds(timer2.getSeconds() + 10); // 10 Sekunden pause
 
     const [isTimer2Running, setIsTimer2Running] = useState(false);
 
@@ -103,8 +95,8 @@ export default function App() {
             <Button id="plankstarthome" variant="outlined">
                 <Link to="/">Home</Link>
             </Button>
-            <MyTimer expiryTimestamp={time} setIsTimer2Running={setIsTimer2Running}/>
-            <MyTimer2 expiryTimestamp={timer} isRunning={isTimer2Running}/>
+            <MyTimer expiryTimestamp={timer1} setIsTimer2Running={setIsTimer2Running}/>
+            <MyTimer2 expiryTimestamp={timer2} isRunning={isTimer2Running}/>
 
         </div>
     );
