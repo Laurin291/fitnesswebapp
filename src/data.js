@@ -4,6 +4,36 @@ import uebungenCard from "./components/UebungenCard.js";
 
 class Data {
 
+    getImagesfromStorage(table) {
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [fetchError, setFetchError] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [image, setImage] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+            const fetchUebungen = async () => {
+                const { data, error } = await supabase
+                    .storage
+                    .from('images')
+                    .download('Beinpresse.PNG')
+
+
+                if (error) {
+                    setFetchError('Could not fetch the exercises')
+
+                }
+                if (data) {
+                    setImage(data)
+                    setFetchError(null)
+                }
+            }
+            fetchUebungen()
+        }, [])
+        return image
+
+    }
+
     //Liefert alle Übungen
     get(table) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -18,7 +48,6 @@ class Data {
                     .select()
 
 
-
                 if (error) {
                     setFetchError('Could not fetch the exercises')
 
@@ -32,11 +61,11 @@ class Data {
         }, [])
 
 
-
         return uebungen
     }
 
-    getbyID(id, kategorie,table) {
+
+    getbyID(id, kategorie, table) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const [fetchError, setFetchError] = useState(null)
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -50,8 +79,6 @@ class Data {
                     .match({uebungID: id, Kategorie: kategorie})
 
 
-
-
                 if (error) {
                     setFetchError('Could not fetch the exercises')
                     setUebungen(null)
@@ -63,7 +90,6 @@ class Data {
             }
             fetchUebungen()
         }, [])
-
 
 
         return uebungen
@@ -84,7 +110,6 @@ class Data {
                     .match({trainigsplanID: id})
 
 
-
                 if (error) {
                     setFetchError('Could not fetch the exercises')
 
@@ -96,7 +121,6 @@ class Data {
             }
             fetchUebungen()
         }, [])
-
 
 
         return uebungen
@@ -116,7 +140,6 @@ class Data {
                     .match({Name: uebung})
 
 
-
                 if (error) {
                     setFetchError('Could not fetch the exercises')
 
@@ -128,7 +151,6 @@ class Data {
             }
             fetchUebungen()
         }, [])
-
 
 
         return uebungen
@@ -156,7 +178,10 @@ class Data {
             .update([{Name, Kategorie}])
             .eq('id', id)
     }
+
+
 }
+
 
 const data = new Data();
 

@@ -53,12 +53,7 @@ code {
   monospace;
 }
 
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  color: black;
-}
+
 
 a {
   color: black;
@@ -196,14 +191,7 @@ a {
   transition: all var(--speed) ease;
 }
 
-#trainingsplandivs{
-  background: white;
-  border-width: 2px;
-  border-radius: 0.5em;
-  border-color: #151616;
-  color: black;
 
-}
 
 #options{
   width: 150px;
@@ -221,10 +209,7 @@ a {
   margin-bottom: 150px;
 }
 
-#Exercise{
-  margin-left: 45px;
-  color: black;
-}
+
 
 
 #back{
@@ -245,11 +230,7 @@ a {
 
 
 
-.tagesbezeichnung{
-  color: black;
-  margin-left: 3%;
-  scale: 150%;
-}
+
 .uebungauswählen{
   margin-left: 25%;
   margin-top: 5%;
@@ -288,42 +269,64 @@ a {
   margin-bottom: 20px;
 }
 
-#uppernavbar{
-  background-color: white;
-  border-style:groove;
-  height: 4em;
-  display: flex;
-  justify-content: center;
-}
 
-#headline{
-  margin-top: 1%;
-}
-#sidenavbar {
-  height: 100%;
-  min-height: 86vh;
-  width: 7em;
-  color: black;
-  border-style:groove;
-  position: relative;
-  float:left;
-  top: 0;
-}
 
-#content{
+
+
+
+
+
+
+
+
+
+
+
+
+
+.css-bhp9pd-MuiPaper-root-MuiCard-root {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.87);
+  -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+  overflow: hidden;
+
   display: flex;
   flex-direction: column;
-}
-#content2{
-  display: flex;
-  float: right;
+  width: 100%;
+  min-width: 45vh;
 }
 
-
-
-#info{
+.css-abna4k-MuiList-root {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background-color: #fff;
+  overflow: auto;
 
 }
+
+/* Uebungselect.js ********************************************************* */
+
+#saveButton{
+  width: 8em;
+
+}
+
+/* Create.js *************************************************************** */
+
+#trainingsplandivs{
+  background: white;
+  border-width: 2px;
+  border-radius: 0.5em;
+  border-color: #151616;
+  color: black;
+
+}
+
 #trainingsplanform{
   position: relative;
   height: 100%;
@@ -331,7 +334,15 @@ a {
 
 }
 
+.plusicon{
+  margin-left: 8%;
+}
 
+#submitButton{
+  margin-left:auto;
+  margin-right: 5em;
+  display: block;
+}
 
 #trainingsplananzeige{
   position: relative;
@@ -359,6 +370,10 @@ a {
 
 }
 
+.trainingsplanname{
+  margin: 2%;
+}
+
 #divs{
   display: flex;
   flex-direction: row;
@@ -370,48 +385,56 @@ a {
   margin-top: 2%;
 }
 
-ul {
+#createList {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
   margin-left: 10%;
+  list-style: none;
+  padding: 0;
+  color: black;
 }
 
-.plusicon{
- margin-left: 8%;
+
+
+#Exercise{
+  margin-left: 45px;
+  color: black;
 }
 
-#submitButton{
-  margin-left:auto;
-  margin-right: 5em;
-  display: block;
+.tagesbezeichnung{
+  color: black;
+  margin-left: 3%;
+  scale: 150%;
 }
 
-.trainingsplanname{
- margin: 2%;
-}
+/* App.js ****************************************************************** */
 
-.css-bhp9pd-MuiPaper-root-MuiCard-root {
-  background-color: #fff;
-  color: rgba(0, 0, 0, 0.87);
-  -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  border-radius: 4px;
-  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
-  overflow: hidden;
-
+#content{
   display: flex;
   flex-direction: column;
-  width: 100%;
-  min-width: 45vh;
+  max-height: 90vh;
 }
 
-.css-abna4k-MuiList-root {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  background-color: #fff;
-  overflow: auto;
+#uppernavbar{
+  background-color: white;
+  border-style:groove;
+  height: 4em;
+  display: flex;
+  justify-content: center;
+}
 
+#headline{
+  margin-top: 1%;
+}
+
+#sidenavbar {
+  height: 100%;
+  min-height: 86vh;
+  width: 7em;
+  color: black;
+  border-style:groove;
+  position: relative;
+  float:left;
+  top: 0;
 }

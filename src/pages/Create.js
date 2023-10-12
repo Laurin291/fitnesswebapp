@@ -13,9 +13,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
-
-export default function DropdownCheckbox() {
+export default function Create() {
     const [numChildren, setNumChildren] = useState(0)
     const [value, setValue] = useState("Beine");
     const [Trainingsplanname, setTrainingsplanname] = useState('')
@@ -26,53 +24,19 @@ export default function DropdownCheckbox() {
     const [Tgsbz5, setTgsbz5] = useState('')
     const [Tgsbz6, setTgsbz6] = useState('')
     const [Tgsbz7, setTgsbz7] = useState('')
-
     const [formError, setFormError] = useState(null)
 
 
     let items = []
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
 
-        if (!Tgsbz1 || !Tgsbz2 || !Tgsbz3 || !Tgsbz4 || !Tgsbz5 || !Tgsbz6 || !Tgsbz7 || !Trainingsplanname) {
-            setFormError('Bitte alles Einfüllem')
-            return
-        }
-        const {data, error} = await supabase
-            .from('trainingstag')
-            .upsert([{Tagesbezeichung: Tgsbz1}])
-            .select()
-
-        if (error) {
-            console.log(error)
-            setFormError('Bitte alles Einfüllem')
-        }
-        if (data) {
-            console.log(data)
-            setFormError(null)
-        }
-    }
-
-
-    const ChildComponent = (otto) => {
-        const data3 = data.getbyID(otto.number, value)
-        return (<div> {data3 && data3.length > 0 && data3.map((userObj, index) => (
-            <p>{userObj.Name}</p>
-        ))}
-        </div>)
-    }
-
-    for (let i = 0; i <= numChildren; i++) {
-        items.push(<ChildComponent key={i} number={i}/>)
-    }
-
-
+    // Funktion um die ausgewaehlten Uebungen von Uebungselect.js in ihre Kurzform umzuwandeln und anzuzeigen
     function getText(nummer) {
         let text = null
         text = window.localStorage.getItem(nummer)
-        if (text != null && text.length > 2) {
+        console.log(text)
 
+        if (text != null && text.length > 2) {
             let text1 = text.split(",")
             let hilfe = []
             for (let i = 0; i < text1.length; i++) {
@@ -105,22 +69,24 @@ export default function DropdownCheckbox() {
 
     }
 
+    //Funktion um den LocalStorage zu löschen *********************************
     function clearLocalStorage() {
         window.localStorage.clear()
     }
 
+    //Component der Trainingsplanerstellung um öfter das gleiche Object am Bildschirm anzuzeigen
     const DayCreateComponent = (number) => {
-        console.log(number)
         return (
             <li>
                 <input type="text" className="tagesbezeichnung" value={Tgsbz1}
                        onChange={(e) => setTgsbz1(e.target.value)}></input>
-                <input type="text" className="uebungauswählen" disabled value={getText(number)}></input>
-                <Link to={'/uebungselect/' + number}><PlusIcon onClick={clearLocalStorage} class="plusicon"/></Link>
+                <input type="text" className="uebungauswählen" disabled value={getText(number.number)}></input>
+                <Link to={'/uebungselect/' + number.number}><PlusIcon class="plusicon"/></Link>
             </li>
         )
     }
 
+    //Component der Trainingsplananzeige um öfter das gleiche Object am Bildschirm anzuzeigen
     const DayShowComponent = ({tag}) => {
         return (
             <div className="trtagdivs">
@@ -131,12 +97,10 @@ export default function DropdownCheckbox() {
         )
     }
 
-    const [checked, setChecked] = useState(false)
-
-
     return (
         <>
             <div id="content">
+                {/* Anzeige der oberen Hälfte des Bildschirms */}
                 <div id="trainingsplananzeige">
                     <h1 className="ueberschrift">Mein derzeitiger Trainingsplan</h1>
                     <div id="divs">
@@ -179,18 +143,19 @@ export default function DropdownCheckbox() {
 
                     </div>
                 </div>
-                <form onSubmit={handleSubmit} id="trainingsplanform">
+                {/* Anzeige der unteren Hälfte des Bildschirms */}
+                <form id="trainingsplanform">
                     <div>
                         <div>
                             <h1 className="ueberschrift">Create new Trainingsplan</h1>
 
                         </div>
                         <div className="trainingsplanname">
-                            <label htmlFor="trainingsplanname" >Traingsplan Name:</label>
+                            <label htmlFor="trainingsplanname">Traingsplan Name:</label>
                             <input type="text" value={Trainingsplanname}
                                    onChange={(e) => setTrainingsplanname(e.target.value)}></input>
                         </div>
-                        <ul>
+                        <ul id="createList">
                             <label htmlFor="Tagesbezeichnung" className="tagesbezeichnung">Tagbezeichnung</label>
                             {/* day1 *********************************************** */}
                             <DayCreateComponent number={1}/>
@@ -198,7 +163,7 @@ export default function DropdownCheckbox() {
                             <DayCreateComponent number={2}/>
                             {/* day3 *********************************************** */}
                             <DayCreateComponent number={3}/>
-                            {  /* day4 *********************************************** */}
+                            { /* day4 *********************************************** */}
                             <DayCreateComponent number={4}/>
                             {/* day5 *********************************************** */}
                             <label htmlFor="Exercise" id="Exercise">Choose your Exercises</label>
