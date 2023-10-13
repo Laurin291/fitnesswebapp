@@ -1,10 +1,12 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useTimer} from "react-timer-hook";
 import {Button} from "@material-ui/core";
 import {useParams} from "react-router-dom";
+import logo from '../pictures/bike.png'; // Tell webpack this JS file uses this image
 
 
-const CyclingAreaPage = ({expiryTimestamp}) => {
+
+function CyclingAreaPage ({expiryTimestamp}) {
     const {difficulty} = useParams()
     const {
         totalSeconds,
@@ -23,11 +25,13 @@ const CyclingAreaPage = ({expiryTimestamp}) => {
 
     const intervalDurations = {"Leicht": 1, "Mittel": 2, "Schwer": 3, "Alternative+":4};
     const soonIntervalDurations = {"Leicht": 2, "Mittel": 4, "Schwer": 6, "Alternative+":8};
-    const cooldownDurations = {"Leicht": 4, "Mittel": 8, "Schwer": 16, "Alternative+":20};
+    const cooldownDurations = {"Leicht": 4, "Mittel": 8, "Schwer": 10, "Alternative+":20};
 
     const intervalDuration = intervalDurations[difficulty];
     const soonIntervalDuration = soonIntervalDurations[difficulty];
     const cooldownDuration = cooldownDurations[difficulty];
+
+    const currentIntervalDuration = useRef(intervalDuration)
 
     const setCooldownStyle = useCallback(() => {
         const box1c = document.querySelector("#effortbox1")
@@ -94,18 +98,22 @@ const CyclingAreaPage = ({expiryTimestamp}) => {
         document.querySelector("#effort").textContent = "Cooldown Phase"
     }, []);
 
-
+    console.log(currentIntervalDuration.current)
     const intervalSetAndReset = useCallback(() => {
         setSoonIntervalStyle();
         setIntervalStyle();
+        currentIntervalDuration.current = intervalDuration;
         setTimeout(() => {
             resetSoonIntervalStyle();
             resetIntervalStyle();
+            currentIntervalDuration.current = cooldownDuration;
         }, intervalDuration * 1000);
-        setTimeout(() => setSoonIntervalStyle(), (intervalDuration + cooldownDuration) * 1000);
+        setTimeout(() => {
+            setSoonIntervalStyle();
+            currentIntervalDuration.current = soonIntervalDuration;
+        }, (intervalDuration + cooldownDuration) * 1000);
         intervalCounter.current--;
-    }, [cooldownDuration, intervalDuration, resetIntervalStyle, resetSoonIntervalStyle, setIntervalStyle, setSoonIntervalStyle]);
-
+    }, [cooldownDuration, intervalDuration, resetIntervalStyle, resetSoonIntervalStyle, setIntervalStyle, setSoonIntervalStyle, soonIntervalDuration]);
 
     const intervalPhases = useCallback(() => {
         if (intervalCounter.current > 0) {
@@ -113,7 +121,6 @@ const CyclingAreaPage = ({expiryTimestamp}) => {
                 intervalSetAndReset();
                 didSetStartIntervalStyle.current = true;
             }
-
             if (latestTotalSecondsRef.current - totalSeconds >= soonIntervalDuration + cooldownDuration + intervalDuration) {
                 latestTotalSecondsRef.current = totalSeconds;
                 intervalSetAndReset();
@@ -128,6 +135,7 @@ const CyclingAreaPage = ({expiryTimestamp}) => {
             intervalPhases();
         }
     }, [intervalPhases, setCooldownStyle, totalSeconds]);
+
 
     return (
         <div style={{textAlign: 'center', color: "black"}}>
@@ -144,25 +152,36 @@ const CyclingAreaPage = ({expiryTimestamp}) => {
             }}>Restart</Button>
         </div>
     );
-};
+}
+
 
 export default function App() {
     const time = new Date();
-    time.setSeconds(time.getSeconds() + 1800); // 10 minutes timer
+    time.setSeconds(time.getSeconds() + 1800); // 30 minutes timer
     return (
+        <div>
         <div className="App" style={{textAlign: 'center'}}>
             <CyclingAreaPage expiryTimestamp={time}/>
-            <div id="effort" className="effort">Phasen</div>
-            <div id="effortbox10" className="effortbox"></div>
-            <div id="effortbox9" className="effortbox"></div>
-            <div id="effortbox8" className="effortbox"></div>
-            <div id="effortbox7" className="effortbox"></div>
-            <div id="effortbox6" className="effortbox"></div>
-            <div id="effortbox5" className="effortbox"></div>
-            <div id="effortbox4" className="effortbox"></div>
-            <div id="effortbox3" className="effortbox"></div>
-            <div id="effortbox2" className="effortbox"></div>
-            <div id="effortbox1" className="effortbox"></div>
+            
+        </div>
+            <div className="Bikerow">
+                <div>
+                    <img src={logo} alt="Logo" className="Bike"/>
+                </div>
+                <div className="Effortboxes">
+                    <div id="effort" className="effort">Phasen</div>
+                    <div id="effortbox10" className="effortbox"></div>
+                    <div id="effortbox9" className="effortbox"></div>
+                    <div id="effortbox8" className="effortbox"></div>
+                    <div id="effortbox7" className="effortbox"></div>
+                    <div id="effortbox6" className="effortbox"></div>
+                    <div id="effortbox5" className="effortbox"></div>
+                    <div id="effortbox4" className="effortbox"></div>
+                    <div id="effortbox3" className="effortbox"></div>
+                    <div id="effortbox2" className="effortbox"></div>
+                    <div id="effortbox1" className="effortbox"></div>
+                </div>
+            </div>
         </div>
     );
 }

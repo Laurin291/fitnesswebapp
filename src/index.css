@@ -225,7 +225,7 @@ a {
   flex-direction: row;
   color: black;
   margin-left: 200px;
-  margin-top: 200px;
+  margin-top: 50px;
 }
 
 
@@ -247,14 +247,15 @@ a {
 
 
 #fr2{
-  margin-left:600px;
+  margin-left:430px;
   height: 40px;
   width: 100px;
+  margin-top: 20px;
 }
 
 
 #effort{
-  margin-left: 200px;
+  margin-left: 100px;
   width: 150px;
   height: 20px;
   margin-bottom: 60px;
@@ -262,7 +263,7 @@ a {
 }
 
 .effortbox{
-  margin-left: 200px;
+  margin-left: 100px;
   width: 150px;
   border-style: solid;
   height: 20px;
@@ -308,6 +309,30 @@ a {
   overflow: auto;
 
 }
+.ShowDiffi{
+  border-color: #151616;
+  border-style: groove;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 1%;
+  margin-left: 1%;
+  width: 23%;
+}
+
+.Bike{
+  display: block;
+  width: 500px;
+  float: right;
+  margin: 5% 25% auto auto;
+}
+
+
+
+
+
+
+
 
 /* Uebungselect.js ********************************************************* */
 
@@ -349,7 +374,6 @@ a {
   justify-content: center;
   border-bottom-color: darkgrey;
   border-bottom-style: dotted;
-
 }
 
 .trtagdivs{
@@ -416,10 +440,14 @@ a {
   max-height: 90vh;
 }
 
+.Effortboxes{
+  float: left;
+}
+
 #uppernavbar{
   background-color: white;
   border-style:groove;
-  height: 4em;
+  height: 2em;
   display: flex;
   justify-content: center;
 }
