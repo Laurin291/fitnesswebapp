@@ -2,14 +2,6 @@ import {useState} from 'react'
 import data from "../data.js";
 import {ReactComponent as PlusIcon} from '../icons/plus-circle-fill.svg';
 import {Link} from "react-router-dom";
-import supabase from "../config/supabaseClient.js";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
 
@@ -29,12 +21,16 @@ export default function Create() {
 
     let items = []
 
+    window.onbeforeunload = function(){
+        window.localStorage.clear()
+        return 'Are you sure you want to leave?';
+    };
 
     // Funktion um die ausgewaehlten Uebungen von Uebungselect.js in ihre Kurzform umzuwandeln und anzuzeigen
     function getText(nummer) {
         let text = null
         text = window.localStorage.getItem(nummer)
-        console.log(text)
+
 
         if (text != null && text.length > 2) {
             let text1 = text.split(",")
@@ -59,9 +55,12 @@ export default function Create() {
                 }
 
             }
-            let ausgabeVor = JSON.stringify(kurzNameString).replace("[", "").replace("]", "").replace('"', '')
-            let ausgabe = ausgabeVor.replace('"', '')
-            return ausgabe
+            let ausgabeVor ='';
+            for (let i = 0; i < kurzNameString.length; i++){
+                ausgabeVor = ausgabeVor + kurzNameString[i].replace("[", "").replace("]", "").replace('"', '').replace(' ','') + ", "
+            }
+
+            return ausgabeVor
 
         } else {
             return ""
@@ -80,7 +79,7 @@ export default function Create() {
             <li>
                 <input type="text" className="tagesbezeichnung" value={Tgsbz1}
                        onChange={(e) => setTgsbz1(e.target.value)}></input>
-                <input type="text" className="uebungauswählen" disabled value={getText(number.number)}></input>
+                <input type="text" className="uebungauswählen"  value={getText(number.number)}></input>
                 <Link to={'/uebungselect/' + number.number}><PlusIcon class="plusicon"/></Link>
             </li>
         )

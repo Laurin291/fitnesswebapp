@@ -17,6 +17,7 @@ import Checkbox from '@mui/material/Checkbox';
 import data from "../data.js";
 import {useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
+import Button from "@mui/material/Button";
 
 
 let selectedItems = []
@@ -38,17 +39,45 @@ function createData(name, kategorie, beschreibung) {
 
 // Funktion mit der die Reihen der Tabelle mit Daten gefühlt und zusammengesetzt werden, um sie anschließend
 function Row(props) {
+    const {number} = useParams()
     const {row} = props;
     const [open, setOpen] = React.useState(false);
     const labelId = `enhanced-table-checkbox-1`;
     //const image = data.getImagesfromStorage("DIPS")
     //console.log(image)
-    const [checked, setChecked] = React.useState(false);
+
+
+    const [checked, setChecked] = React.useState(() => {
+
+        let check = false
+        if (window.localStorage.getItem(number) != null) {
+            const text = window.localStorage.getItem(number).split(',')
+
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] == row.name) {
+                    check = true
+                    break;
+                } else {
+                    check = false
+                }
+            }
+            if (selectedItems.length < 1) {
+                let itemsfromlocalstorage = window.localStorage.getItem(number).split(',')
+                for (let i = 0; i < itemsfromlocalstorage.length; i++) {
+                    selectedItems.push(itemsfromlocalstorage[i])
+                }
+
+            }
+
+        }
+        return check
+    });
+
 
     // Funktion um zu erkennen welche Checkboxen ausgewählt sind und um die Uebungen von diesen zu speichern
     const selectCheckbox = (e) => {
+        setChecked(e.target.checked)
 
-        setChecked(e.target.checked);
         const parent = e.target.parentNode.parentNode.parentNode
 
         if (e.target.checked && !selectedItems.includes(e.currentTarget.id)) {
@@ -63,6 +92,7 @@ function Row(props) {
             selectedItems = newSelectedItems
         }
     }
+
 
     return (
         <React.Fragment>
@@ -138,15 +168,10 @@ function rows() {
 
     if (uebungen != null) {
         numzeilen = uebungen.length
-        console.log(uebungen[1].Name)
         for (let i = 0; i < uebungen.length; i++) {
             zeile.push(createData(uebungen[i].Name, uebungen[i].Kategorie, uebungen[i].Beschreibung))
         }
-
-
     }
-
-
     return zeile
 }
 
@@ -155,9 +180,9 @@ function rows() {
 export default function Uebungstabelle() {
     const {number} = useParams()
 
-    //Funktion um zu erkennen wann der SaveButton gedrückt wird und um die ausgewählten Uebungen im localStorage zu speichern
+    //Funktion um zu erkennen, wann der SaveButton gedrückt wird und um die ausgewählten Uebungen im localStorage zu speichern
     function saveAction() {
-
+        window.localStorage.removeItem(number)
         if (window.localStorage.getItem(number) == null) {
             window.localStorage.setItem(number, selectedItems)
         } else {
@@ -192,8 +217,14 @@ export default function Uebungstabelle() {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <input type="button" value="Save" id="saveButton" onClick={saveAction}></input>
-            <Link to="/create"> <input type="submit" value="Submit" id="ch" onClick={submitAction}></input></Link>
+            <Button variant="contained" color="success" id="saveButton" onClick={saveAction}>
+                Save
+            </Button>
+            <Link to="/create"> <Button variant="contained" color="success" id="submitButton"
+                                        onClick={submitAction}>
+                Submit
+            </Button></Link>
+
         </div>
     );
 }
