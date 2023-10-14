@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {useTimer} from 'react-timer-hook';
 import {Button} from "@material-ui/core";
 import {Link, useParams} from "react-router-dom";
+import {Hidden} from '@mui/material';
 
 function MyTimer({expiryTimestamp, setIsTimer2Running}) {
 
@@ -10,10 +11,8 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
         seconds,
         minutes,
         isRunning,
-        start,
         pause,
         resume,
-        restart,
     } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called')});
 
     const latestTotalSecondsRef = useRef(totalSeconds);
@@ -26,7 +25,7 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
             setTimeout(() => {
                 resume();
                 setIsTimer2Running(false);
-            }, 11000);
+            }, 10200);
 
         }
     }, [pause, resume, totalSeconds, setIsTimer2Running]);
@@ -37,7 +36,7 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
             <div style={{fontSize: '50px'}}>
                 <span>{minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
-            <p>{isRunning ? 'Running' : 'Not running'}</p>
+            <p>{isRunning ? 'Timer läuft' : 'Timer läuft nicht'}</p>
         </div>
     );
 }
@@ -76,7 +75,7 @@ function MyTimer2({expiryTimestamp, isRunning}) {
             <div style={{fontSize: '50px'}}>
                 <span>{minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
-            <p>{isRunning2 ? 'Running' : 'Not running'}</p>
+            <p>{isRunning2 ? 'Pause' : 'Keine Pause'}</p>
         </div>
     );
 }
@@ -96,7 +95,7 @@ export default function App() {
                 <Link to="/">Home</Link>
             </Button>
             <MyTimer expiryTimestamp={timer1} setIsTimer2Running={setIsTimer2Running}/>
-            <MyTimer2 expiryTimestamp={timer2} isRunning={isTimer2Running}/>
+            {isTimer2Running && <MyTimer2 expiryTimestamp={timer2} isRunning={isTimer2Running}/>}
 
         </div>
     );
