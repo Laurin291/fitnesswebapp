@@ -6,8 +6,8 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 
 export default function Plank() {
+    const [time, setTime] = useState(60);
     const [alignment, setAlignment] = useState('60');
-
     const handleAlignment = (event, newAlignment) => {
         if (newAlignment !== null) {
             setAlignment(newAlignment);
