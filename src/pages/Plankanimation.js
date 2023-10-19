@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {useTimer} from 'react-timer-hook';
 import {Button} from "@material-ui/core";
 import {Link, useParams} from "react-router-dom";
-import {Hidden} from '@mui/material';
+import  animation from '../animations/KörrperAnimationBeinheben.gif';
 
 function MyTimer({expiryTimestamp, setIsTimer2Running}) {
 
@@ -94,8 +94,12 @@ export default function App() {
             <Button id="plankstarthome" variant="outlined">
                 <Link to="/">Home</Link>
             </Button>
+
             <MyTimer expiryTimestamp={timer1} setIsTimer2Running={setIsTimer2Running}/>
             {isTimer2Running && <MyTimer2 expiryTimestamp={timer2} isRunning={isTimer2Running}/>}
+            <div className= "container">
+                {!isTimer2Running && <img src={animation} alt="Mein GIF" className="gif" />}
+            </div>
 
         </div>
     );
