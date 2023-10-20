@@ -18,6 +18,9 @@ import data from "../data.js";
 import {useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
 import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from '@mui/material/Alert';
+import {useState} from "react";
 
 
 let selectedItems = []
@@ -43,8 +46,8 @@ function Row(props) {
     const {row} = props;
     const [open, setOpen] = React.useState(false);
     const labelId = `enhanced-table-checkbox-1`;
-    //const image = data.getImagesfromStorage("DIPS")
-    //console.log(image)
+
+
 
 
     const [checked, setChecked] = React.useState(() => {
@@ -79,11 +82,13 @@ function Row(props) {
         setChecked(e.target.checked)
 
         const parent = e.target.parentNode.parentNode.parentNode
+        if (selectedItems[0] == ''){
+            selectedItems = []
+        }
 
         if (e.target.checked && !selectedItems.includes(e.currentTarget.id)) {
             selectedItems.push(e.currentTarget.id)
             parent.style.backgroundColor = 'rgba(20, 110, 255, .1)'
-
         } else if (selectedItems.includes(e.currentTarget.id)) {
             parent.style.backgroundColor = ''
             const newSelectedItems = selectedItems.filter(function (item) {
@@ -178,20 +183,50 @@ function rows() {
 
 // Funktion in welcher die finale Tabelle zusammengesetzt wird
 export default function Uebungstabelle() {
+    const [open, setOpen] = React.useState(false);
+    const [alertinhalt, setAlertInhalt] = useState("")
+    const [severity, setSeverity] = useState("")
     const {number} = useParams()
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
     //Funktion um zu erkennen, wann der SaveButton gedrückt wird und um die ausgewählten Uebungen im localStorage zu speichern
     function saveAction() {
+
+
         window.localStorage.removeItem(number)
         if (window.localStorage.getItem(number) == null) {
             window.localStorage.setItem(number, selectedItems)
         } else {
             window.localStorage.setItem(number, selectedItems + ',' + window.localStorage.getItem(number))
         }
-        console.log(window.localStorage.getItem(number))
+
+
+
+       if (localStorage.getItem(number) === ''){
+           handleClick("Bitte etwas auswählen")
+           setSeverity('error')
+       }else {
+           handleClick("Saved successfully")
+           setSeverity('success')
+       }
 
 
     }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+        const handleClick = (nachricht) => {
+            setOpen(true);
+            setAlertInhalt(nachricht)
+        };
 
     //Funktion um den Zwischenspeicher zu leeren wenn man die Seite verlässt
     function submitAction() {
@@ -224,6 +259,16 @@ export default function Uebungstabelle() {
                                         onClick={submitAction}>
                 Submit
             </Button></Link>
+
+
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+
+                <Alert severity={severity} onClose={handleClose} sx={{width: '100%'}}>
+                    {alertinhalt}
+                </Alert>
+
+
+            </Snackbar>
 
         </div>
     );

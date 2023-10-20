@@ -10,6 +10,7 @@ import CyclingArea from "./pages/CyclingArea.js"
 import React from "react";
 import Plank from "./pages/Plank";
 import Plankanimation from "./pages/Plankanimation";
+import Trainingsplanverwaltung from "./pages/Trainingsplanverwaltung";
 
 function App() {
     return (
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/CyclingArea/:difficulty" element={<CyclingArea/>} />
                 <Route path="/Plank" element={<Plank/>} />
                 <Route path="/Plankanimation/:time" element={<Plankanimation/>} />
+                <Route path="/Trainingsplanverwaltung/:alert" element={<Trainingsplanverwaltung/>} />
             </Routes>
 
         </BrowserRouter>

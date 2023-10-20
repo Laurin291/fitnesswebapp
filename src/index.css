@@ -231,11 +231,7 @@ a {
 
 
 
-.uebungauswählen{
-  margin-left: 25%;
-  margin-top: 5%;
-  scale: 150%;
-}
+
 
 
 
@@ -360,7 +356,7 @@ a {
 }
 
 .plusicon{
-  margin-left: 8%;
+  margin-left: 2%;
 }
 
 #submitButton{
@@ -428,9 +424,26 @@ a {
 
 .tagesbezeichnung{
   color: black;
-  margin-left: 3%;
-  scale: 150%;
+
+  width: 15em;
+  height: 2em;
+  margin-right: 1%;
 }
+
+.uebungauswählen{
+
+  width: 15em;
+  height: 2em;
+}
+
+#loading{
+  position: absolute;
+  justify-content: center;
+}
+.LabelCheckbox{
+
+}
+
 
 /* App.js ****************************************************************** */
 

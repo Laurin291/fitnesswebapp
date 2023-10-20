@@ -13,7 +13,7 @@ class Data {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
             const fetchUebungen = async () => {
-                const { data, error } = await supabase
+                const {data, error} = await supabase
                     .storage
                     .from('images')
                     .download('Beinpresse.PNG')
@@ -126,6 +126,29 @@ class Data {
         return uebungen
     }
 
+    getbyUbung2(uebung) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [fetchError, setFetchError] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [uebungen, setUebungen] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const fetchUebungen = async () => {
+            const {data, error} = await supabase
+                .from("uebungen")
+                .select("uebungID")
+                .match({Name: uebung})
+
+            if (data) {
+                setUebungen(data)
+            }
+
+        }
+        fetchUebungen()
+
+
+        return uebungen
+    }
+
     getbyUbung(table, uebung) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const [fetchError, setFetchError] = useState(null)
@@ -157,18 +180,53 @@ class Data {
     }
 
 
-    async post(Name, Kategorie) {
+    async postTrainingsplan(array, trainingsplanname) {
+        let uebungsIDs
+        let tagesbezeichnung
+        let iserror = false
 
-        const {data, error} = await supabase
-            .from('uebungen')
-            .insert([{Name, Kategorie}])
+        const { data2, error } = await supabase
+            .from('trainingsplan')
+            .insert({name: trainingsplanname})
+            .select()
 
-        if (error) {
-            console.log(error)
+
+
+
+
+        console.log(data2)
+
+
+        if (error == null) {
+            const {data, error2} = await supabase
+                .from("trainingsplan")
+                .select("trainingsplanID")
+                .match({name: trainingsplanname})
+
+            if (error2 == null) {
+                for (let i = 0; i < array.length; i++) {
+                    uebungsIDs = array[i][1]
+                    tagesbezeichnung = array[i][0]
+
+
+                    const {error} = await supabase
+                        .from('trainingstag')
+                        .insert([{
+                            trainingsplanID: data[0].trainingsplanID,
+                            uebungIDs: uebungsIDs,
+                            Tagesbezeichung: tagesbezeichnung
+                        }])
+                }
+            } else {
+                iserror = true
+            }
+
+
+        } else {
+            iserror = true
         }
-        if (data) {
-            console.log(data)
-        }
+        return iserror
+
     }
 
     async update(Name, Kategorie, id) {
@@ -183,6 +241,7 @@ class Data {
 }
 
 
-const data = new Data();
+const
+    data = new Data();
 
 export default data
