@@ -485,17 +485,15 @@ a {
 Plank
  */
 
-#plankstarthome{
-  margin-left: 0px;
-}
-.auswahlButton {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  margin: 5px;
-  cursor: pointer;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25vh;
+  margin-top: 10px;
 }
 
-.ausgewaehlt {
-  background-color: #ccc;
+.gif {
+  width: 50%;
+  height: auto;
 }
