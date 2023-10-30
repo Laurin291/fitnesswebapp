@@ -463,6 +463,21 @@ Plank
     background-color: #ccc;
 }
 
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25vh;
+    margin-top: 10px;
+}
+
+.gif {
+    width: 50%;
+    height: auto;
+}
+/*
+ */
+
 
 .bikerow {
     display: flex;

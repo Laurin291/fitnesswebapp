@@ -2,7 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import {useTimer} from 'react-timer-hook';
 import {Button} from "@material-ui/core";
 import {Link, useParams} from "react-router-dom";
-import  animation from '../animations/KörrperAnimationBeinheben.gif';
+import Beinheben from '../animations/Beinheben.gif';
+import Spideranimation from '../animations/SpiderAnimation.gif'
+import Plank from '../animations/Plank.gif'
+import PlankHaende from '../animations/PlankHände.gif'
+import HaendeBeinheben from '../animations/HändeBeinheben.gif'
 
 function MyTimer({expiryTimestamp, setIsTimer2Running}) {
 
@@ -89,6 +93,27 @@ export default function App() {
 
     const [isTimer2Running, setIsTimer2Running] = useState(false);
 
+    const [gifsList] = useState([Beinheben, Spideranimation, Plank, PlankHaende, HaendeBeinheben]);
+    const [currentGifIndex, setCurrentGifIndex] = useState(0);
+
+    useEffect(() => {
+        let gifInterval;
+
+        if (!isTimer2Running) {
+            gifInterval = setInterval(() => {
+                setCurrentGifIndex(prevIndex => {
+                    let newIndex;
+                    do {
+                        newIndex = Math.floor(Math.random() * gifsList.length);
+                    } while (newIndex === prevIndex);
+                    return newIndex;
+                });
+            }, 30000);
+        }
+
+        return () => clearInterval(gifInterval);
+    }, [isTimer2Running,gifsList]);
+
     return (
         <div>
             <Button id="plankstarthome" variant="outlined">
@@ -98,7 +123,7 @@ export default function App() {
             <MyTimer expiryTimestamp={timer1} setIsTimer2Running={setIsTimer2Running}/>
             {isTimer2Running && <MyTimer2 expiryTimestamp={timer2} isRunning={isTimer2Running}/>}
             <div className= "container">
-                {!isTimer2Running && <img src={animation} alt="Mein GIF" className="gif" />}
+                {!isTimer2Running && <img src={gifsList[currentGifIndex]} alt="Mein GIF" className="gif" />}
             </div>
 
         </div>
