@@ -37,7 +37,7 @@ function App() {
                 <Route path="/CyclingArea/:difficulty" element={<CyclingArea/>} />
                 <Route path="/Plank" element={<Plank/>} />
                 <Route path="/Plankanimation/:time" element={<Plankanimation/>} />
-                <Route path="/Trainingsplanverwaltung/:alert" element={<Trainingsplanverwaltung/>} />
+                <Route path="/Trainingsplanverwaltung" element={<Trainingsplanverwaltung/>} />
             </Routes>
 
         </BrowserRouter>

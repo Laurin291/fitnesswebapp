@@ -48,6 +48,7 @@ class Data {
                     .select()
 
 
+
                 if (error) {
                     setFetchError('Could not fetch the exercises')
 
@@ -64,6 +65,36 @@ class Data {
         return uebungen
     }
 
+
+    getTrainingsplan(id) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [fetchError, setFetchError] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [tage, setTage] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+            const fetchtrainingstag = async () => {
+                const {data, error} = await supabase
+                    .from("trainingstag")
+                    .select()
+                    .match({trainingstagID: id})
+
+
+                if (error) {
+                    setFetchError('Could not fetch the exercises')
+
+                }
+                if (data) {
+                    setTage(data)
+                    setFetchError(null)
+                }
+            }
+            fetchtrainingstag()
+        }, [])
+
+
+        return tage
+    }
 
     getbyID(id, kategorie, table) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
