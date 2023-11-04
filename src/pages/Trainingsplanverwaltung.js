@@ -24,12 +24,12 @@ import {useState} from "react";
 
 
 // Funktion um einen Datensatz in der Tabelle zu erstellen
-function createData(id, name, trainingstage) {
+function createData(id, name, trainingstage, uebungname) {
     return {
         id,
         name,
-        trainingstage
-
+        trainingstage,
+        uebungname
 
 
     };
@@ -99,6 +99,9 @@ function Row(props) {
                                                         <Table size="small" aria-label="purchases">
                                                             <TableBody>
 
+                                                                {row.uebungname.map((uebungen) => {
+                                                                uebungen.map((uebung)=> uebung[0].Name)
+                                                            })}
                                                             </TableBody>
                                                         </Table>
                                                     </Box>
@@ -122,8 +125,10 @@ function Row(props) {
 
 //Funktion um mit den Daten aus der Datenbank die Datensätze für die Tabelle zu erstellen
 function rows() {
+    const uebungen = data.get('uebungen')
     const trainingsplan = data.get('trainingsplan')
     const trainingstage = data.get('trainingstag')
+
 
 
 
@@ -131,12 +136,29 @@ function rows() {
     const zeile = []
 
 
-    if (trainingsplan != null && trainingstage != null) {
-        console.log(trainingstage[1].uebungIDs)
+    if (trainingsplan != null && trainingstage != null && uebungen != null) {
+
         for (let i = 0; i < trainingsplan.length; i++) {
             const trainingstagBezeichnung = trainingstage.filter((tag) => tag.trainingsplanID == trainingsplan[i].trainingsplanID)
+            let uebungenname =[]
 
-            zeile.push(createData(trainingsplan[i].trainingsplanID, trainingsplan[i].name, trainingstagBezeichnung))
+            for (let k = 0; k<7;k++){
+                let hilfe =[]
+                for (let j = 0; j < trainingstagBezeichnung[k].uebungIDs.length; j++){
+
+
+                    hilfe.push(uebungen.filter((uebung)  => uebung.uebungID == trainingstagBezeichnung[k].uebungIDs[j] ))
+
+                }
+                uebungenname.push(hilfe)
+            }
+
+
+
+
+
+
+            zeile.push(createData(trainingsplan[i].trainingsplanID, trainingsplan[i].name, trainingstagBezeichnung, uebungenname))
         }
 
     }
