@@ -10,11 +10,8 @@ function CyclingAreaPage({expiryTimestamp}) {
         totalSeconds,
         seconds,
         minutes,
-        isRunning,
         start,
         pause,
-        resume,
-        restart,
     } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called')});
 
 
@@ -129,6 +126,7 @@ function CyclingAreaPage({expiryTimestamp}) {
         }
 
 
+
             if (intervalCounter.current > 0 && (!didSetStartIntervalStyle.current || latestTotalSecondsRef.current - totalSeconds >= intervalDuration + cooldownDuration + soonIntervalDuration)) {
                 didSetStartIntervalStyle.current = true;
                 latestTotalSecondsRef.current = totalSeconds;
@@ -159,6 +157,7 @@ function CyclingAreaPage({expiryTimestamp}) {
               resetIntervalStyle()
               resetSoonIntervalStyle()
               increase.current = 0.5
+              setCountdown(0)
           }
 
 
@@ -181,12 +180,6 @@ function CyclingAreaPage({expiryTimestamp}) {
             </div>
             <Button variant="contained" onClick={start}>Start</Button>
             <Button variant="contained" onClick={pause}>Pause</Button>
-            <Button variant="contained" onClick={() => {
-                // Restarts to 10 minutes timer
-                const time = new Date();
-                time.setSeconds(time.getSeconds() + 600);
-                restart(time);
-            }}>Restart</Button>
         </div>
     );
 }

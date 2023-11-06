@@ -11,25 +11,54 @@ import React from "react";
 import Plank from "./pages/Plank";
 import Plankanimation from "./pages/Plankanimation";
 import Trainingsplanverwaltung from "./pages/Trainingsplanverwaltung";
+import HomeIcon from '@mui/icons-material/Home';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
+import  avatar from './pictures/avatar.png';
+
+
 
 function App() {
     return (
         <BrowserRouter>
-            <nav id="uppernavbar">
-                <h1 id="headline">FitnessApp</h1>
-            </nav>
+            <nav className="sidenavbar">
+                <div className="avatar">
+                    <img src={avatar} className="avatar__image"/>
+                </div>
 
-            <nav id="sidenavbar">
-                <Link to="/">Home</Link>
-                <Link to="/create">Neuen Trainingsplan erstellen</Link>
-                <Link to="/Fahrrad">Fahrradtraining starten</Link>
-                <Link to="/Plank">Plank starten</Link>
-                <a id="info">Info</a>
-                <a>Ausloggen</a>
+                <div class="wrapper">
+                    <HomeIcon id="icon"></HomeIcon>
+                    <Link to="/Home" className="text">Home</Link>
+                </div>
+                <div className="wrapper">
+                    <AddCircleOutlineIcon id="icon"></AddCircleOutlineIcon>
+                    <Link to="/create" className="text">Trainingsplan</Link>
+                </div>
+                <div className="wrapper">
+                    <DirectionsBikeIcon id="icon"></DirectionsBikeIcon>
+                    <Link to="/Fahrrad" className="text">HIIT-Training</Link>
+                </div>
+                <div className="wrapper">
+                    <PlayArrowIcon id="icon"></PlayArrowIcon>
+                    <Link to="/Plank" className="text">Plank starten</Link>
+                </div>
+                <div className="wrapper" id="textdown">
+                    <SettingsIcon id="icon"></SettingsIcon>
+                    <Link to="/Einstellungen" className="text">Einstellungen</Link>
+                </div>
+                <div className="wrapper">
+                    <LogoutIcon id="icon"></LogoutIcon>
+                    <Link to="/Ausloggen" className="text">Ausloggen</Link>
+                </div>
+
+
             </nav>
 
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/Home" element={<Home />} />
                 <Route path="/create" element={<Create />} />
                 <Route path="/:id" element={<Update />} />
                 <Route path="/uebungselect/:number" element={<Uebungselect/>} />

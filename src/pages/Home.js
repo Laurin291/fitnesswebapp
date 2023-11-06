@@ -1,72 +1,46 @@
-import {useState} from 'react'
-import data from "../data.js";
+
 import React from 'react';
 import '../index.css'
-import { Link } from 'react-router-dom'
-import {ReactComponent as GearIcon} from '../icons/gear.svg';
-import {ReactComponent as PlusIcon} from '../icons/plus-circle-fill.svg';
-
-// eslint-disable-next-line react-hooks/rules-of-hooks
-//
-
-export default function DropdownCheckbox() {
-    const data2 = data.get('trainingsplan')
-    const [numChildren, setNumChildren] = useState(0)
-    const [value, setValue] = useState("Beine");
-    let items = []
-
-    const ChildComponent = (otto) => {
-        const data3 = data.getbyID2(otto.number, "trainingsplan")
-        return (<div id="trainingsplandivs"> {data3 && data3.length > 0 && data3.map((userObj, index) => (
-            <p>{userObj.name}
-                <Link to={'/'+userObj.trainigsplanID}>
-                    <GearIcon/>
-                </Link>
-            </p>
-
-        ))}
-        </div>)
-    }
-
-    for (let i = 0; i <= numChildren; i++) {
-        items.push(<ChildComponent key={i} number={i}/>)
-    }
-
-    const addComponent = () => {
-        setNumChildren(data2.length)
-    }
-    function handleChange(){
-        addComponent()
-
-    }
-
-    const ParentComponent = ({children, addComponent}) => {
-        return (
-            <>
-                {children}
-            </>
-        )
-    }
+import ToggleButton from "@mui/material/ToggleButton";
+import {Link} from "react-router-dom";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 
+export default function Home() {
 
 
-    const [checked, setChecked] = useState(false)
 
 
     return (
         <>
-            <div>
-                <ParentComponent addComponent={addComponent}>{items} </ParentComponent>
+            <div id="Homeanzeige">
+                <h1 className="ueberschrifthome">Willkommen Zurück, Patrik Hackl</h1>
+                <div id="Homedivs">
+                    <Link to="/create"><ToggleButton id="HomeBoxes" style={{backgroundColor: 'green'}}>
+                        <AddCircleOutlineIcon id="icon"></AddCircleOutlineIcon>
+                        Neunen Trainingsplan erstellen
+                    </ToggleButton></Link>
+
+                    <Link to="/Fahrrad"><ToggleButton id="HomeBoxes" style={{backgroundColor: 'blue'}}>
+                        <DirectionsBikeIcon id="icon"></DirectionsBikeIcon>
+                        Fahrradfahren
+                    </ToggleButton></Link>
+
+                    <Link to="/Plank"><ToggleButton id="HomeBoxes" style={{backgroundColor: 'black'}}>
+                        <PlayArrowIcon id="icon"></PlayArrowIcon>
+                        Planken
+                    </ToggleButton></Link>
+
+                </div>
+
+                <Link to="/gewichtsverlauf"><ToggleButton id="gewichthome" style={{backgroundColor: 'orange'}}>
+                    Gewichtsverlauf
+                </ToggleButton></Link>
+
             </div>
         </>
 
     )
 }
-
-
-
-
-//for (let i = 0; i < data2.length; i++) {
-//     item.push(<Typography.Text  children={}/>)
-// }
