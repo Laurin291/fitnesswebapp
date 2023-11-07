@@ -17,21 +17,24 @@ import { validTrainingsplanname, validTagesbezeichnung } from '../Regex.js';
 import Checkbox from "@mui/material/Checkbox";
 import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined';
 import LabelIcon from '@mui/icons-material/Label';
+import IconButton from "@mui/material/IconButton";
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
+import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwoTone';
 
 
 export default function Create() {
-    const [numChildren, setNumChildren] = useState(0)
-    const [value, setValue] = useState("Beine");
-    const [Trainingsplanname, setTrainingsplanname] = useState('')
-
-    const [formError, setFormError] = useState(null)
-    const [loading, setLoading] = React.useState(false);
-    const [query, setQuery] = React.useState('idle');
-    const timerRef = React.useRef();
     const navigate = useNavigate();
-    const [error, setError] = useState(true)
     const [alertinhalt, setAlertInhalt] = useState("")
-    const [checked, setChecked] = React.useState(true);
+    const [error, setError] = useState(true)
+    const [tagesbezeichnung1,setTagesbezeichnung1] = useState("--")
+    const [tagesbezeichnung2,setTagesbezeichnung2] = useState("--")
+    const [tagesbezeichnung3,setTagesbezeichnung3] = useState("--")
+    const [tagesbezeichnung4,setTagesbezeichnung4] = useState("--")
+    const [tagesbezeichnung5,setTagesbezeichnung5] = useState("--")
+    const [tagesbezeichnung6,setTagesbezeichnung6] = useState("--")
+    const [tagesbezeichnung7,setTagesbezeichnung7] = useState("--")
+
+
 
 
     window.onbeforeunload = function () {
@@ -46,7 +49,6 @@ export default function Create() {
 
 
         if (text != null && text.length > 2) {
-            console.log("************** " + text.length)
             let text1 = text.split(",")
             let hilfe = []
             for (let i = 0; i < text1.length; i++) {
@@ -58,6 +60,7 @@ export default function Create() {
 
             for (let i = 0; i < hilfe.length; i++) {
                 kurzNamenobjectarray.push(data.getbyUbung("uebungen", hilfe[i]))
+
             }
 
 
@@ -129,10 +132,12 @@ export default function Create() {
             if (document.getElementById(number.number).disabled === false){
                 document.getElementById(number.number).disabled = true
                 document.getElementById(number.number).value = "REST"
+                document.getElementById(number.number).parentNode.children[3].style.pointerEvents = "none"
                 window.localStorage.setItem("Name"+number.number, "REST")
             }else{
                 document.getElementById(number.number).disabled = false
                 document.getElementById(number.number).value = ""
+                document.getElementById(number.number).parentNode.children[3].style.pointerEvents = ""
                 window.localStorage.setItem("Name"+number.number, "")
             }
 
@@ -147,13 +152,39 @@ export default function Create() {
                        onChange={(e) => saveName(e.target.value, number)}></input>
 
                 <input type="text" className="uebungauswählen" disabled value={getUebungText(number.number)}></input>
-                <Link to={'/uebungselect/' + number.number}><PlusIcon class="plusicon"></PlusIcon> </Link>
+                <Link to={'/uebungselect/' + number.number} class="plusicon" >
+                    <IconButton>
+                    <ArrowCircleRightTwoToneIcon></ArrowCircleRightTwoToneIcon>
+                    </IconButton>
+                </Link>
             </li>
         )
     }
 
     //Component der Trainingsplananzeige um öfter das gleiche Object am Bildschirm anzuzeigen
     const DayShowComponent = ({tag}) => {
+
+        const trainingspläne = data.get("trainingsplan")
+        const trainingstagtabelle = data.get("trainingstag")
+
+        if (trainingspläne != null && trainingstagtabelle != null){
+            const selected = trainingspläne.filter((trainingsplan) => trainingsplan.selected == true)
+
+            if (selected.length >0){
+                const trainingstage = trainingstagtabelle.filter(tag => tag.trainingsplanID == selected[0].trainingsplanID)
+
+                setTagesbezeichnung1(trainingstage[0].Tagesbezeichung)
+                setTagesbezeichnung2(trainingstage[1].Tagesbezeichung)
+                setTagesbezeichnung3(trainingstage[2].Tagesbezeichung)
+                setTagesbezeichnung4(trainingstage[3].Tagesbezeichung)
+                setTagesbezeichnung5(trainingstage[4].Tagesbezeichung)
+                setTagesbezeichnung6(trainingstage[5].Tagesbezeichung)
+                setTagesbezeichnung7(trainingstage[6].Tagesbezeichung)
+            }
+
+        }
+
+
         return (
             <div className="trtagdivs">
                 <p className="trtagcontent">Tag{tag.tagesnummer}</p>
@@ -211,7 +242,7 @@ export default function Create() {
 
 
                 if (!value) {
-                    navigate("/Trainingsplanverwaltung/true")
+                    navigate("/Trainingsplanverwaltung/")
                     clearLocalStorage()
 
                 } else {
@@ -257,42 +288,50 @@ export default function Create() {
             <div id="content">
                 {/* Anzeige der oberen Hälfte des Bildschirms */}
                 <div id="trainingsplananzeige">
-                    <h1 className="ueberschrift">Mein derzeitiger Trainingsplan</h1>
+                    <div id="ueberschriftverwaltungsdiv">
+                        <h1 className="ueberschrift">Mein derzeitiger Trainingsplan</h1>
+                        <Link to={"/trainingsplanverwaltung"} id="verwaltungsButton"><IconButton >
+                            <SettingsTwoToneIcon></SettingsTwoToneIcon>
+                        </IconButton>
+                        </Link>
+                    </div>
+
+
                     <div id="divs">
                         <DayShowComponent tag={{
                             tagesnummer: 1,
                             wochentag: 'Montag',
-                            tagesbezeichnung: 'Push'
+                            tagesbezeichnung: tagesbezeichnung1
                         }}/>
                         <DayShowComponent tag={{
                             tagesnummer: 2,
                             wochentag: 'Dienstag',
-                            tagesbezeichnung: 'Pull'
+                            tagesbezeichnung: tagesbezeichnung2
                         }}/>
                         <DayShowComponent tag={{
                             tagesnummer: 3,
                             wochentag: 'Mittwoch',
-                            tagesbezeichnung: 'Arms'
+                            tagesbezeichnung: tagesbezeichnung3
                         }}/>
                         <DayShowComponent tag={{
                             tagesnummer: 4,
                             wochentag: 'Donnerstag',
-                            tagesbezeichnung: 'Legs'
+                            tagesbezeichnung: tagesbezeichnung4
                         }}/>
                         <DayShowComponent tag={{
                             tagesnummer: 5,
                             wochentag: 'Freitag',
-                            tagesbezeichnung: 'Rest'
+                            tagesbezeichnung: tagesbezeichnung5
                         }}/>
                         <DayShowComponent tag={{
                             tagesnummer: 6,
                             wochentag: 'Samstag',
-                            tagesbezeichnung: 'Push'
+                            tagesbezeichnung: tagesbezeichnung6
                         }}/>
                         <DayShowComponent tag={{
                             tagesnummer: 7,
                             wochentag: 'Sonntag',
-                            tagesbezeichnung: 'Pull'
+                            tagesbezeichnung: tagesbezeichnung7
                         }}/>
 
 
@@ -303,13 +342,14 @@ export default function Create() {
                     <div>
                         <div>
                             <h1 className="ueberschrift">Neue Trainingsplan erstellen</h1>
-
                         </div>
+
                         <div className="trainingsplanname">
                             <label htmlFor="trainingsplanname">Trainingsplan Name:</label>
                             <input id="trainingsplanname" type="text" defaultValue={getTrainingsplanNameText()}
                                    onInput={(e) => saveTrainingsplanName(e.target.value)} required></input>
                         </div>
+
                         <ul id="createList">
                             <label htmlFor="Tagesbezeichnung" className="tagesbezeichnung">Tagesbezeichnung</label>
                             {/* day1 *********************************************** */}

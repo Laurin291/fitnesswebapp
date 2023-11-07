@@ -15,21 +15,22 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Checkbox from '@mui/material/Checkbox';
 import data from "../data.js";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from '@mui/material/Alert';
 import {useState} from "react";
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import KeyboardDoubleArrowRightTwoToneIcon from '@mui/icons-material/KeyboardDoubleArrowRightTwoTone';
 
 
 // Funktion um einen Datensatz in der Tabelle zu erstellen
-function createData(id, name, trainingstage, uebungname) {
+function createData(id, name, trainingstage) {
     return {
         id,
         name,
-        trainingstage,
-        uebungname
+        trainingstage
 
 
     };
@@ -40,8 +41,26 @@ function Row(props) {
     const {number} = useParams()
     const {row} = props;
     const [open, setOpen] = React.useState(false);
-    const [open2, setOpen2] = React.useState(false);
     const labelId = `enhanced-table-checkbox-1`;
+    const [checked, setChecked] = React.useState()
+    const navigate = useNavigate();
+
+    const selectTrainingsplan = (e) => {
+        const parent = e.target.parentNode.parentNode
+
+        const name = parent.parentNode.children[2]
+
+        if (name != undefined){
+            console.log(name.innerHTML)
+            data.updatecolumn().then(data.update(name.innerHTML,'TRUE').then(navigate("/create")))
+
+        }
+
+
+
+
+
+    }
 
 
     return (
@@ -62,6 +81,11 @@ function Row(props) {
                 <TableCell align="left">
                     {row.name}
                 </TableCell>
+                <TableCell>
+                    <IconButton size="small" onClick={selectTrainingsplan}>
+                        <KeyboardDoubleArrowRightTwoToneIcon/>
+                    </IconButton>
+                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
@@ -75,39 +99,18 @@ function Row(props) {
 
                                     {row.trainingstage.map((trainingstag) => (
                                         <>
-                                        <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
-                                            <TableCell component="th" scope="row">
-                                                {trainingstag.Tagesbezeichung}
-                                            </TableCell>
-                                            <TableCell align={"right"}>
-                                                <IconButton
-                                                    aria-label="expand row"
-                                                    size="small"
-                                                    onClick={() => setOpen2(!open2)}
-                                                >
-                                                    {open2 ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
-                                                <Collapse in={open2} timeout="auto" unmountOnExit>
-                                                    <Box sx={{margin: 1}}>
-                                                        <Typography variant="h7" gutterBottom component="div">
-                                                            Übungen
-                                                        </Typography>
-                                                        <Table size="small" aria-label="purchases">
-                                                            <TableBody>
-
-                                                                {row.uebungname.map((uebungen) => {
-                                                                uebungen.map((uebung)=> uebung[0].Name)
-                                                            })}
-                                                            </TableBody>
-                                                        </Table>
-                                                    </Box>
-                                                </Collapse>
-                                            </TableCell>
-                                        </TableRow>
+                                            <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                                                <TableCell component="th" scope="row">
+                                                    {trainingstag.Tagesbezeichung}
+                                                </TableCell>
+                                                <TableCell align={"right"}>
+                                                    <IconButton
+                                                        size="small"
+                                                    >
+                                                        <EditTwoToneIcon></EditTwoToneIcon>
+                                                    </IconButton>
+                                                </TableCell>
+                                            </TableRow>
                                         </>
                                     ))}
 
@@ -130,8 +133,6 @@ function rows() {
     const trainingstage = data.get('trainingstag')
 
 
-
-
     let numzeilen = 0;
     const zeile = []
 
@@ -140,25 +141,9 @@ function rows() {
 
         for (let i = 0; i < trainingsplan.length; i++) {
             const trainingstagBezeichnung = trainingstage.filter((tag) => tag.trainingsplanID == trainingsplan[i].trainingsplanID)
-            let uebungenname =[]
-
-            for (let k = 0; k<7;k++){
-                let hilfe =[]
-                for (let j = 0; j < trainingstagBezeichnung[k].uebungIDs.length; j++){
 
 
-                    hilfe.push(uebungen.filter((uebung)  => uebung.uebungID == trainingstagBezeichnung[k].uebungIDs[j] ))
-
-                }
-                uebungenname.push(hilfe)
-            }
-
-
-
-
-
-
-            zeile.push(createData(trainingsplan[i].trainingsplanID, trainingsplan[i].name, trainingstagBezeichnung, uebungenname))
+            zeile.push(createData(trainingsplan[i].trainingsplanID, trainingsplan[i].name, trainingstagBezeichnung))
         }
 
     }
@@ -176,13 +161,14 @@ export default function Trainingsplanverwaltung() {
 
     return (
         <div id="content">
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} id="tableContainer">
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
                             <TableCell/>
                             <TableCell>ID</TableCell>
                             <TableCell>Name</TableCell>
+                            <TableCell/>
 
                         </TableRow>
                     </TableHead>

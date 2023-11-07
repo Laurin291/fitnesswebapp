@@ -235,7 +235,7 @@ export default function Uebungstabelle() {
 
     return (
         <div id="content">
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} id="tableContainer">
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>

@@ -210,19 +210,112 @@ class Data {
         return uebungen
     }
 
+    getTrainingsplan(id) {
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [fetchError, setFetchError] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [uebungen, setUebungen] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+            const fetchUebungen = async () => {
+                const {data, error} = await supabase
+                    .from('trainingsplan')
+                    .select('*')
+                    .match({trainingsplanID: id})
+
+
+                if (error) {
+                    setFetchError('Could not fetch the exercises')
+
+                }
+                if (data) {
+                    setUebungen(data)
+                    setFetchError(null)
+                }
+            }
+            fetchUebungen()
+        }, [])
+
+
+        return uebungen
+
+
+
+
+
+    }
+
+    getTrainingstag(id){
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [fetchError, setFetchError] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [uebungen, setUebungen] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+            const fetchUebungen = async () => {
+                const {data, error} = await supabase
+                    .from('trainingstag')
+                    .select('Tagesbezeichung, uebungIDs')
+                    .match({trainingsplanID: id})
+
+
+                if (error) {
+                    setFetchError('Could not fetch the exercises')
+
+                }
+                if (data) {
+                    setUebungen(data)
+                    setFetchError(null)
+                }
+            }
+            fetchUebungen()
+        }, [])
+
+
+        return uebungen
+    }
+
+    getUebungen(id){
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [fetchError, setFetchError] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [uebungen, setUebungen] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+            const fetchUebungen = async () => {
+                const {data, error} = await supabase
+                    .from('uebungen')
+                    .select('Name')
+                    .match({uebungID: id})
+
+
+                if (error) {
+                    setFetchError('Could not fetch the exercises')
+
+                }
+                if (data) {
+                    setUebungen(data)
+                    setFetchError(null)
+                }
+            }
+            fetchUebungen()
+        }, [])
+
+
+        return uebungen
+    }
+
 
     async postTrainingsplan(array, trainingsplanname) {
         let uebungsIDs
         let tagesbezeichnung
         let iserror = false
 
-        const { data2, error } = await supabase
+        const {data2, error} = await supabase
             .from('trainingsplan')
             .insert({name: trainingsplanname})
             .select()
-
-
-
 
 
         console.log(data2)
@@ -260,12 +353,21 @@ class Data {
 
     }
 
-    async update(Name, Kategorie, id) {
+    async update(Name, update) {
 
         const {data, error} = await supabase
-            .from("uebungen")
-            .update([{Name, Kategorie}])
-            .eq('id', id)
+            .from("trainingsplan")
+            .update([{selected: update}])
+            .eq('name', Name)
+    }
+
+    async updatecolumn(){
+        const {data, error} = await supabase
+            .from("trainingsplan")
+            .update([{selected: 'FALSE'}])
+            .eq('selected','TRUE')
+
+
     }
 
 
