@@ -20,6 +20,7 @@ import LabelIcon from '@mui/icons-material/Label';
 import IconButton from "@mui/material/IconButton";
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwoTone';
+import {Zoom} from "@mui/material";
 
 
 export default function Create() {
@@ -33,6 +34,7 @@ export default function Create() {
     const [tagesbezeichnung5,setTagesbezeichnung5] = useState("--")
     const [tagesbezeichnung6,setTagesbezeichnung6] = useState("--")
     const [tagesbezeichnung7,setTagesbezeichnung7] = useState("--")
+
 
 
 
@@ -285,6 +287,7 @@ export default function Create() {
 
     return (
         <>
+            <Zoom in={true}>
             <div id="content">
                 {/* Anzeige der oberen Hälfte des Bildschirms */}
                 <div id="trainingsplananzeige">
@@ -394,7 +397,7 @@ export default function Create() {
                 </form>
 
             </div>
-
+            </Zoom>
         </>
 
     )

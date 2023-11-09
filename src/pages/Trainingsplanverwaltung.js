@@ -23,136 +23,161 @@ import MuiAlert from '@mui/material/Alert';
 import {useState} from "react";
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import KeyboardDoubleArrowRightTwoToneIcon from '@mui/icons-material/KeyboardDoubleArrowRightTwoTone';
+import {Grow, Skeleton, Slide, tableCellClasses, Zoom} from "@mui/material";
+import {styled} from '@mui/material/styles';
+import {TransitionGroup} from "react-transition-group";
 
 
-// Funktion um einen Datensatz in der Tabelle zu erstellen
-function createData(id, name, trainingstage) {
-    return {
-        id,
-        name,
-        trainingstage
+export default function Trainingsplanverwaltung() {
 
-
-    };
-}
-
-// Funktion mit der die Reihen der Tabelle mit Daten gefühlt und zusammengesetzt werden, um sie anschließend
-function Row(props) {
-    const {number} = useParams()
-    const {row} = props;
-    const [open, setOpen] = React.useState(false);
-    const labelId = `enhanced-table-checkbox-1`;
-    const [checked, setChecked] = React.useState()
-    const navigate = useNavigate();
-
-    const selectTrainingsplan = (e) => {
-        const parent = e.target.parentNode.parentNode
-
-        const name = parent.parentNode.children[2]
-
-        if (name != undefined){
-            console.log(name.innerHTML)
-            data.updatecolumn().then(data.update(name.innerHTML,'TRUE').then(navigate("/create")))
-
-        }
-
-
-
-
-
-    }
-
-
-    return (
-        <React.Fragment>
-            <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
-                <TableCell>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpen(!open)}
-                    >
-                        {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
-                    </IconButton>
-                </TableCell>
-                <TableCell component="th" scope="row">
-                    {row.id}
-                </TableCell>
-                <TableCell align="left">
-                    {row.name}
-                </TableCell>
-                <TableCell>
-                    <IconButton size="small" onClick={selectTrainingsplan}>
-                        <KeyboardDoubleArrowRightTwoToneIcon/>
-                    </IconButton>
-                </TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{margin: 1}}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Trainingstage
-                            </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableBody>
-
-                                    {row.trainingstage.map((trainingstag) => (
-                                        <>
-                                            <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
-                                                <TableCell component="th" scope="row">
-                                                    {trainingstag.Tagesbezeichung}
-                                                </TableCell>
-                                                <TableCell align={"right"}>
-                                                    <IconButton
-                                                        size="small"
-                                                    >
-                                                        <EditTwoToneIcon></EditTwoToneIcon>
-                                                    </IconButton>
-                                                </TableCell>
-                                            </TableRow>
-                                        </>
-                                    ))}
-
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-        </React.Fragment>
-
-
-    );
-}
-
-//Funktion um mit den Daten aus der Datenbank die Datensätze für die Tabelle zu erstellen
-function rows() {
     const uebungen = data.get('uebungen')
     const trainingsplan = data.get('trainingsplan')
     const trainingstage = data.get('trainingstag')
 
-
-    let numzeilen = 0;
-    const zeile = []
-
-
-    if (trainingsplan != null && trainingstage != null && uebungen != null) {
-
-        for (let i = 0; i < trainingsplan.length; i++) {
-            const trainingstagBezeichnung = trainingstage.filter((tag) => tag.trainingsplanID == trainingsplan[i].trainingsplanID)
+// Funktion um einen Datensatz in der Tabelle zu erstellen
+    function createData(id, name, trainingstage) {
+        return {
+            id,
+            name,
+            trainingstage
 
 
-            zeile.push(createData(trainingsplan[i].trainingsplanID, trainingsplan[i].name, trainingstagBezeichnung))
+        };
+    }
+
+    const StyledTableCell = styled(TableCell)(({theme}) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: '#06367A',
+            color: theme.palette.common.white,
+        },
+        [`&.${tableCellClasses.body}`]: {
+            fontSize: 14,
+        },
+    }));
+
+    const StyledTableRow = styled(TableRow)(({theme}) => ({
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.action.hover,
+        },
+        // hide last border
+        '&:last-child td, &:last-child th': {
+            border: 0,
+        },
+    }));
+
+// Funktion mit der die Reihen der Tabelle mit Daten gefühlt und zusammengesetzt werden, um sie anschließend
+    function Row(props) {
+        const {number} = useParams()
+        const {row} = props;
+        const [open, setOpen] = React.useState(false);
+        const labelId = `enhanced-table-checkbox-1`;
+        const [checked, setChecked] = React.useState()
+        const navigate = useNavigate();
+
+        const selectTrainingsplan = (e) => {
+            const parent = e.target.parentNode.parentNode
+
+            const name = parent.parentNode.children[2]
+
+            if (name != undefined) {
+                console.log(name.innerHTML)
+                data.updatecolumn().then(data.update(name.innerHTML, 'TRUE'))
+                navigate("/create")
+
+            }
+
+
         }
 
+
+        return (
+            <React.Fragment>
+                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                    <TableCell>
+                        <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => setOpen(!open)}
+                        >
+                            {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
+                        </IconButton>
+                    </TableCell>
+                    <StyledTableCell component="th" scope="row">
+                        {row.id}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                        {row.name}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                        <IconButton size="small" onClick={selectTrainingsplan}>
+                            <KeyboardDoubleArrowRightTwoToneIcon/>
+                        </IconButton>
+                    </StyledTableCell>
+                </StyledTableRow>
+                <StyledTableRow>
+                    <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                            <Box sx={{margin: 1}}>
+                                <Typography variant="h6" gutterBottom component="div">
+                                    Trainingstage
+                                </Typography>
+                                <Table size="small" aria-label="purchases">
+                                    <TableBody>
+
+                                        {row.trainingstage.map((trainingstag) => (
+                                            <>
+                                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                                                    <TableCell component="th" scope="row">
+                                                        {trainingstag.Tagesbezeichung}
+                                                    </TableCell>
+                                                    <StyledTableCell align={"right"}>
+                                                        <IconButton
+                                                            size="small"
+                                                        >
+                                                            <EditTwoToneIcon></EditTwoToneIcon>
+                                                        </IconButton>
+                                                    </StyledTableCell>
+                                                </StyledTableRow>
+                                            </>
+                                        ))}
+
+                                    </TableBody>
+                                </Table>
+                            </Box>
+                        </Collapse>
+                    </TableCell>
+                </StyledTableRow>
+            </React.Fragment>
+
+
+        );
     }
-    return zeile
-}
+
+//Funktion um mit den Daten aus der Datenbank die Datensätze für die Tabelle zu erstellen
+    function rows() {
+
+
+        let numzeilen = 0;
+        const zeile = []
+
+
+        if (trainingsplan != null && trainingstage != null && uebungen != null) {
+
+            for (let i = 0; i < trainingsplan.length; i++) {
+                const trainingstagBezeichnung = trainingstage.filter((tag) => tag.trainingsplanID == trainingsplan[i].trainingsplanID)
+
+
+                zeile.push(createData(trainingsplan[i].trainingsplanID, trainingsplan[i].name, trainingstagBezeichnung))
+            }
+
+        }
+
+        return zeile
+    }
 
 
 // Funktion in welcher die finale Tabelle zusammengesetzt wird
-export default function Trainingsplanverwaltung() {
+
     const [open, setOpen] = React.useState(false);
     const [alertinhalt, setAlertInhalt] = useState("")
     const [severity, setSeverity] = useState("")
@@ -161,25 +186,65 @@ export default function Trainingsplanverwaltung() {
 
     return (
         <div id="content">
-            <TableContainer component={Paper} id="tableContainer">
-                <Table aria-label="collapsible table">
+            <Zoom in={true}><Typography m={3} variant='h2'
+                                        sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Trainingspläne</Typography></Zoom>
+            <Zoom in={true}><TableContainer component={Paper} id="tableContainer">
+                <Table stickyHeader>
                     <TableHead>
-                        <TableRow>
-                            <TableCell/>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell/>
+                        <StyledTableRow>
+                            <StyledTableCell/>
+                            <StyledTableCell>ID</StyledTableCell>
+                            <StyledTableCell>Name</StyledTableCell>
+                            <StyledTableCell/>
 
-                        </TableRow>
+                        </StyledTableRow>
                     </TableHead>
+
                     <TableBody>
-                        {rows().map((row) => (
+                        {trainingstage != null &&
+                            rows().map((row) => (
                             <Row key={row.name} row={row}/>
                         ))}
+
+                        {trainingstage == null &&
+                            <>
+                                <TableRow>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                </TableRow>
+                            </>
+                        }
                     </TableBody>
+
                 </Table>
             </TableContainer>
-
+            </Zoom>
 
         </div>
     );
