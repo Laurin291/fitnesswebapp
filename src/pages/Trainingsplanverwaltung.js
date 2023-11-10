@@ -238,6 +238,12 @@ export default function Trainingsplanverwaltung() {
                                     <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
                                 </TableRow>
+                                <TableRow>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                </TableRow>
                             </>
                         }
                     </TableBody>

@@ -128,7 +128,7 @@ export default function Create() {
     //Component der Trainingsplanerstellung um öfter das gleiche Object am Bildschirm anzuzeigen
     const DayCreateComponent = (number) => {
 
-
+        const woche = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag']
 
         const handleChange = (event) => {
             if (document.getElementById(number.number).disabled === false){
@@ -150,7 +150,7 @@ export default function Create() {
         return (
             <li>
                 <Checkbox icon={<LabelOutlinedIcon/>} checkedIcon={<LabelIcon />} onChange={handleChange}/>
-                <input type="text" id={number.number} className="tagesbezeichnung" defaultValue={getNameText(number)}
+                <input type="text" id={number.number} className="tagesbezeichnung" defaultValue={getNameText(number)} placeholder={woche[number.number -1]}
                        onChange={(e) => saveName(e.target.value, number)}></input>
 
                 <input type="text" className="uebungauswählen" disabled value={getUebungText(number.number)}></input>
@@ -348,7 +348,7 @@ export default function Create() {
                         </div>
 
                         <div className="trainingsplanname">
-                            <label htmlFor="trainingsplanname">Trainingsplan Name:</label>
+                            <label htmlFor="trainingsplanname"  >Trainingsplan Name:</label>
                             <input id="trainingsplanname" type="text" defaultValue={getTrainingsplanNameText()}
                                    onInput={(e) => saveTrainingsplanName(e.target.value)} required></input>
                         </div>

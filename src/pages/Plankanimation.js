@@ -119,7 +119,7 @@ export default function App() {
 
     const isTimer1Expired = new Date() >= timer1;
     return (
-        <div>
+        <div id='content'>
             <Button id="plankstarthome" variant="outlined">
                 <Link to="/">Home</Link>
             </Button>

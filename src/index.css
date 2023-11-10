@@ -358,12 +358,15 @@ a {
     margin-left: 2%;
     margin-right: 2%;
     margin-top: 2%;
+    font-family: Bahnschrift;
+
 
 }
 
 .trtagcontent {
     border-color: #151616;
     border-style: groove;
+    border-radius: 5px;
     position: relative;
     display: flex;
     justify-content: center;
@@ -384,6 +387,7 @@ a {
 .ueberschrift {
     margin-left: 3%;
     margin-top: 2%;
+    font-family: Bahnschrift;
 }
 
 #ueberschriftverwaltungsdiv{
@@ -423,6 +427,7 @@ a {
     display: flex;
     flex-direction: column;
     max-height: 90vh;
+    margin-left: 12em;
 }
 
 .Effortboxes {
@@ -430,13 +435,15 @@ a {
 }
 
 
+
 .sidenavbar {
     height: 100svh;
     width: 8em;
     color: white;
-    position: relative;
-    float: left;
+    position: fixed;
+    z-index: 1;
     top: 0;
+    float: left;
     font-size: 25px;
     line-height: 150%;
     background-color: #06367A;

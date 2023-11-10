@@ -69,7 +69,7 @@ export default function Fahrradseite() {
     }
     return (
         <>
-            <div>
+            <div id='content'>
                 <div>
                     Willkommen zurück, Rainer Zufall! <br/>
                     Starten Sie ihr Indoor HIIT Cycling Training.<br/>

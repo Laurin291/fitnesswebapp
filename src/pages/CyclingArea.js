@@ -188,7 +188,7 @@ export default function App() {
     const time = new Date();
     time.setSeconds(time.getSeconds() + 1800); // 30 minutes timer
     return (
-        <div>
+        <div id='content'>
             <div className="App" style={{textAlign: 'center'}}>
                 <CyclingAreaPage expiryTimestamp={time}/>
             </div>

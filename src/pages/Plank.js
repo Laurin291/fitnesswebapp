@@ -34,7 +34,7 @@ export default function Plank() {
 
     return (
         <>
-            <div>
+            <div id='content'>
                 <div>
                     <Stack spacing={3} alignItems="center">
                         <ToggleButtonGroup {...control} aria-label="Medium sizes">
