@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useTimer} from 'react-timer-hook';
-import {Button} from "@material-ui/core";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import Beinheben from '../animations/BeinhebenAnimation.gif';
 import Spideranimation from '../animations/SpiderAnimation.gif'
 import Plank from '../animations/Plank.gif'
@@ -20,7 +19,6 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
     } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called')});
 
     const latestTotalSecondsRef = useRef(totalSeconds);
-
     useEffect(() => {
         if (latestTotalSecondsRef.current - totalSeconds >= 30) {
             latestTotalSecondsRef.current = totalSeconds;
@@ -57,16 +55,6 @@ function MyTimer2({expiryTimestamp, isRunning}) {
     } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called')});
 
     useEffect(() => {
-
-
-        if (!isRunning) {
-            console.log("Running")
-            pause();
-
-        } else {
-            console.log("Notrunning")
-            resume()
-        }
         if (seconds === 0 && !isRunning) {
             // Der Timer ist abgelaufen und läuft, also setzen wir ihn auf 10 Sekunden zurück
             expiryTimestamp = new Date();
@@ -84,7 +72,7 @@ function MyTimer2({expiryTimestamp, isRunning}) {
     );
 }
 
-export default function App() {
+export default function App(totalSeconds) {
     const {time} = useParams()
     const [timer1] = useState(() => {
         const initialTimer1 = new Date();
@@ -93,37 +81,40 @@ export default function App() {
     });
     const timer2 = new Date();
     timer2.setSeconds(timer2.getSeconds() + 10);
-
+    console.log("Otto: " + totalSeconds)
     const [isTimer2Running, setIsTimer2Running] = useState(false);
 
     const [gifsList] = useState([Beinheben, Spideranimation, Plank, PlankHaende, HaendeBeinheben]);
     const [currentGifIndex, setCurrentGifIndex] = useState(0);
-
+    const getRandomIndex = (currentIndex, maxIndex) => {
+        let newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * maxIndex);
+        } while (newIndex === currentIndex);
+        return newIndex;
+    };
     useEffect(() => {
         let gifInterval;
 
         if (!isTimer2Running) {
             gifInterval = setInterval(() => {
-                setCurrentGifIndex(prevIndex => {
-                    let newIndex;
-                    do {
-                        newIndex = Math.floor(Math.random() * gifsList.length);
-                    } while (newIndex === prevIndex);
-                    return newIndex;
-                });
+                setCurrentGifIndex(prevIndex => getRandomIndex(prevIndex, gifsList.length));
             }, 30000);
         }
 
         return () => clearInterval(gifInterval);
-    }, [isTimer2Running,gifsList]);
+    }, [isTimer2Running, gifsList]);
 
-    const isTimer1Expired = new Date() >= timer1;
+    let isTimer1Expired = new Date() >= timer1;
+
+        if(time >= 120){
+        isTimer1Expired = new Date() >= timer1;
+    }
+    console.log("Timer: "+timer1)
+    console.log("Datum: "+new Date())
+    console.log(isTimer1Expired)
     return (
-        <div id='content'>
-            <Button id="plankstarthome" variant="outlined">
-                <Link to="/">Home</Link>
-            </Button>
-
+        <div id="content">
             <MyTimer expiryTimestamp={timer1} setIsTimer2Running={setIsTimer2Running}/>
             {isTimer2Running && <MyTimer2 expiryTimestamp={timer2} isRunning={isTimer2Running}/>}
             <div className="container">
