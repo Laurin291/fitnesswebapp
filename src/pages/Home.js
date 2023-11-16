@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 export default function Home() {
 
@@ -36,6 +36,7 @@ export default function Home() {
                 </div>
 
                 <Link to="/gewichtsverlauf"><ToggleButton id="gewichthome" style={{backgroundColor: 'orange'}}>
+                    <BarChartIcon id="icon"></BarChartIcon>
                     Gewichtsverlauf
                 </ToggleButton></Link>
 

@@ -2,15 +2,16 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useTimer} from "react-timer-hook";
 import {Button} from "@material-ui/core";
 import {useParams} from "react-router-dom";
-
+import {click} from "@testing-library/user-event/dist/click";
 
 function CyclingAreaPage({expiryTimestamp}) {
     const {difficulty} = useParams()
-    const {
+    let {
         totalSeconds,
+        isRunning,
         seconds,
         minutes,
-        start,
+        resume,
         pause,
     } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called')});
 
@@ -115,50 +116,77 @@ function CyclingAreaPage({expiryTimestamp}) {
 
     }, []);
 
+    const warmup = useCallback(() => {
+        document.querySelector("#effort").textContent = " Aufwärm Phase"
+        setCooldownStyle()
+        increase.current=0.5
+        const kurbelPath = document.getElementById("kurbel-path");
+        kurbelPath.setAttribute("fill", "green");
+        document.querySelector("#rpm").textContent = "40RPM"
+
+
+
+    }, []);
 
 
     useEffect(() => {
-        if(countdown>=0){
-            if (latestTotalSecondsRef2.current - totalSeconds >= 1) {
-                latestTotalSecondsRef2.current = totalSeconds;
-                setCountdown(countdown - 1);
+        if(isRunning) {
+            if (countdown >= 0) {
+                if (latestTotalSecondsRef2.current - totalSeconds >= 1) {
+                    latestTotalSecondsRef2.current = totalSeconds;
+                    setCountdown(countdown - 1);
+                }
             }
+            setTimeout(() => {
+                if (intervalCounter.current > 0 && (!didSetStartIntervalStyle.current || latestTotalSecondsRef.current - totalSeconds >= intervalDuration + cooldownDuration + soonIntervalDuration)) {
+                    didSetStartIntervalStyle.current = true;
+                    latestTotalSecondsRef.current = totalSeconds;
+                    intervalCounter.current--;
+
+                    setCooldownStyle();
+                    setSoonIntervalStyle();
+                    setIntervalStyle();
+                    setCountdown(intervalDuration);
+                    increase.current = 1
+
+
+                    setTimeout(() => {
+                        resetSoonIntervalStyle();
+                        resetIntervalStyle();
+                        setCooldownStyle()
+                        increase.current = 0.5
+                        setCountdown(cooldownDuration);
+                    }, intervalDuration * 1000);
+
+                    setTimeout(() => {
+                        setSoonIntervalStyle();
+                        setCountdown(soonIntervalDuration);
+                        increase.current = 0.8
+
+                    }, (intervalDuration + cooldownDuration) * 1000);
+                }
+            }, 10000)
+        }
+
+        if(!isRunning){
+            increase.current=0;
+        }
+
+
+        if(intervalCounter.current>=10){
+            warmup()
+
+        }
+
+        if(intervalCounter.current<=0){
+            resetIntervalStyle()
+            resetSoonIntervalStyle()
+            increase.current = 0.5
+            setCountdown(0)
         }
 
 
 
-            if (intervalCounter.current > 0 && (!didSetStartIntervalStyle.current || latestTotalSecondsRef.current - totalSeconds >= intervalDuration + cooldownDuration + soonIntervalDuration)) {
-                didSetStartIntervalStyle.current = true;
-                latestTotalSecondsRef.current = totalSeconds;
-                intervalCounter.current--;
-
-                setCooldownStyle();
-                setSoonIntervalStyle();
-                setIntervalStyle();
-                setCountdown(intervalDuration);
-                increase.current = 1
-
-                setTimeout(() => {
-                    resetSoonIntervalStyle();
-                    resetIntervalStyle();
-                    setCooldownStyle()
-                    increase.current = 0.5
-                    setCountdown(cooldownDuration);
-                }, intervalDuration * 1000);
-
-                setTimeout(() => {
-                    setSoonIntervalStyle();
-                    setCountdown(soonIntervalDuration);
-                    increase.current = 0.8
-                }, (intervalDuration + cooldownDuration) * 1000);
-            }
-
-          if(intervalCounter.current<=0){
-              resetIntervalStyle()
-              resetSoonIntervalStyle()
-              increase.current = 0.5
-              setCountdown(0)
-          }
 
 
         const kurbelRotation = setInterval(() => {
@@ -178,7 +206,7 @@ function CyclingAreaPage({expiryTimestamp}) {
             <div style={{fontSize: '50px'}}>
                 <span>Nächstes Intervall in: {countdown}s</span>
             </div>
-            <Button variant="contained" onClick={start}>Start</Button>
+            <Button variant="contained" onClick={resume}>Start</Button>
             <Button variant="contained" onClick={pause}>Pause</Button>
         </div>
     );

@@ -268,8 +268,9 @@ a {
 .effortbox {
     width: 150px;
     border-style: solid;
-    height: 20px;
+    height: 22px;
     margin-bottom: 20px;
+    border-radius: 28%;
 }
 
 
@@ -390,11 +391,12 @@ a {
     font-family: Bahnschrift;
 }
 
-#ueberschriftverwaltungsdiv{
+#ueberschriftverwaltungsdiv {
     display: flex;
     flex-direction: row;
 }
-#verwaltungsButton{
+
+#verwaltungsButton {
     margin-left: 45%;
     margin-top: 2%;
 }
@@ -435,7 +437,6 @@ a {
 }
 
 
-
 .sidenavbar {
     height: 100svh;
     width: 8em;
@@ -459,6 +460,7 @@ a {
     align-items: center;
     margin-top: 7%;
 }
+
 .wrapper:active {
     width: 200px;
     height: 60px;
@@ -499,21 +501,21 @@ a {
 }
 
 
-
-#textdown{
-    margin-top:85%
+#textdown {
+    margin-top: 85%
 }
 
 /* Trainingsplanverwaltung */
 
-#tableContainer{
+#tableContainer {
     margin: 2em;
     width: 95%;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 }
-#tableContainer2{
+
+#tableContainer2 {
     margin: 2em;
     width: 95%;
     border-radius: 10px;
@@ -553,6 +555,7 @@ Plank
     width: 50%;
     height: auto;
 }
+
 /*
  */
 
@@ -574,19 +577,18 @@ Plank
 }
 
 
-#Homeboxes{
+#Homeboxes {
     border-radius: 2px;
     border-style: solid;
 }
 
-.showHome{
+.showHome {
     flex-direction: row;
 }
 
 #Homeanzeige {
     position: static;
-    justify-content: center;
-
+    margin-left: 20%;
 
 }
 
@@ -597,30 +599,31 @@ Plank
 
 }
 
-#HomeBoxes{
+#HomeBoxes {
     border-radius: 20% 20%;
-    border-style: solid ;
+    border-style: solid;
     margin-left: 25%;
     height: 200px;
     width: 300px;
     background: white;
-    margin-right: 150px;
+    margin-right: 50px;
     font-size: 20px;
     color: white;
     font-family: Bahnschrift;
 }
-#HomeBoxes:hover{
+
+#HomeBoxes:hover {
     border-radius: 20% 20%;
-    border-style: solid ;
+    border-style: solid;
     margin-left: 25%;
     height: 200px;
     width: 300px;
     background: white;
-    margin-right: 150px;
+    margin-right: 50px;
     font-size: 20px;
     color: white;
     font-family: Bahnschrift;
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
 
 }
 
@@ -629,14 +632,104 @@ Plank
     margin-left: 3%;
 }
 
-#gewichthome{
+#gewichthome {
     border-radius: 25% 25% 25%;
     border-style: solid;
     margin-left: 20%;
-    margin-top: 10%;
-    height: 250px;
-    width: 750px;
+    margin-top: 5%;
+    height: 200px;
+    width: 600px;
     background: white;
 }
 
 
+.Logindiv {
+    border-radius: 20% 20%;
+    border-style: solid;
+    margin-left: 25%;
+    height: 200px;
+    width: 300px;
+    background: white;
+    margin-right: 50px;
+    font-size: 20px;
+    text-align: center;
+    color: Black;
+    font-family: Bahnschrift;
+}
+
+#fahrradcontent {
+    margin-left: 1%;
+    margin-top: 1%;
+    font-family: Bahnschrift;
+}
+
+#ueberschriftfahrrad {
+    font-size: 50px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#contentfarrad {
+    font-size: 30px;
+    text-align: center;
+}
+
+#fahrradinfoicon {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+
+}
+
+.diffibar {
+    display: flex;
+    justify-content: center;
+    margin: 40px 10px 10px;
+}
+
+.square {
+    width: 30px;
+    height: 25px;
+    background-color: #E3E3E3;
+}
+
+.square-green {
+    background-color: #6CD24B;
+}
+
+.square-yellow {
+    background-color: #f1ff2e;
+}
+
+.square-orange {
+    background-color: #FFAD01;
+}
+
+.square-red {
+    background-color: #FF2E37;
+}
+
+.square-rounded-left {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.square-rounded-right {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.diffibutton {
+    display: grid !important;
+    width: 230px !important;
+    height: 180px !important;
+    background-color: white !important;
+    font-size: 28px !important;
+    border-radius: 40px !important;
+}
+
+.diffibuttons {
+    gap: 0.8rem;
+    display: flex;
+    margin: 40px;
+}
