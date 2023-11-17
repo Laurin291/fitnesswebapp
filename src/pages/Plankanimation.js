@@ -35,7 +35,7 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
 
     return (
         <div style={{textAlign: 'center', color: "black"}}>
-            <div style={{fontSize: '50px'}}>
+            <div style={{fontSize: '100px'}}>
                 <span>{minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
             <p>{isRunning ? 'Timer läuft' : 'Timer läuft nicht'}</p>
@@ -63,8 +63,8 @@ function MyTimer2({expiryTimestamp, isRunning}) {
         }
     }, [isRunning, pause, resume, totalSeconds, restart]);
     return (
-        <div style={{textAlign: 'center', color: "black"}}>
-            <div style={{fontSize: '50px'}}>
+        <div style={{textAlign: 'center', color: "black",marginTop:'50'}}>
+            <div style={{fontSize: '200px'}}>
                 <span>{minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
             <p>{isRunning2 ? 'Pause' : 'Keine Pause'}</p>
@@ -72,7 +72,7 @@ function MyTimer2({expiryTimestamp, isRunning}) {
     );
 }
 
-export default function App(totalSeconds) {
+export default function App() {
     const {time} = useParams()
     const [timer1] = useState(() => {
         const initialTimer1 = new Date();
@@ -81,7 +81,7 @@ export default function App(totalSeconds) {
     });
     const timer2 = new Date();
     timer2.setSeconds(timer2.getSeconds() + 10);
-    console.log("Otto: " + totalSeconds)
+
     const [isTimer2Running, setIsTimer2Running] = useState(false);
 
     const [gifsList] = useState([Beinheben, Spideranimation, Plank, PlankHaende, HaendeBeinheben]);
@@ -107,19 +107,18 @@ export default function App(totalSeconds) {
 
     let isTimer1Expired = new Date() >= timer1;
 
-        if(time >= 120){
-        isTimer1Expired = new Date() >= timer1;
-    }
     console.log("Timer: "+timer1)
     console.log("Datum: "+new Date())
     console.log(isTimer1Expired)
     return (
         <div id="content">
-            <MyTimer expiryTimestamp={timer1} setIsTimer2Running={setIsTimer2Running}/>
+            <div className="timer">
+                <MyTimer expiryTimestamp={timer1} setIsTimer2Running={setIsTimer2Running}/>
+            </div>
             {isTimer2Running && <MyTimer2 expiryTimestamp={timer2} isRunning={isTimer2Running}/>}
             <div className="container">
                 {!isTimer2Running && !isTimer1Expired && (
-                    <img src={gifsList[currentGifIndex]} alt="Mein GIF" className="gif"/>
+                    <img src={gifsList[currentGifIndex]} className="gif"/>
                 )}
             </div>
 

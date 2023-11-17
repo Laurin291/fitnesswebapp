@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import { Stack } from "@mui/material";
+import {Stack, Zoom} from "@mui/material";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useTheme } from '@mui/material/styles';
@@ -15,8 +15,12 @@ import Spideranimation from '../animations/SpiderAnimation.gif'
 import Plank from '../animations/Plank.gif'
 import PlankHaende from '../animations/HaendeAnimation.gif'
 import HaendeBeinheben from '../animations/HaendeBeinheben.gif'
+import {Button} from "@material-ui/core";
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+
 
 const images = [
     {
@@ -45,7 +49,13 @@ function SwipeableTextMobileStepper() {
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
     const maxSteps = images.length;
+    const handleNext = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
 
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
     const handleStepChange = (step) => {
         setActiveStep(step);
     };
@@ -71,6 +81,7 @@ function SwipeableTextMobileStepper() {
                 index={activeStep}
                 onChangeIndex={handleStepChange}
                 interval={5000}
+                sx={{ display: 'flex', justifyContent: 'center' }}
             >
                 {images.map((step, index) => (
                     <div key={step.label}>
@@ -78,11 +89,12 @@ function SwipeableTextMobileStepper() {
                             <Box
                                 component="img"
                                 sx={{
-                                    height: 450,
+
                                     display: 'block',
                                     maxWidth: 1000,
                                     overflow: 'hidden',
                                     width: '100%',
+                                    margin: '0 auto',
                                 }}
                                 src={step.imgPath}
                                 alt={step.label}
@@ -95,6 +107,30 @@ function SwipeableTextMobileStepper() {
                 steps={maxSteps}
                 position="static"
                 activeStep={activeStep}
+                nextButton={
+                    <ToggleButton
+                        size="small"
+                        onClick={handleNext}
+                        disabled={activeStep === maxSteps - 1}
+                    >
+                        Next
+                        {theme.direction === 'rtl' ? (
+                            <KeyboardArrowLeft />
+                        ) : (
+                            <KeyboardArrowRight />
+                        )}
+                    </ToggleButton>
+                }
+                backButton={
+                    <ToggleButton size="small" onClick={handleBack} disabled={activeStep === 0}>
+                        {theme.direction === 'rtl' ? (
+                            <KeyboardArrowRight />
+                        ) : (
+                            <KeyboardArrowLeft />
+                        )}
+                        Back
+                    </ToggleButton>
+                }
             />
         </Box>
     );
@@ -123,15 +159,17 @@ export default function App() {
     };
 
     return (
-        <div id="content">
-            <div>
-                <SwipeableTextMobileStepper />
-                <Stack spacing={3} alignItems="center">
-                    <ToggleButtonGroup {...control} aria-label="Medium sizes">
-                        {children}
-                    </ToggleButtonGroup>
-                </Stack>
+        <Zoom in={true}>
+            <div id="content">
+                <div>
+                    <SwipeableTextMobileStepper />
+                    <Stack spacing={3} alignItems="center">
+                        <ToggleButtonGroup {...control} aria-label="Medium sizes">
+                            {children}
+                        </ToggleButtonGroup>
+                    </Stack>
+                </div>
             </div>
-        </div>
+        </Zoom>
     );
 }

@@ -546,12 +546,16 @@ Plank
     justify-content: center;
     align-items: center;
     height: 25vh;
-    margin-top: 10px;
+    margin-top: 130px;
 }
 
 .gif {
-    width: 50%;
+    width: 95%;
     height: auto;
+}
+
+.timer{
+    margin-top: 20px;
 }
 /*
  */
