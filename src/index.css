@@ -568,14 +568,48 @@ Plank
     justify-content: center;
     align-items: center;
     height: 25vh;
-    margin-top: 10px;
+    margin-top: 130px;
 }
 
 .gif {
-    width: 50%;
+    width: 95%;
     height: auto;
 }
 
+.timer{
+    margin-top: 20px;
+}
+
+.timebuttons {
+    gap: 0.8rem;
+    display: flex;
+    margin-top: 40px;
+    margin-right: 30px;
+    margin-bottom: 0px;
+    justify-content: center;
+
+}
+.timebutton {
+    display: grid !important;
+    width: 100px !important;
+    height: 70px !important;
+    background-color: white !important;
+    font-size: 28px !important;
+    border-radius: 20px !important;
+}
+#ueberschriftplank {
+    font-size: 50px;
+    text-align: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#contentplank {
+    font-size: 30px;
+    text-align: center;
+    font-family: Bahnschrift;
+
+}
 /*
  */
 
