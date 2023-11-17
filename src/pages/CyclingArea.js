@@ -201,7 +201,7 @@ function CyclingAreaPage({expiryTimestamp}) {
     return (
         <div style={{textAlign: 'center', color: "black"}}>
             <div style={{fontSize: '50px'}}>
-                <span>Verbleinde Zeit: {minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
+                <span> {minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
             <div style={{fontSize: '50px'}}>
                 <span>Nächstes Intervall in: {countdown}s</span>

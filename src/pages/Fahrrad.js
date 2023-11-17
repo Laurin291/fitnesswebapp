@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Link} from "react-router-dom";
 import ToggleButton from "@mui/material/ToggleButton";
-import {Popper, Stack} from "@mui/material";
+import {Popper, Stack, Tooltip} from "@mui/material";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone';
 import Box from "@mui/material/Box";
@@ -9,6 +9,7 @@ import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import {Zoom} from "@mui/material";
+import {Button} from "@material-ui/core";
 
 
 export default function Fahrradseite() {
@@ -22,21 +23,27 @@ export default function Fahrradseite() {
                 setDifficulty(event.target.value)
             }
         };
-        const [anchorEl, setAnchorEl] = React.useState(null);
-        const [open, setOpen] = React.useState(false);
-        const [placement, setPlacement] = React.useState();
 
-        const handleClick = (newPlacement) => (event) => {
-            setAnchorEl(event.currentTarget);
-            setOpen((prev) => placement !== newPlacement || !prev);
-            setPlacement(newPlacement);
-        };
 
         const children = [
             <div className="diffibuttons">
                 <ToggleButton value="Leicht" key="Leicht" className="diffibutton">
                     <div>
-                        <InfoTwoToneIcon id="fahrradinfoicon" onClick={handleClick('right')}></InfoTwoToneIcon>
+                        <Tooltip TransitionComponent={Zoom}
+                                 title={
+                                     <>
+                                         <Typography color="inherit">Leicht:</Typography>
+                                         <Typography color="inherit">-Anfang: 10 Minuten Aufwärmen</Typography>
+                                         <Typography color="inherit">-Mitte: 10 Minuten abwechselnd</Typography>
+                                         <Typography color="inherit">45 Sekunden Cooldown</Typography>
+                                         <Typography color="inherit">15 Sekunden Intervall</Typography>
+                                         <Typography color="inherit">-Schluss: 10 Minuten Ausfahren</Typography>
+                                     </>
+                                 }
+                        >
+                        <InfoTwoToneIcon id="fahrradinfoicon">
+                        </InfoTwoToneIcon>
+                        </Tooltip>
                         <div className="diffibar">
                             <div className="square square-green square-rounded-left"/>
                             <div className="square"/>
@@ -45,27 +52,25 @@ export default function Fahrradseite() {
                         </div>
                         <Link to={'/CyclingArea/Leicht'}> Leicht </Link>
                     </div>
-                    <Box sx={{width: 500}}>
-                        <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
-                            {({TransitionProps}) => (
-                                <Fade {...TransitionProps} timeout={350}>
-                                    <Paper>
-                                        <Typography sx={{p: 2}}>Leicht:<br/>
-                                            -Anfang: 10 Minuten Aufwärmen<br/>
-                                            -Mitte: 10 Minuten abwechselnd <br/>
-                                            -45 Sekunden Cooldown <br/>
-                                            -15 Sekunden Intervall<br/>
-                                            -Schluss: 10 Minuten Ausfahren<br/></Typography>
-                                    </Paper>
-                                </Fade>
-                            )}
-                        </Popper>
-                    </Box>
-                </ToggleButton>,
+                </ToggleButton>
 
                 <ToggleButton value="Mittel" key="Mittel" className="diffibutton">
                     <div>
-                        <InfoTwoToneIcon id="fahrradinfoicon" onClick={handleClick('right')}></InfoTwoToneIcon>
+                        <Tooltip TransitionComponent={Zoom}
+                                 title={
+                                     <>
+                                         <Typography color="inherit">Mittel:</Typography>
+                                         <Typography color="inherit">-Anfang: 10 Minuten Aufwärmen</Typography>
+                                         <Typography color="inherit">-Mitte: 10 Minuten abwechselnd</Typography>
+                                         <Typography color="inherit">35 Sekunden Cooldown</Typography>
+                                         <Typography color="inherit">25 Sekunden Intervall</Typography>
+                                         <Typography color="inherit">-Schluss: 10 Minuten Ausfahren</Typography>
+                                     </>
+                                 }
+                        >
+                            <InfoTwoToneIcon id="fahrradinfoicon">
+                            </InfoTwoToneIcon>
+                        </Tooltip>
                         <div className="diffibar">
                             <div className="square square-green square-rounded-left ">
                             </div>
@@ -80,27 +85,24 @@ export default function Fahrradseite() {
                         </div>
                         <Link to={'/CyclingArea/Mittel'}> Mittel </Link>
                     </div>
-                    <Box sx={{width: 500}}>
-                        <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
-                            {({TransitionProps}) => (
-                                <Fade {...TransitionProps} timeout={350}>
-                                    <Paper>
-                                        <Typography sx={{p: 2}}>Schwer:<br/>
-                                            -Anfang: 10 Minuten Aufwärmen<br/>
-                                            -Mitte: 10 Minuten abwechselnd <br/>
-                                            -30 Sekunden Cooldown <br/>
-                                            -30 Sekunden Intervall<br/>
-                                            -Schluss: 10 Minuten Ausfahren<br/>
-                                        </Typography>
-                                    </Paper>
-                                </Fade>
-                            )}
-                        </Popper>
-                    </Box>
-                </ToggleButton>,
+                </ToggleButton>
                 <ToggleButton value="Schwer" key="Schwer" className="diffibutton">
                     <div>
-                        <InfoTwoToneIcon id="fahrradinfoicon" onClick={handleClick('right')}></InfoTwoToneIcon>
+                        <Tooltip TransitionComponent={Zoom}
+                                 title={
+                                     <>
+                                         <Typography color="inherit">Schwer:</Typography>
+                                         <Typography color="inherit">-Anfang: 10 Minuten Aufwärmen</Typography>
+                                         <Typography color="inherit">-Mitte: 10 Minuten abwechselnd</Typography>
+                                         <Typography color="inherit">30 Sekunden Cooldown</Typography>
+                                         <Typography color="inherit">30 Sekunden Intervall</Typography>
+                                         <Typography color="inherit">-Schluss: 10 Minuten Ausfahren</Typography>
+                                     </>
+                                 }
+                        >
+                            <InfoTwoToneIcon id="fahrradinfoicon">
+                            </InfoTwoToneIcon>
+                        </Tooltip>
                         <div className="diffibar">
                             <div className="square square-green square-rounded-left ">
                             </div>
@@ -115,26 +117,24 @@ export default function Fahrradseite() {
                         </div>
                         <Link to={'/CyclingArea/Schwer'}> Schwer </Link>
                     </div>
-                    <Box sx={{width: 500}}>
-                        <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
-                            {({TransitionProps}) => (
-                                <Fade {...TransitionProps} timeout={350}>
-                                    <Paper>
-                                        <Typography sx={{p: 2}}>Alternative:<br/>
-                                            -Anfang: 10 Minuten Aufwärmen<br/>
-                                            -Mitte: 10 Minuten abwechselnd <br/>
-                                            -20 Sekunden Cooldown <br/>
-                                            -40 Sekunden Intervall<br/>
-                                            -Schluss: 10 Minuten Ausfahren<br/></Typography>
-                                    </Paper>
-                                </Fade>
-                            )}
-                        </Popper>
-                    </Box>
-                </ToggleButton>,
+                </ToggleButton>
                 <ToggleButton value="Alternative" key="Alternative" className="diffibutton">
                     <div>
-                        <InfoTwoToneIcon id="fahrradinfoicon" onClick={handleClick('right')}></InfoTwoToneIcon>
+                        <Tooltip TransitionComponent={Zoom}
+                                 title={
+                                     <>
+                                         <Typography color="inherit">Alternative:</Typography>
+                                         <Typography color="inherit">-Anfang: 10 Minuten Aufwärmen</Typography>
+                                         <Typography color="inherit">-Mitte: 10 Minuten abwechselnd</Typography>
+                                         <Typography color="inherit">20 Sekunden Cooldown</Typography>
+                                         <Typography color="inherit">40 Sekunden Intervall</Typography>
+                                         <Typography color="inherit">-Schluss: 10 Minuten Ausfahren</Typography>
+                                     </>
+                                 }
+                        >
+                            <InfoTwoToneIcon id="fahrradinfoicon">
+                            </InfoTwoToneIcon>
+                        </Tooltip>
                         <div className="diffibar">
                             <div className="square square-green square-rounded-left ">
                             </div>
@@ -149,22 +149,6 @@ export default function Fahrradseite() {
                         </div>
                         <Link to={'/CyclingArea/Alternative'}> Alternative</Link>
                     </div>
-                    <Box sx={{width: 500}}>
-                        <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
-                            {({TransitionProps}) => (
-                                <Fade {...TransitionProps} timeout={350}>
-                                    <Paper>
-                                        <Typography sx={{p: 2}}>Leicht:<br/>
-                                            -Anfang: 10 Minuten Aufwärmen<br/>
-                                            -Mitte: 10 Minuten abwechselnd <br/>
-                                            -45 Sekunden Cooldown <br/>
-                                            -15 Sekunden Intervall<br/>
-                                            -Schluss: 10 Minuten Ausfahren<br/></Typography>
-                                    </Paper>
-                                </Fade>
-                            )}
-                        </Popper>
-                    </Box>
                 </ToggleButton>
             </div>
         ];
@@ -188,12 +172,10 @@ export default function Fahrradseite() {
             <Zoom in={true}>
             <div id='content'>
                 <div id="fahrradcontent">
-                    <div id="ueberschriftfahrrad">Willkommen zurück</div>
+                    <div id="ueberschriftfahrrad">Starte dein HIIT-Cycling Training</div>
                     <br/>
                     <div id="contentfarrad">
-                        Starten Sie ihr Indoor HIIT Cycling Training.<br/>
-                        Wählen Sie eine Schwierigskeisstufe und beginnen Sie.<br/>
-                        Viel spass und gutes Gelingen!
+                        Wähle eine Schwierigskeisstufe:<br/>
                     </div>
                 </div>
                 <div>

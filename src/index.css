@@ -270,7 +270,6 @@ a {
     border-style: solid;
     height: 22px;
     margin-bottom: 20px;
-    border-radius: 28%;
 }
 
 
@@ -439,13 +438,13 @@ a {
 
 .sidenavbar {
     height: 100svh;
-    width: 8em;
+    width: 9em;
     color: white;
     position: fixed;
     z-index: 1;
     top: 0;
     float: left;
-    font-size: 25px;
+    font-size: 20px;
     line-height: 150%;
     background-color: #06367A;
     border: none;
@@ -568,7 +567,7 @@ Plank
 .kurbel-container {
     display: grid;
     place-items: center;
-    margin-left: 30%;
+    margin-left: 15%;
 }
 
 #kurbel {
@@ -671,8 +670,11 @@ Plank
 
 #contentfarrad {
     font-size: 30px;
-    text-align: center;
+    margin-left:12%;
+    margin-top: 6%;
+    font-family: Bahnschrift;
 }
+
 
 #fahrradinfoicon {
     position: absolute;
