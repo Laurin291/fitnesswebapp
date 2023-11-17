@@ -237,11 +237,7 @@ a {
 }
 
 
-.uebungauswählen {
-    margin-left: 10%;
-    margin-top: 5%;
-    scale: 130%;
-}
+
 
 
 #ch {
@@ -336,8 +332,8 @@ a {
 
 }
 
-.plusicon {
-    margin-left: 4%;
+#restIcon {
+ margin-left: 10%;
 }
 
 #submitButton {
@@ -358,7 +354,6 @@ a {
     margin-left: 2%;
     margin-right: 2%;
     margin-top: 2%;
-    font-family: Bahnschrift;
 
 
 }
@@ -422,6 +417,14 @@ a {
     scale: 130%;
 }
 
+.uebungauswählen {
+    margin-left: 10%;
+    margin-top: 5%;
+    margin-right: 4%;
+    scale: 130%;
+    background: lightgray;
+}
+
 /* App.js ****************************************************************** */
 
 #content {
@@ -429,6 +432,7 @@ a {
     flex-direction: column;
     max-height: 90vh;
     margin-left: 12em;
+    font-family: Bahnschrift;
 }
 
 .Effortboxes {
@@ -520,6 +524,23 @@ a {
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
+}
+
+.trvcheckbox{
+    position: relative;
+    justify-self: end;
+}
+
+#namediv{
+    display: grid;
+    place-items: center;
+}
+
+
+#checkboxcontainer{
+    display: flex;
+    justify-content: space-between;
+    width: auto;
 }
 
 /*

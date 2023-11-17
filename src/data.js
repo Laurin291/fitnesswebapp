@@ -355,17 +355,21 @@ class Data {
 
     async update(Name, update) {
 
+        const {data2, error2} = await supabase
+            .from("trainingsplan")
+            .update([{selected: 'FALSE'}])
+            .eq('selected','TRUE')
+
         const {data, error} = await supabase
             .from("trainingsplan")
             .update([{selected: update}])
             .eq('name', Name)
+
+
     }
 
     async updatecolumn(){
-        const {data, error} = await supabase
-            .from("trainingsplan")
-            .update([{selected: 'FALSE'}])
-            .eq('selected','TRUE')
+
 
 
     }

@@ -26,7 +26,11 @@ import KeyboardDoubleArrowRightTwoToneIcon from '@mui/icons-material/KeyboardDou
 import {Grow, Skeleton, Slide, tableCellClasses, Zoom} from "@mui/material";
 import {styled} from '@mui/material/styles';
 import {TransitionGroup} from "react-transition-group";
-
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import {wait} from "@testing-library/user-event/dist/utils";
+import {logDOM} from "@testing-library/react";
 
 export default function Trainingsplanverwaltung() {
 
@@ -35,11 +39,12 @@ export default function Trainingsplanverwaltung() {
     const trainingstage = data.get('trainingstag')
 
 // Funktion um einen Datensatz in der Tabelle zu erstellen
-    function createData(id, name, trainingstage) {
+    function createData(id, name, trainingstage, selected) {
         return {
             id,
             name,
-            trainingstage
+            trainingstage,
+            selected
 
 
         };
@@ -71,20 +76,18 @@ export default function Trainingsplanverwaltung() {
         const {row} = props;
         const [open, setOpen] = React.useState(false);
         const labelId = `enhanced-table-checkbox-1`;
-        const [checked, setChecked] = React.useState()
+        const [checked, setChecked] = React.useState(false)
         const navigate = useNavigate();
 
+
         const selectTrainingsplan = (e) => {
-            const parent = e.target.parentNode.parentNode
 
-            const name = parent.parentNode.children[2]
+            console.log(row.name)
 
-            if (name != undefined) {
-                console.log(name.innerHTML)
-                data.updatecolumn().then(data.update(name.innerHTML, 'TRUE'))
-                navigate("/create")
+                data.update(row.name, 'TRUE')
+                navigate('/create')
 
-            }
+
 
 
         }
@@ -93,26 +96,26 @@ export default function Trainingsplanverwaltung() {
         return (
             <React.Fragment>
                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
-                    <TableCell>
+                    <TableCell width={"15%"}>
                         <IconButton
                             aria-label="expand row"
                             size="small"
                             onClick={() => setOpen(!open)}
                         >
-                            {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
+                            {open ? <KeyboardArrowDownIcon/> : <KeyboardArrowRightIcon/>}
                         </IconButton>
                     </TableCell>
-                    <StyledTableCell component="th" scope="row">
-                        {row.id}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
+                    <StyledTableCell width={"40%"} id={"checkboxcontainer"}>
+                        <div id='namediv'>
                         {row.name}
-                    </StyledTableCell>
-                    <StyledTableCell>
-                        <IconButton size="small" onClick={selectTrainingsplan}>
-                            <KeyboardDoubleArrowRightTwoToneIcon/>
+                        </div>
+                        <IconButton className={row.name} onClick={selectTrainingsplan}>
+                            {row.selected ? <CheckBoxIcon id={'trvcheckbox'}> </CheckBoxIcon> : <CheckBoxOutlineBlankIcon id={'trvcheckbox'}></CheckBoxOutlineBlankIcon>}
+
                         </IconButton>
+
                     </StyledTableCell>
+
                 </StyledTableRow>
                 <StyledTableRow>
                     <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
@@ -167,7 +170,7 @@ export default function Trainingsplanverwaltung() {
                 const trainingstagBezeichnung = trainingstage.filter((tag) => tag.trainingsplanID == trainingsplan[i].trainingsplanID)
 
 
-                zeile.push(createData(trainingsplan[i].trainingsplanID, trainingsplan[i].name, trainingstagBezeichnung))
+                zeile.push(createData(trainingsplan[i].trainingsplanID, trainingsplan[i].name, trainingstagBezeichnung, trainingsplan[i].selected))
             }
 
         }
@@ -187,15 +190,14 @@ export default function Trainingsplanverwaltung() {
     return (
         <div id="content">
             <Zoom in={true}><Typography m={3} variant='h2'
-                                        sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Trainingspläne</Typography></Zoom>
+                                        sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Deine Trainingspläne</Typography></Zoom>
             <Zoom in={true}><TableContainer component={Paper} id="tableContainer">
                 <Table stickyHeader>
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell/>
-                            <StyledTableCell>ID</StyledTableCell>
                             <StyledTableCell>Name</StyledTableCell>
-                            <StyledTableCell/>
+
 
                         </StyledTableRow>
                     </TableHead>
@@ -208,42 +210,42 @@ export default function Trainingsplanverwaltung() {
 
                         {trainingstage == null &&
                             <>
-                                <TableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                </TableRow>
-                                <TableRow>
+                                </StyledTableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                </TableRow>
-                                <TableRow>
+                                </StyledTableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                </TableRow>
-                                <TableRow>
+                                </StyledTableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                </TableRow>
-                                <TableRow>
+                                </StyledTableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                </TableRow>
-                                <TableRow>
+                                </StyledTableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                    <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
+                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                </TableRow>
+                                </StyledTableRow>
                             </>
                         }
                     </TableBody>

@@ -1,26 +1,19 @@
-import {useEffect, useState} from 'react'
 import data from "../data.js";
-import {ReactComponent as PlusIcon} from '../icons/plus-circle-fill.svg';
 import {Link} from "react-router-dom";
 import Button from '@mui/material/Button';
 import supabase from "../config/supabaseClient";
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Fade from '@mui/material/Fade';
-import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
-import Backdrop from '@mui/material/Backdrop';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import {useNavigate} from "react-router-dom";
 import { validTrainingsplanname, validTagesbezeichnung } from '../Regex.js';
 import Checkbox from "@mui/material/Checkbox";
-import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined';
-import LabelIcon from '@mui/icons-material/Label';
 import IconButton from "@mui/material/IconButton";
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwoTone';
 import {Zoom} from "@mui/material";
+import ChairIcon from '@mui/icons-material/Chair';
+import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
+import {useState} from "react";
 
 
 export default function Create() {
@@ -39,6 +32,7 @@ export default function Create() {
 
 
 
+
     window.onbeforeunload = function () {
         window.localStorage.clear()
         return 'Are you sure you want to leave?';
@@ -50,7 +44,7 @@ export default function Create() {
         text = window.localStorage.getItem(nummer)
 
 
-        if (text != null && text.length > 2) {
+        if (text != null && text.length > 2 && text !== "REST") {
             let text1 = text.split(",")
             let hilfe = []
             for (let i = 0; i < text1.length; i++) {
@@ -81,20 +75,39 @@ export default function Create() {
 
             return ausgabeVor
 
-        } else {
-            return ""
+        } else if (text === "REST") {
+            return "REST"
+        }else{
+            return ''
         }
 
     }
 
-    function getNameText(nummer) {
-        return window.localStorage.getItem("Name" + nummer.number)
+    // Funktion um zu checken ob der jeweilige Tag ein REST-DAY ist
+    function checkRESTDAY(nummer){
+        let text = window.localStorage.getItem(nummer)
+
+        if (text === 'REST'){
+            return true
+        }else{
+            return false
+        }
+
     }
 
+
+    // Funktion um den bereits eingegeben Namen der Trainingstage aus dem Localstorage zu bekommen
+    function getNameText(nummer) {
+        return window.localStorage.getItem("Name" + nummer.number)
+
+    }
+
+    // Funktion um den bereits eingegeben Namen des Trainingsplans aus dem Localstorage zu bekommen
     function getTrainingsplanNameText() {
         return window.localStorage.getItem("TrainingsplanName")
     }
 
+    //Funktion um die Eingabe des Users (Trainingstagsbezeichnung) zu speichern
     function saveName(name, nummer) {
 
         if (!validTagesbezeichnung.test(name)) {
@@ -107,6 +120,7 @@ export default function Create() {
         }
     }
 
+    //Funktion um die Eingabe des Users (Trainingsplan) zu speichern
     function saveTrainingsplanName(name) {
         if (!validTrainingsplanname.test(name)) {
             document.getElementById("trainingsplanname").style.backgroundColor = 'lightsalmon'
@@ -134,31 +148,37 @@ export default function Create() {
             if (document.getElementById(number.number).disabled === false){
                 document.getElementById(number.number).disabled = true
                 document.getElementById(number.number).value = "REST"
-                document.getElementById(number.number).parentNode.children[3].style.pointerEvents = "none"
                 window.localStorage.setItem("Name"+number.number, "REST")
+                window.localStorage.setItem(number.number, "REST")
+                document.getElementById('uebungauswählen'+ number.number).value = "REST"
+                document.getElementById('uebungauswählen'+ number.number).disabled = true
+                document.getElementById('restIcon'+ number.number).checked = true
             }else{
                 document.getElementById(number.number).disabled = false
                 document.getElementById(number.number).value = ""
-                document.getElementById(number.number).parentNode.children[3].style.pointerEvents = ""
                 window.localStorage.setItem("Name"+number.number, "")
+                window.localStorage.setItem(number.number, "")
+                document.getElementById('uebungauswählen'+ number.number).value = ""
+                document.getElementById('uebungauswählen'+ number.number).disabled = false
+                document.getElementById('restIcon'+ number.number).checked = false
             }
+
+
 
 
         };
 
-
         return (
             <li>
-                <Checkbox icon={<LabelOutlinedIcon/>} checkedIcon={<LabelIcon />} onChange={handleChange}/>
-                <input type="text" id={number.number} className="tagesbezeichnung" defaultValue={getNameText(number)} placeholder={woche[number.number -1]}
-                       onChange={(e) => saveName(e.target.value, number)}></input>
 
-                <input type="text" className="uebungauswählen" disabled value={getUebungText(number.number)}></input>
-                <Link to={'/uebungselect/' + number.number} class="plusicon" >
-                    <IconButton>
-                    <ArrowCircleRightTwoToneIcon></ArrowCircleRightTwoToneIcon>
-                    </IconButton>
+                <input type="text" id={number.number} className="tagesbezeichnung" defaultValue={getNameText(number)} placeholder={woche[number.number -1]}
+                       onChange={(e) => saveName(e.target.value, number)}  disabled={checkRESTDAY(number.number)}></input>
+
+
+                <Link to={'/uebungselect/' + number.number }  >
+                    <input type="text" className="uebungauswählen" id={'uebungauswählen'+ number.number}  readOnly value={getUebungText(number.number)} disabled={checkRESTDAY(number.number)}></input>
                 </Link>
+                <Checkbox id={'restIcon'+ number.number} icon={<ChairOutlinedIcon/>} checkedIcon={<ChairIcon/>} onChange={handleChange} defaultChecked={checkRESTDAY(number.number)}/>
             </li>
         )
     }
@@ -223,8 +243,12 @@ export default function Create() {
                         .select("uebungID")
                         .match({Name: uebungen[i][j]})
 
+                    if(data[0] == undefined){
+                        uebungen[i][j] = 0
+                    }else{
+                        uebungen[i][j] = data[0].uebungID
+                    }
 
-                    uebungen[i][j] = data[0].uebungID
 
 
                 }
@@ -344,7 +368,7 @@ export default function Create() {
                 <form id="trainingsplanform">
                     <div>
                         <div>
-                            <h1 className="ueberschrift">Neue Trainingsplan erstellen</h1>
+                            <h1 className="ueberschrift">Neuen Trainingsplan erstellen</h1>
                         </div>
 
                         <div className="trainingsplanname">

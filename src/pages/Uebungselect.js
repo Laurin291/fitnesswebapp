@@ -23,6 +23,7 @@ import MuiAlert from '@mui/material/Alert';
 import {useState} from "react";
 import {styled} from "@mui/material/styles";
 import {Skeleton, tableCellClasses, Zoom} from "@mui/material";
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 export default function Uebungstabelle() {
     let selectedItems = []
@@ -132,16 +133,16 @@ export default function Uebungstabelle() {
         return (
             <React.Fragment>
                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
-                    <StyledTableCell>
+                    <StyledTableCell width={'20%'}>
                         <IconButton
                             aria-label="expand row"
                             size="small"
                             onClick={() => setOpen(!open)}
                         >
-                            {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
+                            {open ? <KeyboardArrowDownIcon/> : <KeyboardArrowRightIcon/>}
                         </IconButton>
                     </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell width={'48%'}>
                         <Checkbox
                             id={row.name}
                             color="primary"
@@ -277,28 +278,33 @@ export default function Uebungstabelle() {
                                     <>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
-                                            <TableCell><Skeleton variant="rectangular" width={180} height={50}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
                                         </TableRow>
                                     </>
                                 }
