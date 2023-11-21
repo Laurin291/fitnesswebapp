@@ -67,7 +67,7 @@ function MyTimer2({expiryTimestamp, isRunning}) {
             <div style={{fontSize: '200px'}}>
                 <span>{minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
-            <p>{isRunning2 ? 'Pause' : 'Keine Pause'}</p>
+            <div className="timer"><p>{isRunning2 ? 'Pause' : 'Keine Pause'}</p></div>
         </div>
     );
 }

@@ -61,7 +61,7 @@ function SwipeableTextMobileStepper() {
     };
 
     return (
-        <Box sx={{ flexGrow: 1 , maxWidth: 750, marginTop: 1,marginLeft: 30}}>
+        <Box sx={{ flexGrow: 1 , maxWidth: 750,}}>
             <AutoPlaySwipeableViews
                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                 index={activeStep}
@@ -152,14 +152,14 @@ export default function App() {
             <Link to={'/Plankanimation/90'}>
                 <ToggleButton value="90" key="90" className="timebutton" style={{color:"black"}}>90</ToggleButton>
             </Link>
-            <Link to={'/Plankanimation/90'}>
-                <ToggleButton value="90" key="90" className="timebutton" style={{color:"black"}}>120</ToggleButton>
+            <Link to={'/Plankanimation/120'}>
+                <ToggleButton value="120" key="120" className="timebutton" style={{color:"black"}}>120</ToggleButton>
             </Link>
-            <Link to={'/Plankanimation/90'}>
-                <ToggleButton value="90" key="90" className="timebutton" style={{color:"black"}}>150</ToggleButton>
+            <Link to={'/Plankanimation/150'}>
+                <ToggleButton value="150" key="150" className="timebutton" style={{color:"black"}}>150</ToggleButton>
             </Link>
-            <Link to={'/Plankanimation/90'}>
-                <ToggleButton value="90" key="90" className="timebutton" style={{color:"black"}}>180</ToggleButton>
+            <Link to={'/Plankanimation/180'}>
+                <ToggleButton value="180" key="180" className="timebutton" style={{color:"black"}}>180</ToggleButton>
             </Link>
         </div>
     ];
@@ -183,7 +183,7 @@ export default function App() {
                             {children}
                         </ToggleButtonGroup>
                     </Stack>
-                    <div>
+                    <div className={"makeCenter"}>
                     <SwipeableTextMobileStepper />
                     </div>
                 </div>

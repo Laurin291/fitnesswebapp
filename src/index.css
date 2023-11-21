@@ -572,7 +572,7 @@ Plank
 }
 
 .gif {
-    width: 95%;
+    width: 90%;
     height: auto;
 }
 
@@ -610,6 +610,8 @@ Plank
     font-family: Bahnschrift;
 
 }
+
+.makeCenter{display: flex;justify-content: center}
 /*
  */
 
