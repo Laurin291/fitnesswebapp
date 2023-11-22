@@ -25,57 +25,68 @@ import  avatar from './pictures/avatar.png';
 
 
 function App() {
-    return (
-        <BrowserRouter>
-            <nav className="sidenavbar">
-                <div className="avatar">
-                    <img src={avatar} className="avatar__image"/>
-                </div>
+    if (window.location.href == "http://localhost:3000/" ||window.location.href == "http://localhost:3000/Registration" ) {
+        return(
+            <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Login/>}/>
+            <Route path="/Registration" element={<Registration/>}/>
+        </Routes>
+            </BrowserRouter>
+        )
+    } else {
+        return (
+            <BrowserRouter>
+                <nav className="sidenavbar">
+                    <div className="avatar">
+                        <img src={avatar} className="avatar__image"/>
+                    </div>
 
-                <div class="wrapper">
-                    <HomeIcon id="icon"></HomeIcon>
-                    <Link to="/Home" className="text">Home</Link>
-                </div>
-                <div className="wrapper">
-                    <AddCircleOutlineIcon id="icon"></AddCircleOutlineIcon>
-                    <Link to="/create" className="text">Trainingsplan</Link>
-                </div>
-                <div className="wrapper">
-                    <DirectionsBikeIcon id="icon"></DirectionsBikeIcon>
-                    <Link to="/Fahrrad" className="text">HIIT-Training</Link>
-                </div>
-                <div className="wrapper">
-                    <PlayArrowIcon id="icon"></PlayArrowIcon>
-                    <Link to="/Plank" className="text">Plank starten</Link>
-                </div>
-                <div className="wrapper" id="textdown">
-                    <SettingsIcon id="icon"></SettingsIcon>
-                    <Link to="/Einstellungen" className="text">Einstellungen</Link>
-                </div>
-                <div className="wrapper">
-                    <LogoutIcon id="icon"></LogoutIcon>
-                    <Link to="/Ausloggen" className="text">Ausloggen</Link>
-                </div>
+                    <div className="wrapper">
+                        <HomeIcon id="icon"></HomeIcon>
+                        <Link to="/Home" className="text">Home</Link>
+                    </div>
+                    <div className="wrapper">
+                        <AddCircleOutlineIcon id="icon"></AddCircleOutlineIcon>
+                        <Link to="/create" className="text">Trainingsplan</Link>
+                    </div>
+                    <div className="wrapper">
+                        <DirectionsBikeIcon id="icon"></DirectionsBikeIcon>
+                        <Link to="/Fahrrad" className="text">HIIT-Training</Link>
+                    </div>
+                    <div className="wrapper">
+                        <PlayArrowIcon id="icon"></PlayArrowIcon>
+                        <Link to="/Plank" className="text">Plank starten</Link>
+                    </div>
+                    <div className="wrapper" id="textdown">
+                        <SettingsIcon id="icon"></SettingsIcon>
+                        <Link to="/Einstellungen" className="text">Einstellungen</Link>
+                    </div>
+                    <div className="wrapper">
+                        <LogoutIcon id="icon"></LogoutIcon>
+                        <Link to="/Ausloggen" className="text">Ausloggen</Link>
+                    </div>
 
 
-            </nav>
+                </nav>
 
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/Registration" element={<Registration/>} />
-                <Route path="/Home" element={<Home />} />
-                <Route path="/create" element={<Create />} />
-                <Route path="/:id" element={<Update />} />
-                <Route path="/uebungselect/:number" element={<Uebungselect/>} />
-                <Route path="/Fahrrad" element={<Fahrrad/>} />
-                <Route path="/CyclingArea/:difficulty" element={<CyclingArea/>} />
-                <Route path="/Plank" element={<Plank/>} />
-                <Route path="/Plankanimation/:time" element={<Plankanimation/>} />
-                <Route path="/Trainingsplanverwaltung" element={<Trainingsplanverwaltung/>} />
-            </Routes>
+                <Routes>
+                    <Route path="/" element={<Login/>}/>
+                    <Route path="/Registration" element={<Registration/>}/>
+                    <Route path="/Home" element={<Home/>}/>
+                    <Route path="/create" element={<Create/>}/>
+                    <Route path="/:id" element={<Update/>}/>
+                    <Route path="/uebungselect/:number" element={<Uebungselect/>}/>
+                    <Route path="/Fahrrad" element={<Fahrrad/>}/>
+                    <Route path="/CyclingArea/:difficulty" element={<CyclingArea/>}/>
+                    <Route path="/Plank" element={<Plank/>}/>
+                    <Route path="/Plankanimation/:time" element={<Plankanimation/>}/>
+                    <Route path="/Trainingsplanverwaltung" element={<Trainingsplanverwaltung/>}/>
+                </Routes>
 
-        </BrowserRouter>
-    );
+            </BrowserRouter>
+        );
+    }
 }
 
 export default App;

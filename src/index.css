@@ -255,18 +255,27 @@ a {
 
 
 #effort {
-    width: 150px;
+    width: 180px;
     height: 20px;
     margin-bottom: 60px;
-    font-size: 30px;
+    font-size: 45px;
 }
 
 .effortbox {
     width: 150px;
     border-style: solid;
-    height: 22px;
-    margin-bottom: 20px;
+    height: 26px;
+    margin-bottom: 10px;
 }
+
+.effortlevel{
+    font-size: 40px;
+
+}
+
+#efforthr{
+    width: 155px;
+    margin-left: 0px;}
 
 
 .css-bhp9pd-MuiPaper-root-MuiCard-root {
@@ -482,7 +491,7 @@ a {
 }
 
 .text {
-    font-size: 25px;
+    font-size: 22px;
     color: white;
     font-family: Bahnschrift;
 }
@@ -791,4 +800,14 @@ Plank
     gap: 0.8rem;
     display: flex;
     margin: 40px;
+}
+
+#pauseicon{
+    scale:  200%;
+    position: relative;
+    left:480px;
+}
+
+#setcountdown{
+
 }
