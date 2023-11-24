@@ -578,7 +578,7 @@ f
                 TransitionComponent={Transition}
             >
 
-                <AppBar sx={{position: 'relative'}}>
+                <AppBar sx={{position: 'relative', background: '#06367A'}} >
                     <Toolbar id={'toolbar'}>
                         <Typography sx={{ml: 2, flex: 1}} variant="h6" component="div">
                             {selectedTrainingstag.Tagesbezeichung}
