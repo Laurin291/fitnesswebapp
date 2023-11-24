@@ -259,6 +259,7 @@ a {
     height: 20px;
     margin-bottom: 60px;
     font-size: 45px;
+    width: 200px;
 }
 
 .effortbox {
@@ -809,5 +810,8 @@ Plank
 }
 
 #setcountdown{
-
+    position: absolute;
+    right:100px;
+    top: 640px;
+    font-size: 40px;
 }
