@@ -25,6 +25,11 @@ import  avatar from './pictures/avatar.png';
 
 
 function App() {
+    function refreshPage() {
+        window.location.reload();
+    }
+
+
     if (window.location.href == "http://localhost:3000/" ||window.location.href == "http://localhost:3000/Registration") {
         return(
             <BrowserRouter>
@@ -62,9 +67,9 @@ function App() {
                         <SettingsIcon id="icon"></SettingsIcon>
                         <Link to="/Einstellungen" className="text">Einstellungen</Link>
                     </div>
-                    <div className="wrapper">
+                    <div className="wrapper" onClick={refreshPage}>
                         <LogoutIcon id="icon"></LogoutIcon>
-                        <Link to="/" className="text">Ausloggen</Link>
+                        <Link to="/" className="text" >Ausloggen</Link>
                     </div>
 
 

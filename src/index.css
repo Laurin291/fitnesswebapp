@@ -237,6 +237,9 @@ a {
 }
 
 
+
+
+
 #ch {
     margin-left: 320px;
     color: black;
@@ -256,6 +259,7 @@ a {
     height: 20px;
     margin-bottom: 60px;
     font-size: 45px;
+    width: 200px;
 }
 
 .effortbox {
@@ -265,15 +269,14 @@ a {
     margin-bottom: 10px;
 }
 
-.effortlevel {
+.effortlevel{
     font-size: 40px;
 
 }
 
-#efforthr {
+#efforthr{
     width: 155px;
-    margin-left: 0px;
-}
+    margin-left: 0px;}
 
 
 .css-bhp9pd-MuiPaper-root-MuiCard-root {
@@ -317,34 +320,10 @@ a {
 
 #saveButton {
     width: 8em;
-    float: right;
-    margin-right: 4em;
 
 }
 
 /* Create.js *************************************************************** */
-
-
-#toolbar{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background: #06367A;
-}
-#tableContaineruebungen{
-    margin: 2em;
-    width: 94.5%;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-#selectedTrainingsplanname {
-    margin-top: 2.5%;
-    margin-left: 3%;
-    border-color: #151616;
-    border-radius: 7px;
-    font-family: Bahnschrift;
-}
 
 
 #trainingsplandivs {
@@ -353,7 +332,6 @@ a {
     border-radius: 0.5em;
     border-color: #151616;
     color: black;
-    margin-top: 0;
 
 }
 
@@ -369,8 +347,7 @@ a {
 }
 
 #submitButton {
-    float: right;
-    margin-right: 8em;
+
 
 }
 
@@ -382,58 +359,28 @@ a {
 }
 
 .trtagdivs {
-
-    width: 5.7em;
-    margin-top: 2%;
+    height: 6em;
+    width: 6em;
     margin-left: 2%;
     margin-right: 2%;
-    margin-bottom: 6%;
-    background: white;
-    border-radius: 7px;
+    margin-top: 2%;
 
-
-}
-
-.trtagdivs:hover {
-    transform: translateY(-5px);
 
 }
 
 .trtagcontent {
+    border-color: #151616;
+    border-style: groove;
+    border-radius: 5px;
     position: relative;
     display: flex;
     justify-content: center;
-    margin: 4px 0 0 0;
+    margin: 0;
 
-
-    width: 115px;
-    height: 25px;
-
-}
-
-#wochentagAnzeige {
-    border-style: solid;
-    border-top: #151616;
-    border-left: #151616;
-    border-right: #151616;
-    color: #06367A;
-}
-
-#tagesbezeichnungAnzeige {
-    border-radius: 7px;
-}
-
-#trainingsplanname {
-    margin-left: 1%;
-    border-radius: 7px;
-    width: 12em;
-    height: 20px;
 }
 
 .trainingsplanname {
     margin: 2%;
-
-
 }
 
 #divs {
@@ -451,13 +398,11 @@ a {
 #ueberschriftverwaltungsdiv {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
 }
 
 #verwaltungsButton {
-    margin-top: 1.5%;
-    margin-right: 2%;
-    margin-bottom: 1%;
+    margin-left: 45%;
+    margin-top: 2%;
 }
 
 #createList {
@@ -472,7 +417,7 @@ a {
 
 
 #Exercise {
-    margin-left: 18%;
+    margin-left: 45px;
     color: black;
 }
 
@@ -480,7 +425,6 @@ a {
     color: black;
     margin-left: 3%;
     scale: 130%;
-    border-radius: 7px;
 }
 
 .uebungauswählen {
@@ -489,7 +433,6 @@ a {
     margin-right: 4%;
     scale: 130%;
     background: lightgray;
-    border-radius: 7px;
 }
 
 /* App.js ****************************************************************** */
@@ -599,18 +542,18 @@ a {
 
 }
 
-.trvcheckbox {
+.trvcheckbox{
     position: relative;
     justify-self: end;
 }
 
-#namediv {
+#namediv{
     display: grid;
     place-items: center;
 }
 
 
-#checkboxcontainer {
+#checkboxcontainer{
     display: flex;
     justify-content: space-between;
     width: auto;
@@ -649,7 +592,7 @@ Plank
     height: auto;
 }
 
-.timer {
+.timer{
     margin-top: 20px;
 }
 
@@ -662,7 +605,6 @@ Plank
     justify-content: center;
 
 }
-
 .timebutton {
     display: grid !important;
     width: 100px !important;
@@ -671,7 +613,6 @@ Plank
     font-size: 28px !important;
     border-radius: 20px !important;
 }
-
 #ueberschriftplank {
     font-size: 50px;
     text-align: center;
@@ -686,11 +627,7 @@ Plank
 
 }
 
-.makeCenter {
-    display: flex;
-    justify-content: center
-}
-
+.makeCenter{display: flex;justify-content: center}
 /*
  */
 
@@ -749,7 +686,7 @@ Plank
 }
 
 #HomeBoxes:hover {
-   transform: translateY(-5px);
+    transform: translateY(-5px);
 
 }
 
@@ -799,7 +736,7 @@ Plank
 
 #contentfarrad {
     font-size: 30px;
-    margin-left: 12%;
+    margin-left:12%;
     margin-top: 6%;
     font-family: Bahnschrift;
 }
@@ -865,12 +802,15 @@ Plank
     margin: 40px;
 }
 
-#pauseicon {
-    scale: 200%;
+#pauseicon{
+    scale:  200%;
     position: relative;
-    left: 480px;
+    left:480px;
 }
 
-#setcountdown {
-
+#setcountdown{
+    position: absolute;
+    right:100px;
+    top: 640px;
+    font-size: 40px;
 }
