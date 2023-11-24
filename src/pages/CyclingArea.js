@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useTimer} from "react-timer-hook";
 import {Button} from "@material-ui/core";
 import {Link, useParams} from "react-router-dom";
-import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledRounded';
+import PauseCircleOutlineOutlinedIcon from '@mui/icons-material/PauseCircleOutlineOutlined';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 
 
@@ -24,9 +24,9 @@ function CyclingAreaPage({expiryTimestamp}) {
 
     const intervalCounter = useRef(10);
 
-    const intervalDurations = {"Leicht": 2, "Mittel": 2, "Schwer": 3, "Alternative+": 4};
-    const soonIntervalDurations = {"Leicht": 2, "Mittel": 4, "Schwer": 6, "Alternative+": 8};
-    const cooldownDurations = {"Leicht": 2, "Mittel": 8, "Schwer": 12, "Alternative+": 32};
+    const intervalDurations = {"Leicht": 2, "Mittel": 2, "Schwer": 3, "Alternative": 4};
+    const soonIntervalDurations = {"Leicht": 2, "Mittel": 4, "Schwer": 6, "Alternative": 8};
+    const cooldownDurations = {"Leicht": 2, "Mittel": 8, "Schwer": 12, "Alternative": 32};
 
     const intervalDuration = intervalDurations[difficulty];
     const soonIntervalDuration = soonIntervalDurations[difficulty];
@@ -81,7 +81,7 @@ function CyclingAreaPage({expiryTimestamp}) {
             kurbelPath.setAttribute("fill", "#F35D07");
 
             document.querySelector("#effort").textContent = "Warm up"
-            document.querySelector("#effortlevel").textContent = "05"
+            document.querySelector("#effortlevel").textContent = "80RPM"
         } catch (e) {
 
         }
@@ -103,7 +103,7 @@ function CyclingAreaPage({expiryTimestamp}) {
             kurbelPath.setAttribute("fill", "green");
 
             document.querySelector("#effort").textContent = "Rest"
-            document.querySelector("#effortlevel").textContent = "01"
+            document.querySelector("#effortlevel").textContent = "70RPM"
         } catch (e) {
 
         }
@@ -127,7 +127,7 @@ function CyclingAreaPage({expiryTimestamp}) {
             kurbelPath.setAttribute("fill", "red");
 
             document.querySelector("#effort").textContent = "Max"
-            document.querySelector("#effortlevel").textContent = "10"
+            document.querySelector("#effortlevel").textContent = "100RPM"
         } catch (e) {
 
         }
@@ -162,7 +162,7 @@ function CyclingAreaPage({expiryTimestamp}) {
             increase.current = 0.5
             const kurbelPath = document.getElementById("kurbel-path");
             kurbelPath.setAttribute("fill", "green");
-            document.querySelector("#effortlevel").textContent = "01"
+            document.querySelector("#effortlevel").textContent = "70RPM"
 
         } catch (e) {
 
@@ -178,9 +178,9 @@ function CyclingAreaPage({expiryTimestamp}) {
 
     useEffect(() => {
         if (!isRunning) {
-            clearTimeout(timeout1.current);
-            clearTimeout(timeout2.current);
-            clearTimeout(timeout3.current);
+            clearInterval(timeout1.current);
+            clearInterval(timeout2.current);
+            clearInterval(timeout3.current);
             return
         }
 
@@ -190,6 +190,7 @@ function CyclingAreaPage({expiryTimestamp}) {
                 setCountdown(countdown - 1);
             }
         }
+
 
         timeout1.current = setTimeout(() => {
             if (intervalCounter.current > 0 && (!didSetStartIntervalStyle.current || latestTotalSecondsRef.current - totalSeconds >= intervalDuration + cooldownDuration + soonIntervalDuration)) {
@@ -217,7 +218,7 @@ function CyclingAreaPage({expiryTimestamp}) {
                     increase.current = 0.8
                 }, (intervalDuration + cooldownDuration) * 1000);
             }
-        }, 5000);
+        }, 10000);
 
 
         if (intervalCounter.current >= 10) {
@@ -245,10 +246,10 @@ function CyclingAreaPage({expiryTimestamp}) {
 
     return (
         <div style={{textAlign: 'center', color: "black"}}>
-            <div style={{fontSize: '50px'}}>
+            <div style={{fontSize: '70px'}}>
                 <span> {minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
-            <PauseCircleFilledRoundedIcon id="pauseicon" onClick={handleClickOpen}/>
+            <PauseCircleOutlineOutlinedIcon id="pauseicon" onClick={handleClickOpen}/>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -271,7 +272,7 @@ function CyclingAreaPage({expiryTimestamp}) {
                 </DialogActions>
             </Dialog>
             <div id="setcountdown">
-                {countdown}
+                Nächtes Intervall in: {countdown}s
             </div>
         </div>
     );
