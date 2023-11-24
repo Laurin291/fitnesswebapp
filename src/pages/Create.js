@@ -1,42 +1,93 @@
 import data from "../data.js";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import Button from '@mui/material/Button';
 import supabase from "../config/supabaseClient";
 import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import {useNavigate} from "react-router-dom";
-import { validTrainingsplanname, validTagesbezeichnung } from '../Regex.js';
+import {validTrainingsplanname, validTagesbezeichnung} from '../Regex.js';
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import {Zoom} from "@mui/material";
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
+import {
+    AppBar,
+    Dialog,
+    List,
+    ListItem,
+    ListItemText,
+    Slide,
+    tableCellClasses,
+    Toolbar,
+    useMediaQuery,
+    Zoom
+} from "@mui/material";
 import ChairIcon from '@mui/icons-material/Chair';
 import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
 import {useState} from "react";
+import breakeoutlined from '../icons/brakeoutlined.png'
+import breakfilled from '../icons/brakeoutlined.svg'
+import Typography from "@mui/material/Typography";
+import {Divider} from "@supabase/ui";
+import CloseIcon from '@mui/icons-material/Close';
+import {styled, useTheme} from "@mui/material/styles";
+import {DataGrid} from '@mui/x-data-grid';
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import Collapse from "@mui/material/Collapse";
+import Box from "@mui/material/Box";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 
 export default function Create() {
     const navigate = useNavigate();
     const [alertinhalt, setAlertInhalt] = useState("")
     const [error, setError] = useState(true)
-    const [tagesbezeichnung1,setTagesbezeichnung1] = useState("--")
-    const [tagesbezeichnung2,setTagesbezeichnung2] = useState("--")
-    const [tagesbezeichnung3,setTagesbezeichnung3] = useState("--")
-    const [tagesbezeichnung4,setTagesbezeichnung4] = useState("--")
-    const [tagesbezeichnung5,setTagesbezeichnung5] = useState("--")
-    const [tagesbezeichnung6,setTagesbezeichnung6] = useState("--")
-    const [tagesbezeichnung7,setTagesbezeichnung7] = useState("--")
-
-
-
-
+    const [tagesbezeichnung1, setTagesbezeichnung1] = useState("--")
+    const [tagesbezeichnung2, setTagesbezeichnung2] = useState("--")
+    const [tagesbezeichnung3, setTagesbezeichnung3] = useState("--")
+    const [tagesbezeichnung4, setTagesbezeichnung4] = useState("--")
+    const [tagesbezeichnung5, setTagesbezeichnung5] = useState("--")
+    const [tagesbezeichnung6, setTagesbezeichnung6] = useState("--")
+    const [tagesbezeichnung7, setTagesbezeichnung7] = useState("--")
+    const [selectedTrainingstag, setSelectedTrainingstag] = useState('')
+    const [selectedTrainingsplan, setSelectedTrainingsplan] = useState('Kein Trainingsplan')
 
 
     window.onbeforeunload = function () {
         window.localStorage.clear()
         return 'Are you sure you want to leave?';
     };
+
+    const StyledTableRow = styled(TableRow)(({theme}) => ({
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.action.hover,
+        },
+        // hide last border
+        '&:last-child td, &:last-child th': {
+            border: 0,
+        },
+    }));
+
+    const StyledTableCell = styled(TableCell)(({theme}) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: '#06367A',
+            color: theme.palette.common.white,
+        },
+        [`&.${tableCellClasses.body}`]: {
+            fontSize: 14,
+        },
+    }));
 
     // Funktion um die ausgewaehlten Uebungen von Uebungselect.js in ihre Kurzform umzuwandeln und anzuzeigen
     function getUebungText(nummer) {
@@ -77,19 +128,19 @@ export default function Create() {
 
         } else if (text === "REST") {
             return "REST"
-        }else{
+        } else {
             return ''
         }
 
     }
 
-    // Funktion um zu checken ob der jeweilige Tag ein REST-DAY ist
-    function checkRESTDAY(nummer){
+    // Funktion um zu checken ob der jeweilige Tag ein REST-DAY ist ***********
+    function checkRESTDAY(nummer) {
         let text = window.localStorage.getItem(nummer)
 
-        if (text === 'REST'){
+        if (text === 'REST') {
             return true
-        }else{
+        } else {
             return false
         }
 
@@ -102,7 +153,7 @@ export default function Create() {
 
     }
 
-    // Funktion um den bereits eingegeben Namen des Trainingsplans aus dem Localstorage zu bekommen
+    // Funktion um den bereits eingegeben Namen des Trainingsplans aus dem Localstorage zu bekommen ********************
     function getTrainingsplanNameText() {
         return window.localStorage.getItem("TrainingsplanName")
     }
@@ -113,19 +164,19 @@ export default function Create() {
         if (!validTagesbezeichnung.test(name)) {
             document.getElementById(nummer.number).style.backgroundColor = 'lightsalmon'
 
-        }else {
+        } else {
             document.getElementById(nummer.number).style.backgroundColor = "lightgreen";
             window.localStorage.setItem("Name" + nummer.number, name)
 
         }
     }
 
-    //Funktion um die Eingabe des Users (Trainingsplan) zu speichern
+    //Funktion um die Eingabe des Users (Trainingsplan) zu speichern ***************************************************
     function saveTrainingsplanName(name) {
         if (!validTrainingsplanname.test(name)) {
             document.getElementById("trainingsplanname").style.backgroundColor = 'lightsalmon'
 
-        }else {
+        } else {
             document.getElementById("trainingsplanname").style.backgroundColor = "lightgreen";
             window.localStorage.setItem("TrainingsplanName", name)
 
@@ -134,7 +185,7 @@ export default function Create() {
 
     }
 
-    //Funktion um den LocalStorage zu löschen *********************************
+    //Funktion um den LocalStorage zu löschen **************************************************************************
     function clearLocalStorage() {
         window.localStorage.clear()
     }
@@ -142,28 +193,27 @@ export default function Create() {
     //Component der Trainingsplanerstellung um öfter das gleiche Object am Bildschirm anzuzeigen
     const DayCreateComponent = (number) => {
 
-        const woche = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag']
+        const woche = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
 
         const handleChange = (event) => {
-            if (document.getElementById(number.number).disabled === false){
+            if (document.getElementById(number.number).disabled === false) {
                 document.getElementById(number.number).disabled = true
                 document.getElementById(number.number).value = "REST"
-                window.localStorage.setItem("Name"+number.number, "REST")
+                document.getElementById(number.number).style.backgroundColor = 'white'
+                window.localStorage.setItem("Name" + number.number, "REST")
                 window.localStorage.setItem(number.number, "REST")
-                document.getElementById('uebungauswählen'+ number.number).value = "REST"
-                document.getElementById('uebungauswählen'+ number.number).disabled = true
-                document.getElementById('restIcon'+ number.number).checked = true
-            }else{
+                document.getElementById('uebungauswählen' + number.number).value = "REST"
+                document.getElementById('uebungauswählen' + number.number).disabled = true
+                document.getElementById('restIcon' + number.number).checked = true
+            } else {
                 document.getElementById(number.number).disabled = false
                 document.getElementById(number.number).value = ""
-                window.localStorage.setItem("Name"+number.number, "")
+                window.localStorage.setItem("Name" + number.number, "")
                 window.localStorage.setItem(number.number, "")
-                document.getElementById('uebungauswählen'+ number.number).value = ""
-                document.getElementById('uebungauswählen'+ number.number).disabled = false
-                document.getElementById('restIcon'+ number.number).checked = false
+                document.getElementById('uebungauswählen' + number.number).value = ""
+                document.getElementById('uebungauswählen' + number.number).disabled = false
+                document.getElementById('restIcon' + number.number).checked = false
             }
-
-
 
 
         };
@@ -171,14 +221,18 @@ export default function Create() {
         return (
             <li>
 
-                <input type="text" id={number.number} className="tagesbezeichnung" defaultValue={getNameText(number)} placeholder={woche[number.number -1]}
-                       onChange={(e) => saveName(e.target.value, number)}  disabled={checkRESTDAY(number.number)}></input>
+                <input type="text" id={number.number} className="tagesbezeichnung" defaultValue={getNameText(number)}
+                       placeholder={woche[number.number - 1]}
+                       onChange={(e) => saveName(e.target.value, number)}
+                       disabled={checkRESTDAY(number.number)}></input>
 
 
-                <Link to={'/uebungselect/' + number.number }  >
-                    <input type="text" className="uebungauswählen" id={'uebungauswählen'+ number.number}  readOnly value={getUebungText(number.number)} disabled={checkRESTDAY(number.number)}></input>
+                <Link to={'/uebungselect/' + number.number}>
+                    <input type="text" className="uebungauswählen" id={'uebungauswählen' + number.number} readOnly
+                           value={getUebungText(number.number)} disabled={checkRESTDAY(number.number)}></input>
                 </Link>
-                <Checkbox id={'restIcon'+ number.number} icon={<ChairOutlinedIcon/>} checkedIcon={<ChairIcon/>} onChange={handleChange} defaultChecked={checkRESTDAY(number.number)}/>
+                <Checkbox id={'restIcon' + number.number} icon={<ChairOutlinedIcon/>} checkedIcon={<ChairIcon/>}
+                          onChange={handleChange} defaultChecked={checkRESTDAY(number.number)}/>
             </li>
         )
     }
@@ -188,13 +242,13 @@ export default function Create() {
 
         const trainingspläne = data.get("trainingsplan")
         const trainingstagtabelle = data.get("trainingstag")
-
-        if (trainingspläne != null && trainingstagtabelle != null){
+        let trainingstage = []
+        if (trainingspläne != null && trainingstagtabelle != null) {
             const selected = trainingspläne.filter((trainingsplan) => trainingsplan.selected == true)
-
-            if (selected.length >0){
-                const trainingstage = trainingstagtabelle.filter(tag => tag.trainingsplanID == selected[0].trainingsplanID)
-
+            //console.log(selected)
+            if (selected.length > 0) {
+                trainingstage = trainingstagtabelle.filter(tag => tag.trainingsplanID == selected[0].trainingsplanID)
+                setSelectedTrainingsplan(selected[0].name)
                 setTagesbezeichnung1(trainingstage[0].Tagesbezeichung)
                 setTagesbezeichnung2(trainingstage[1].Tagesbezeichung)
                 setTagesbezeichnung3(trainingstage[2].Tagesbezeichung)
@@ -202,24 +256,37 @@ export default function Create() {
                 setTagesbezeichnung5(trainingstage[4].Tagesbezeichung)
                 setTagesbezeichnung6(trainingstage[5].Tagesbezeichung)
                 setTagesbezeichnung7(trainingstage[6].Tagesbezeichung)
+
             }
 
+        }
+        let trainingstag = ''
+
+        if (trainingstage.length > 0) {
+            trainingstag = trainingstage[tag.tagesnummer - 1]
+        }
+        let fontsize = 20;
+        if (tag.tagesbezeichnung.length > 10){
+            fontsize = 17
+        }else if (tag.tagesbezeichnung.length > 12){
+            fontsize = 14
         }
 
 
         return (
-            <div className="trtagdivs">
-                <p className="trtagcontent">Tag{tag.tagesnummer}</p>
-                <p className="trtagcontent">{tag.wochentag}</p>
-                <p className="trtagcontent">{tag.tagesbezeichnung}</p>
+
+            <div className="trtagdivs" onClick={() => handleClickOpenDialog(trainingstag)}>
+                <p className="trtagcontent" id='wochentagAnzeige'>{tag.wochentag}</p>
+                <p className="trtagcontent" id='tagesbezeichnungAnzeige' style={{ fontSize: fontsize }} >{tag.tagesbezeichnung}</p>
             </div>
+
         )
     }
 
 
     // Funktion um den ganzen Trainingsplan zu speichern **********************
     async function submitAction() {
-        setOpen(false)
+        setOpenAlert(false)
         setError(false)
 
         let tagesbezeichnungUebungen = []
@@ -243,12 +310,11 @@ export default function Create() {
                         .select("uebungID")
                         .match({Name: uebungen[i][j]})
 
-                    if(data[0] == undefined){
+                    if (data[0] == undefined) {
                         uebungen[i][j] = 0
-                    }else{
+                    } else {
                         uebungen[i][j] = data[0].uebungID
                     }
-
 
 
                 }
@@ -277,8 +343,6 @@ export default function Create() {
             })
 
 
-
-
         } catch (e) {
             setError(true)
             console.log(e.message)
@@ -293,136 +357,275 @@ export default function Create() {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
     });
 
-    const [open, setOpen] = React.useState(false);
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [openDialog, setOpenDialog] = React.useState(false);
+
 
     const handleClick = (nachricht) => {
-        setOpen(true);
+        setOpenAlert(true);
         setAlertInhalt(nachricht)
     };
 
-    const handleClose = (event, reason) => {
+    const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
 
-        setOpen(false);
+        setOpenAlert(false);
     };
+
+
+    const handleClickOpenDialog = (trainingstag) => {
+        if (trainingstag !== '') {
+            setOpenDialog(true);
+            setSelectedTrainingstag(trainingstag)
+        }
+
+
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
+    function createData(name) {
+        return {name};
+    }
+
+    function rows() {
+        const zeile = []
+        zeile.push(createData(selectedTrainingstag))
+
+        return zeile
+    }
+
+
+    function Row(props) {
+        const {number} = useParams()
+        const {row} = props;
+        const [open, setOpen] = React.useState(false);
+        const labelId = `enhanced-table-checkbox-1`;
+        const uebungen = []
+
+
+        for (let i = 0; i < selectedTrainingstag.uebungIDs.length; i++) {
+            uebungen.push(data.getUebungen(selectedTrainingstag.uebungIDs[i]))
+        }
+
+
+        if (uebungen[0] != null) {
+            uebungen.map(uebung => console.log(uebung));
+        }
+
+
+        return (
+            <React.Fragment>
+                {uebungen.map((uebung) => (
+                    <>
+                        <TableRow>
+
+
+                            {uebung != null &&
+                                <>
+                                    {uebung.length > 0 &&
+                                        <>
+                                            <TableCell></TableCell>
+                                            <TableCell>{uebung[0].Name}</TableCell>
+                                            <TableCell>{uebung[0].Kategorie}</TableCell>
+                                            <TableCell>{uebung[0].Beschreibung}</TableCell>
+                                            <TableCell></TableCell>
+
+                                        </>
+                                    }
+                                    {uebung.length == 0 &&
+                                        <>
+                                            <TableCell></TableCell>
+                                            <TableCell>REST</TableCell>
+                                            <TableCell>REST</TableCell>
+                                            <TableCell>REST</TableCell>
+                                            <TableCell>REST</TableCell>
+f
+                                        </>
+                                    }
+                                </>
+                            }
+
+
+                        </TableRow>
+                    </>
+                ))}
+            </React.Fragment>
+        )
+    }
 
 
     return (
         <>
             <Zoom in={true}>
-            <div id="content">
-                {/* Anzeige der oberen Hälfte des Bildschirms */}
-                <div id="trainingsplananzeige">
-                    <div id="ueberschriftverwaltungsdiv">
-                        <h1 className="ueberschrift">Mein derzeitiger Trainingsplan</h1>
-                        <Link to={"/trainingsplanverwaltung"} id="verwaltungsButton"><IconButton >
-                            <SettingsTwoToneIcon></SettingsTwoToneIcon>
-                        </IconButton>
-                        </Link>
+                <div id="content">
+                    {/* Anzeige der oberen Hälfte des Bildschirms */}
+                    <div id="trainingsplananzeige">
+                        <div id="ueberschriftverwaltungsdiv">
+                            <h1 className="ueberschrift">{selectedTrainingsplan} ausgewählt</h1>
+
+                            <Link to={"/trainingsplanverwaltung"} id="verwaltungsButton"><IconButton>
+                                <EditNoteOutlinedIcon sx={{ height: '40px', width: '40px' }}></EditNoteOutlinedIcon>
+                            </IconButton>
+                            </Link>
+                        </div>
+
+
+
+                        <div id="divs">
+                            <DayShowComponent tag={{
+                                tagesnummer: 1,
+                                wochentag: 'Montag',
+                                tagesbezeichnung: tagesbezeichnung1
+                            }}/>
+                            <DayShowComponent tag={{
+                                tagesnummer: 2,
+                                wochentag: 'Dienstag',
+                                tagesbezeichnung: tagesbezeichnung2
+                            }}/>
+                            <DayShowComponent tag={{
+                                tagesnummer: 3,
+                                wochentag: 'Mittwoch',
+                                tagesbezeichnung: tagesbezeichnung3
+                            }}/>
+                            <DayShowComponent tag={{
+                                tagesnummer: 4,
+                                wochentag: 'Donnerstag',
+                                tagesbezeichnung: tagesbezeichnung4
+                            }}/>
+                            <DayShowComponent tag={{
+                                tagesnummer: 5,
+                                wochentag: 'Freitag',
+                                tagesbezeichnung: tagesbezeichnung5
+                            }}/>
+                            <DayShowComponent tag={{
+                                tagesnummer: 6,
+                                wochentag: 'Samstag',
+                                tagesbezeichnung: tagesbezeichnung6
+                            }}/>
+                            <DayShowComponent tag={{
+                                tagesnummer: 7,
+                                wochentag: 'Sonntag',
+                                tagesbezeichnung: tagesbezeichnung7
+                            }}/>
+
+
+                        </div>
                     </div>
+                    {/* Anzeige der unteren Hälfte des Bildschirms */}
+                    <form id="trainingsplanform">
+                        <div>
+                            <div>
+                                <h1 className="ueberschrift">Neuen Trainingsplan erstellen</h1>
+                            </div>
+
+                            <div className="trainingsplanname">
+                                <label htmlFor="trainingsplanname">Trainingsplan Name:</label>
+                                <input id="trainingsplanname" type="text" defaultValue={getTrainingsplanNameText()}
+                                       onInput={(e) => saveTrainingsplanName(e.target.value)} required></input>
+                            </div>
+
+                            <ul id="createList">
+                                <label htmlFor="Tagesbezeichnung" className="tagesbezeichnung">Tagesbezeichnung</label>
+                                <label htmlFor="Exercise" id="Exercise">Übungen</label>
+                                {/* day1 *********************************************** */}
+                                <DayCreateComponent number={1} id='1'/>
+                                {/* day2 *********************************************** */}
+                                <DayCreateComponent number={2} id='2'/>
+                                {/* day3 *********************************************** */}
+                                <DayCreateComponent number={3} id='3'/>
+                                { /* day4 *********************************************** */}
+                                <DayCreateComponent number={4} id='4'/>
+                                {/* day5 *********************************************** */}
+                                <label htmlFor="Tagesbezeichnung" className="tagesbezeichnung">Tagesbezeichnung</label>
+                                <label htmlFor="Exercise" id="Exercise">Übungen</label>
+                                <DayCreateComponent number={5} id='5'/>
+                                {/* day6 *********************************************** */}
+                                <DayCreateComponent number={6} id='6'/>
+                                {/* day7 *********************************************** */}
+                                <DayCreateComponent number={7} id='7'/>
 
 
-                    <div id="divs">
-                        <DayShowComponent tag={{
-                            tagesnummer: 1,
-                            wochentag: 'Montag',
-                            tagesbezeichnung: tagesbezeichnung1
-                        }}/>
-                        <DayShowComponent tag={{
-                            tagesnummer: 2,
-                            wochentag: 'Dienstag',
-                            tagesbezeichnung: tagesbezeichnung2
-                        }}/>
-                        <DayShowComponent tag={{
-                            tagesnummer: 3,
-                            wochentag: 'Mittwoch',
-                            tagesbezeichnung: tagesbezeichnung3
-                        }}/>
-                        <DayShowComponent tag={{
-                            tagesnummer: 4,
-                            wochentag: 'Donnerstag',
-                            tagesbezeichnung: tagesbezeichnung4
-                        }}/>
-                        <DayShowComponent tag={{
-                            tagesnummer: 5,
-                            wochentag: 'Freitag',
-                            tagesbezeichnung: tagesbezeichnung5
-                        }}/>
-                        <DayShowComponent tag={{
-                            tagesnummer: 6,
-                            wochentag: 'Samstag',
-                            tagesbezeichnung: tagesbezeichnung6
-                        }}/>
-                        <DayShowComponent tag={{
-                            tagesnummer: 7,
-                            wochentag: 'Sonntag',
-                            tagesbezeichnung: tagesbezeichnung7
-                        }}/>
+
+                            </ul>
+                            <Button variant="contained" color="success" id="submitButton"
+                                    onClick={submitAction}>
+                                Submit
+                            </Button>
 
 
-                    </div>
+                            <div>
+
+                                <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+
+                                    <Alert severity="error" onClose={handleCloseSnackbar} sx={{width: '100%'}}>
+                                        {alertinhalt}
+                                    </Alert>
+
+
+                                </Snackbar>
+
+                            </div>
+
+
+                        </div>
+                    </form>
+
                 </div>
-                {/* Anzeige der unteren Hälfte des Bildschirms */}
-                <form id="trainingsplanform">
-                    <div>
-                        <div>
-                            <h1 className="ueberschrift">Neuen Trainingsplan erstellen</h1>
-                        </div>
-
-                        <div className="trainingsplanname">
-                            <label htmlFor="trainingsplanname"  >Trainingsplan Name:</label>
-                            <input id="trainingsplanname" type="text" defaultValue={getTrainingsplanNameText()}
-                                   onInput={(e) => saveTrainingsplanName(e.target.value)} required></input>
-                        </div>
-
-                        <ul id="createList">
-                            <label htmlFor="Tagesbezeichnung" className="tagesbezeichnung">Tagesbezeichnung</label>
-                            {/* day1 *********************************************** */}
-                            <DayCreateComponent number={1} id='1'/>
-                            {/* day2 *********************************************** */}
-                            <DayCreateComponent number={2} id='2'/>
-                            {/* day3 *********************************************** */}
-                            <DayCreateComponent number={3} id='3'/>
-                            { /* day4 *********************************************** */}
-                            <DayCreateComponent number={4} id='4'/>
-                            {/* day5 *********************************************** */}
-                            <label htmlFor="Exercise" id="Exercise">Choose your Exercises</label>
-                            <DayCreateComponent number={5} id='5'/>
-                            {/* day6 *********************************************** */}
-                            <DayCreateComponent number={6} id='6'/>
-                            {/* day7 *********************************************** */}
-                            <DayCreateComponent number={7} id='7'/>
-                            <li>
-                                <Button variant="contained" color="success" id="submitButton"
-                                        onClick={submitAction}>
-                                    Submit
-                                </Button>
-                            </li>
-                        </ul>
-
-
-                        <div>
-
-                            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-
-                                <Alert severity="error" onClose={handleClose} sx={{width: '100%'}}>
-                                    {alertinhalt}
-                                </Alert>
-
-
-                            </Snackbar>
-
-                        </div>
-
-
-                    </div>
-                </form>
-
-            </div>
             </Zoom>
+
+            <Dialog
+                fullScreen
+                open={openDialog}
+                onClose={handleCloseDialog}
+                TransitionComponent={Transition}
+            >
+
+                <AppBar sx={{position: 'relative'}}>
+                    <Toolbar id={'toolbar'}>
+                        <Typography sx={{ml: 2, flex: 1}} variant="h6" component="div">
+                            {selectedTrainingstag.Tagesbezeichung}
+                        </Typography>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            onClick={handleCloseDialog}
+                            aria-label="close"
+                        >
+                            <CloseIcon/>
+                        </IconButton>
+
+
+                    </Toolbar>
+                </AppBar>
+
+                <TableContainer component={Paper} id="tableContaineruebungen">
+                    <Table sx={{minWidth: 650}} aria-label="simple table" stickyHeader >
+                        <TableHead>
+                            <StyledTableRow>
+                                <StyledTableCell></StyledTableCell>
+                                <StyledTableCell>Name</StyledTableCell>
+                                <StyledTableCell>Kategorie</StyledTableCell>
+                                <StyledTableCell>Beschreibung</StyledTableCell>
+                                <StyledTableCell>Bild</StyledTableCell>
+
+                            </StyledTableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows().map((row) => (
+                                <Row key={row.name} row={row}/>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+
+            </Dialog>
         </>
+
 
     )
 }

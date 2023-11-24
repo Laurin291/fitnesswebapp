@@ -15,7 +15,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Checkbox from '@mui/material/Checkbox';
 import data from "../data.js";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Link} from "react-router-dom";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
@@ -33,6 +33,7 @@ export default function Uebungstabelle() {
     const {number} = useParams()
     const [isloaded, setIsLoaded] = useState(false)
     const uebungen = data.get('uebungen')
+    const navigate = useNavigate();
 
 
     const Alert = React.forwardRef(function Alert(props, ref) {
@@ -228,7 +229,12 @@ export default function Uebungstabelle() {
         } else {
             handleClick("Saved successfully")
             setSeverity('success')
+            selectedItems = []
+            navigate('/create')
+
         }
+
+
 
 
     }
@@ -246,9 +252,7 @@ export default function Uebungstabelle() {
     };
 
     //Funktion um den Zwischenspeicher zu leeren wenn man die Seite verlässt
-    function submitAction() {
-        selectedItems = []
-    }
+
 
 
 
@@ -259,7 +263,7 @@ export default function Uebungstabelle() {
                     <Typography ml={3} mt={3} variant='h2'
                                 sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Übungen</Typography>
                     <TableContainer component={Paper} id="tableContainer2">
-                        <Table stickyHeader>
+                        <Table stickyHeader size="small">
                             <TableHead>
                                 <StyledTableRow>
                                     <StyledTableCell/>
@@ -306,6 +310,21 @@ export default function Uebungstabelle() {
                                             <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
                                             <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
                                         </TableRow>
+                                        <TableRow>
+                                            <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                        </TableRow>
                                     </>
                                 }
 
@@ -315,13 +334,14 @@ export default function Uebungstabelle() {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Button variant="contained" color="success" id="saveButton" onClick={saveAction}>
-                        Save
-                    </Button>
-                    <Link to="/create"> <Button variant="contained" color="success" id="submitButton"
-                                                onClick={submitAction}>
-                        Submit
-                    </Button></Link>
+                    <div>
+                        <Button variant="contained" color="success" id="saveButton" onClick={saveAction}>
+                            Save
+                        </Button>
+                    </div>
+
+
+
 
 
                     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

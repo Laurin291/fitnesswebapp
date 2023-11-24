@@ -82,12 +82,9 @@ export default function Trainingsplanverwaltung() {
 
         const selectTrainingsplan = (e) => {
 
-            console.log(row.name)
 
                 data.update(row.name, 'TRUE')
                 navigate('/create')
-
-
 
 
         }
@@ -192,7 +189,7 @@ export default function Trainingsplanverwaltung() {
             <Zoom in={true}><Typography m={3} variant='h2'
                                         sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Deine Trainingspläne</Typography></Zoom>
             <Zoom in={true}><TableContainer component={Paper} id="tableContainer">
-                <Table stickyHeader>
+                <Table stickyHeader size="small">
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell/>
@@ -212,39 +209,68 @@ export default function Trainingsplanverwaltung() {
                             <>
                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
-                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
                                 </StyledTableRow>
                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
-                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
                                 </StyledTableRow>
                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
-                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
                                 </StyledTableRow>
                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
-                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
                                 </StyledTableRow>
                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
-                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
                                 </StyledTableRow>
                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={100} /></TableCell>
-                                    <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} /></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
+
+                                </StyledTableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                     <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
+
+                                </StyledTableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
+
+                                </StyledTableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
+
+                                </StyledTableRow>
+                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                                    <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
+                                    <TableCell id={'checkboxcontainer'}><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={180} />
+                                        <Skeleton variant="circular" width={40} height={40}/>
+                                    </TableCell>
+
                                 </StyledTableRow>
                             </>
                         }

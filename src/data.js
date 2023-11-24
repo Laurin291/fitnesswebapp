@@ -286,7 +286,7 @@ class Data {
             const fetchUebungen = async () => {
                 const {data, error} = await supabase
                     .from('uebungen')
-                    .select('Name')
+                    .select('Name, Kategorie, Beschreibung')
                     .match({uebungID: id})
 
 
