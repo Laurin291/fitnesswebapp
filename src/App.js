@@ -25,7 +25,7 @@ import  avatar from './pictures/avatar.png';
 
 
 function App() {
-    if (window.location.href == "http://localhost:3000/" ||window.location.href == "http://localhost:3000/Registration" ) {
+    if (window.location.href == "http://localhost:3000/" ||window.location.href == "http://localhost:3000/Registration") {
         return(
             <BrowserRouter>
         <Routes>
@@ -52,11 +52,11 @@ function App() {
                     </div>
                     <div className="wrapper">
                         <DirectionsBikeIcon id="icon"></DirectionsBikeIcon>
-                        <Link to="/Fahrrad" className="text">HIIT-Training</Link>
+                        <Link to="/Fahrrad" className="text">HIIT Training</Link>
                     </div>
                     <div className="wrapper">
                         <PlayArrowIcon id="icon"></PlayArrowIcon>
-                        <Link to="/Plank" className="text">Plank starten</Link>
+                        <Link to="/Plank" className="text">Planken</Link>
                     </div>
                     <div className="wrapper" id="textdown">
                         <SettingsIcon id="icon"></SettingsIcon>
@@ -64,7 +64,7 @@ function App() {
                     </div>
                     <div className="wrapper">
                         <LogoutIcon id="icon"></LogoutIcon>
-                        <Link to="/Ausloggen" className="text">Ausloggen</Link>
+                        <Link to="/" className="text">Ausloggen</Link>
                     </div>
 
 
@@ -87,6 +87,7 @@ function App() {
             </BrowserRouter>
         );
     }
+
 }
 
 export default App;

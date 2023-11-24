@@ -25,13 +25,10 @@ import {
 import ChairIcon from '@mui/icons-material/Chair';
 import ChairOutlinedIcon from '@mui/icons-material/ChairOutlined';
 import {useState} from "react";
-import breakeoutlined from '../icons/brakeoutlined.png'
-import breakfilled from '../icons/brakeoutlined.svg'
 import Typography from "@mui/material/Typography";
 import {Divider} from "@supabase/ui";
 import CloseIcon from '@mui/icons-material/Close';
 import {styled, useTheme} from "@mui/material/styles";
-import {DataGrid} from '@mui/x-data-grid';
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -39,10 +36,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import Collapse from "@mui/material/Collapse";
-import Box from "@mui/material/Box";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;

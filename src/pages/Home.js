@@ -18,27 +18,27 @@ export default function Home() {
             <div id="Homeanzeige">
                 <h1 className="ueberschrifthome">Willkommen Zurück, Patrik Hackl</h1>
                 <div id="Homedivs">
-                    <Link to="/create"><ToggleButton id="HomeBoxes" style={{backgroundColor: 'green'}}>
-                        <AddCircleOutlineIcon id="icon"></AddCircleOutlineIcon>
-                        Neunen Trainingsplan erstellen
+                    <Link to="/create"><ToggleButton id="HomeBoxes" style={{backgroundColor: '#006eb0'}}>
+                        <AddCircleOutlineIcon id="icon2"> </AddCircleOutlineIcon>
+                        Trainingsplan
                     </ToggleButton></Link>
 
-                    <Link to="/Fahrrad"><ToggleButton id="HomeBoxes" style={{backgroundColor: 'blue'}}>
-                        <DirectionsBikeIcon id="icon"></DirectionsBikeIcon>
-                        Fahrradfahren
+                    <Link to="/Fahrrad"><ToggleButton id="HomeBoxes" style={{backgroundColor: '#004d7b'}}>
+                        <DirectionsBikeIcon id="icon2"></DirectionsBikeIcon>
+                        HIIT Training
                     </ToggleButton></Link>
-
-                    <Link to="/Plank"><ToggleButton id="HomeBoxes" style={{backgroundColor: 'black'}}>
-                        <PlayArrowIcon id="icon"></PlayArrowIcon>
-                        Planken
-                    </ToggleButton></Link>
-
                 </div>
+                <div id="Homedivs2">
+                <Link to="/Plank"><ToggleButton id="HomeBoxes" style={{backgroundColor: '#609bbf'}}>
+                    <PlayArrowIcon id="icon2"></PlayArrowIcon>
+                    Planken
+                </ToggleButton></Link>
 
-                <Link to="/gewichtsverlauf"><ToggleButton id="gewichthome" style={{backgroundColor: 'orange'}}>
-                    <BarChartIcon id="icon"></BarChartIcon>
+                <Link to="/gewichtsverlauf"><ToggleButton id="HomeBoxes" style={{backgroundColor: '#80cfff'}}>
+                    <BarChartIcon id="icon2"></BarChartIcon>
                     Gewichtsverlauf
                 </ToggleButton></Link>
+                </div>
 
             </div>
         </>
