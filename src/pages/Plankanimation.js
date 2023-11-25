@@ -84,8 +84,10 @@ export default function App() {
 
     const [isTimer2Running, setIsTimer2Running] = useState(false);
 
-    const [gifsList] = useState([Beinheben, Spideranimation, Plank, PlankHaende, HaendeBeinheben]);
-    const [currentGifIndex, setCurrentGifIndex] = useState(0);
+    const [gifsList] = useState([Plank, Spideranimation, Beinheben, PlankHaende, HaendeBeinheben]);
+    const [currentGifIndex, setCurrentGifIndex] = useState(()=>{
+        return Math.floor(Math.random() * 4)
+    });
     const getRandomIndex = (currentIndex, maxIndex) => {
         let newIndex;
         do {
@@ -107,9 +109,6 @@ export default function App() {
 
     let isTimer1Expired = new Date() >= timer1;
 
-    console.log("Timer: "+timer1)
-    console.log("Datum: "+new Date())
-    console.log(isTimer1Expired)
     return (
         <div id="content">
             <div className="timer">
