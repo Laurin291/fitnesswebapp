@@ -74,6 +74,7 @@ function MyTimer2({expiryTimestamp, isRunning}) {
 
 export default function App() {
     const {time} = useParams()
+    const [pause,setpause] = useState(0)
     const [timer1] = useState(() => {
         const initialTimer1 = new Date();
         initialTimer1.setSeconds(initialTimer1.getSeconds() + parseInt(time));
@@ -107,8 +108,22 @@ export default function App() {
         return () => clearInterval(gifInterval);
     }, [isTimer2Running, gifsList]);
 
-    let isTimer1Expired = new Date() >= timer1;
 
+    useEffect(() => {
+        if (parseInt(time) === 60) {
+            setpause(10);
+        }else if (parseInt(time)=== 90){
+            setpause(20)
+        }else if (parseInt(time)=== 120){
+            setpause(30)
+        }else if (parseInt(time) === 150){
+            setpause(40)
+        }else if (parseInt(time) === 180){
+            setpause(50)
+        }
+    }, [time]);
+    let isTimer1Expired = new Date().getSeconds() >= timer1.getSeconds()+pause;
+    console.log(isTimer1Expired)
     return (
         <div id="content">
             <div className="timer">
