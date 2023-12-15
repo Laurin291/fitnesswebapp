@@ -878,3 +878,23 @@ Plank
     top: 640px;
     font-size: 40px;
 }
+
+/* Gewichtsverlauf */
+
+#chart{
+
+
+}
+
+#verticalSlider{
+    margin-top: 3em;
+
+}
+
+#content2{
+    display: flex;
+    flex-direction: row;
+    max-height: 90vh;
+    margin-left: 1em;
+    font-family: Bahnschrift;
+}

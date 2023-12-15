@@ -21,6 +21,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import  avatar from './pictures/avatar.png';
+import Gewichtsverlauf from "./pages/Gewichtsverlauf";
 
 
 
@@ -87,6 +88,7 @@ function App() {
                     <Route path="/Plank" element={<Plank/>}/>
                     <Route path="/Plankanimation/:time" element={<Plankanimation/>}/>
                     <Route path="/Trainingsplanverwaltung" element={<Trainingsplanverwaltung/>}/>
+                    <Route path="/Gewichtsverlauf" element={<Gewichtsverlauf/>}/>
                 </Routes>
 
             </BrowserRouter>

@@ -368,7 +368,18 @@ class Data {
 
     }
 
-    async updatecolumn(){
+    async deleteTrainingsplan(id) {
+
+        const {error2} = await supabase
+            .from('trainingstag')
+            .delete()
+            .eq('trainingsplanID', id)
+
+        const {error} = await supabase
+            .from('trainingsplan')
+            .delete()
+            .eq('trainingsplanID', id)
+
 
 
 

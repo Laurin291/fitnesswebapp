@@ -23,7 +23,17 @@ import MuiAlert from '@mui/material/Alert';
 import {useState} from "react";
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import KeyboardDoubleArrowRightTwoToneIcon from '@mui/icons-material/KeyboardDoubleArrowRightTwoTone';
-import {Grow, Skeleton, Slide, tableCellClasses, Zoom} from "@mui/material";
+import {
+    Dialog, DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Grow,
+    Skeleton,
+    Slide,
+    tableCellClasses,
+    Zoom
+} from "@mui/material";
 import {styled} from '@mui/material/styles';
 import {TransitionGroup} from "react-transition-group";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -31,6 +41,12 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import {wait} from "@testing-library/user-event/dist/utils";
 import {logDOM} from "@testing-library/react";
+import ClearIcon from '@mui/icons-material/Clear';
+
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function Trainingsplanverwaltung() {
 
@@ -69,6 +85,7 @@ export default function Trainingsplanverwaltung() {
             border: 0,
         },
     }));
+    const [selectedrow, setSelectedRow] = React.useState("")
 
 // Funktion mit der die Reihen der Tabelle mit Daten gefühlt und zusammengesetzt werden, um sie anschließend
     function Row(props) {
@@ -78,6 +95,9 @@ export default function Trainingsplanverwaltung() {
         const labelId = `enhanced-table-checkbox-1`;
         const [checked, setChecked] = React.useState(false)
         const navigate = useNavigate();
+        const [refresh, setRefresh] = React.useState(0)
+
+        console.log(row.id)
 
 
         const selectTrainingsplan = (e) => {
@@ -88,6 +108,20 @@ export default function Trainingsplanverwaltung() {
 
 
         }
+
+        const deleteTrainingsplan = () =>{
+            console.log(selectedrow)
+            setOpenDialog(false);
+            data.deleteTrainingsplan(row.id).then(navigate('/create'))
+
+
+
+            //document.getElementById('table').deleteRow(selectedrow.rowIndex)
+
+
+        }
+
+
 
 
         return (
@@ -106,10 +140,19 @@ export default function Trainingsplanverwaltung() {
                         <div id='namediv'>
                         {row.name}
                         </div>
-                        <IconButton className={row.name} onClick={selectTrainingsplan}>
-                            {row.selected ? <CheckBoxIcon id={'trvcheckbox'}> </CheckBoxIcon> : <CheckBoxOutlineBlankIcon id={'trvcheckbox'}></CheckBoxOutlineBlankIcon>}
+
+
+
+                            <IconButton className={row.name} onClick={selectTrainingsplan}>
+                                {row.selected ? <CheckBoxIcon id={'trvcheckbox'}> </CheckBoxIcon> : <CheckBoxOutlineBlankIcon id={'trvcheckbox'}></CheckBoxOutlineBlankIcon>}
+
+                            </IconButton>
+                        <IconButton className={row.name} onClick={handleClickOpen} >
+                            {row.selected ? <ClearIcon > </ClearIcon> : <ClearIcon ></ClearIcon>}
 
                         </IconButton>
+
+
 
                     </StyledTableCell>
 
@@ -147,6 +190,26 @@ export default function Trainingsplanverwaltung() {
                         </Collapse>
                     </TableCell>
                 </StyledTableRow>
+
+                <Dialog
+                    open={openDialog}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle>{"Wollen Sie diesen Trainingsplan wirklich löschen?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            Wenn Sie diesen Trainingsplan löschen gehen alle Daten von diesem verloren.
+                            Sie können diese Action nicht rückgängig machen.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Abbrechen</Button>
+                        <Button onClick={deleteTrainingsplan}>Löschen</Button>
+                    </DialogActions>
+                </Dialog>
             </React.Fragment>
 
 
@@ -154,6 +217,7 @@ export default function Trainingsplanverwaltung() {
     }
 
 //Funktion um mit den Daten aus der Datenbank die Datensätze für die Tabelle zu erstellen
+
     function rows() {
 
 
@@ -184,12 +248,28 @@ export default function Trainingsplanverwaltung() {
     const {number} = useParams()
 
 
+
+    const [openDialog, setOpenDialog] = React.useState(false);
+
+    const handleClickOpen = (e) => {
+        setSelectedRow(e.target.rowIndex)
+
+        setOpenDialog(true);
+    };
+
+    const handleClose = () => {
+        setOpenDialog(false);
+    };
+
+
+
+
     return (
         <div id="content">
             <Zoom in={true}><Typography m={3} variant='h2'
                                         sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Deine Trainingspläne</Typography></Zoom>
             <Zoom in={true}><TableContainer component={Paper} id="tableContainer">
-                <Table stickyHeader size="small">
+                <Table stickyHeader size="small" id={"table"}>
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell/>
@@ -201,7 +281,7 @@ export default function Trainingsplanverwaltung() {
 
                     <TableBody>
                         {trainingstage != null &&
-                            rows().map((row) => (
+                            rows().map((row, rowIndex) => (
                             <Row key={row.name} row={row}/>
                         ))}
 
@@ -279,6 +359,8 @@ export default function Trainingsplanverwaltung() {
                 </Table>
             </TableContainer>
             </Zoom>
+
+
 
         </div>
     );
