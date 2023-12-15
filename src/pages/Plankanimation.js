@@ -74,6 +74,7 @@ function MyTimer2({expiryTimestamp, isRunning}) {
 
 export default function App() {
     const {time} = useParams()
+    const [pause,setpause] = useState(0)
     const [timer1] = useState(() => {
         const initialTimer1 = new Date();
         initialTimer1.setSeconds(initialTimer1.getSeconds() + parseInt(time));
@@ -84,8 +85,10 @@ export default function App() {
 
     const [isTimer2Running, setIsTimer2Running] = useState(false);
 
-    const [gifsList] = useState([Beinheben, Spideranimation, Plank, PlankHaende, HaendeBeinheben]);
-    const [currentGifIndex, setCurrentGifIndex] = useState(0);
+    const [gifsList] = useState([Plank, Spideranimation, Beinheben, PlankHaende, HaendeBeinheben]);
+    const [currentGifIndex, setCurrentGifIndex] = useState(()=>{
+        return Math.floor(Math.random() * 4)
+    });
     const getRandomIndex = (currentIndex, maxIndex) => {
         let newIndex;
         do {
@@ -105,10 +108,21 @@ export default function App() {
         return () => clearInterval(gifInterval);
     }, [isTimer2Running, gifsList]);
 
-    let isTimer1Expired = new Date() >= timer1;
 
-    console.log("Timer: "+timer1)
-    console.log("Datum: "+new Date())
+    useEffect(() => {
+        if (parseInt(time) === 60) {
+            setpause(10);
+        }else if (parseInt(time)=== 90){
+            setpause(20)
+        }else if (parseInt(time)=== 120){
+            setpause(30)
+        }else if (parseInt(time) === 150){
+            setpause(40)
+        }else if (parseInt(time) === 180){
+            setpause(50)
+        }
+    }, [time]);
+    let isTimer1Expired = new Date().getSeconds() >= timer1.getSeconds()+pause;
     console.log(isTimer1Expired)
     return (
         <div id="content">
