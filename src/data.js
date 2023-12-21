@@ -4,6 +4,8 @@ import uebungenCard from "./components/UebungenCard.js";
 
 class Data {
 
+
+
     getImagesfromStorage(table) {
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -300,7 +302,7 @@ class Data {
                 }
             }
             fetchUebungen()
-        }, [])
+        }, [id])
 
 
         return uebungen
@@ -352,6 +354,16 @@ class Data {
         return iserror
 
     }
+
+    async postbenutzer(firstname, lastname,passwort, email ) {
+        const {data2, error} = await supabase
+            .from('benutzer')
+            .insert({Vorname: firstname,Nachname:lastname,Kennwort:passwort,Email:email})
+            .select()
+    }
+
+
+
 
     async update(Name, update) {
 

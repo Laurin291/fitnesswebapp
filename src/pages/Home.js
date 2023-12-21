@@ -10,13 +10,12 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 
 export default function Home() {
 
-
-
+    let user=JSON.parse(localStorage.getItem("user"))
 
     return (
         <>
             <div id="Homeanzeige">
-                <h1 className="ueberschrifthome">Willkommen Zurück, Patrik Hackl</h1>
+                <h1 className="ueberschrifthome">{`Willkommen zurück ${user.firstname} ${user.lastname}`}</h1>
                 <div id="Homedivs">
                     <Link to="/create"><ToggleButton id="HomeBoxes" style={{backgroundColor: '#006eb0'}}>
                         <AddCircleOutlineIcon id="icon2"> </AddCircleOutlineIcon>

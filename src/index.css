@@ -530,28 +530,18 @@ a {
     flex-direction: row;
     align-items: center;
     margin-top: 7%;
+    position: relative;
+    color: white;
 }
-
-.wrapper:active {
-    width: 200px;
-    height: 60px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 7%;
-    background-color: darkblue;
-}
-
-
 #icon {
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     margin-right: 2px;
 }
 
 #icon2{
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     margin-right: 10px;
 }
 
@@ -560,6 +550,28 @@ a {
     color: white;
     font-family: Bahnschrift;
 }
+
+.text::after {
+    content: '';
+    border-bottom: 3px solid #0F9CD8;
+    display: block;
+    transition: width .3s;
+    -webkit-transition: width .3s;
+    -moz-transition: width .3s;
+    -ms-transition: width .3s;
+    -o-transition: width .3s;
+    width: 0;
+}
+.text:hover::after {
+    width: 100%;
+    transition: width .3s;
+}
+.underline-class {
+    border-bottom: 3px solid #0F9CD8;
+}
+
+
+
 
 .avatar {
     align-items: center;
@@ -579,7 +591,7 @@ a {
 
 
 #textdown {
-    margin-top: 85%
+    margin-top: 60%
 }
 
 /* Trainingsplanverwaltung */
@@ -757,7 +769,8 @@ Plank
 
 .ueberschrifthome {
     margin-left: 19%;
-    margin-bottom: 8%;
+    margin-top:2%;
+    margin-bottom: 6%;
     font-family: Bahnschrift;
 }
 
@@ -877,6 +890,15 @@ Plank
     right:100px;
     top: 640px;
     font-size: 40px;
+}
+
+/*
+Einstellungen *****************************************************************
+ */
+
+#PrioEinsellungText{
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 /* Gewichtsverlauf */
