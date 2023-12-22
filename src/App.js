@@ -13,7 +13,7 @@ import Plankanimation from "./pages/Plankanimation";
 import Trainingsplanverwaltung from "./pages/Trainingsplanverwaltung";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
-import Gewicht from "./pages/Gewicht";
+import Gewichtsverlauf from "./pages/Gewichtsverlauf";
 import Einstellungen from "./pages/Einstellungen"
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -66,7 +66,7 @@ function App() {
                 </div>
                 <div className="wrapper"  onClick={e => handleClick(e)}>
                     <BarChartIcon id="icon"></BarChartIcon>
-                    <Link to="/Gewicht" className="text ">Gewicht</Link>
+                    <Link to="/Gewichtsverlauf" className="text ">Gewicht</Link>
                 </div>
 
                 <div className="wrapper" id="textdown" onClick={e => handleClick(e)}>
@@ -95,7 +95,7 @@ function App() {
                 <Route path="/Plank" element={[sidebar(), <Plank/>]}/>
                 <Route path="/Plankanimation/:time" element={[sidebar(), <Plankanimation/>]}/>
                 <Route path="/Trainingsplanverwaltung" element={[sidebar(), <Trainingsplanverwaltung/>]}/>
-                <Route path="/Gewicht" element={[sidebar(), <Gewicht/>]}/>
+                <Route path="/Gewichtsverlauf" element={[sidebar(), <Gewichtsverlauf/>]}/>
                 <Route path="/Einstellungen" element={[sidebar(), <Einstellungen/>]}/>
             </Routes>
         </BrowserRouter>

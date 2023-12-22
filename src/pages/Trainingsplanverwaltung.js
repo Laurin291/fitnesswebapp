@@ -50,8 +50,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Trainingsplanverwaltung() {
 
+    let user=JSON.parse(localStorage.getItem("user"))
+    console.log(user.id)
+
     const uebungen = data.get('uebungen')
-    const trainingsplan = data.get('trainingsplan')
+    const trainingsplan = data.getTrainingsplan(user.id)
+    console.log(trainingsplan)
     const trainingstage = data.get('trainingstag')
 
 // Funktion um einen Datensatz in der Tabelle zu erstellen
@@ -65,6 +69,8 @@ export default function Trainingsplanverwaltung() {
 
         };
     }
+
+
 
     const StyledTableCell = styled(TableCell)(({theme}) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -97,7 +103,7 @@ export default function Trainingsplanverwaltung() {
         const navigate = useNavigate();
         const [refresh, setRefresh] = React.useState(0)
 
-        console.log(row.id)
+
 
 
         const selectTrainingsplan = (e) => {
@@ -110,7 +116,6 @@ export default function Trainingsplanverwaltung() {
         }
 
         const deleteTrainingsplan = () =>{
-            console.log(selectedrow)
             setOpenDialog(false);
             data.deleteTrainingsplan(row.id).then(navigate('/create'))
 
@@ -217,7 +222,8 @@ export default function Trainingsplanverwaltung() {
     }
 
 //Funktion um mit den Daten aus der Datenbank die Datensätze für die Tabelle zu erstellen
-
+    const test = [{}];
+    const [rows2, setRows] = React.useState(test)
     function rows() {
 
 
@@ -235,6 +241,7 @@ export default function Trainingsplanverwaltung() {
             }
 
         }
+
 
         return zeile
     }

@@ -72,14 +72,15 @@ class Data {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const [fetchError, setFetchError] = useState(null)
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [tage, setTage] = useState(null)
+        const [uebungen, setUebungen] = useState(null)
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
-            const fetchtrainingstag = async () => {
+            const fetchUebungen = async () => {
                 const {data, error} = await supabase
-                    .from("trainingstag")
+                    .from("trainingsplan")
                     .select()
-                    .match({trainingstagID: id})
+                    .match({userID: id})
+
 
 
                 if (error) {
@@ -87,15 +88,15 @@ class Data {
 
                 }
                 if (data) {
-                    setTage(data)
+                    setUebungen(data)
                     setFetchError(null)
                 }
             }
-            fetchtrainingstag()
+            fetchUebungen()
         }, [])
 
 
-        return tage
+        return uebungen
     }
 
     getbyID(id, kategorie, table) {
@@ -212,41 +213,7 @@ class Data {
         return uebungen
     }
 
-    getTrainingsplan(id) {
 
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [fetchError, setFetchError] = useState(null)
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [uebungen, setUebungen] = useState(null)
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        useEffect(() => {
-            const fetchUebungen = async () => {
-                const {data, error} = await supabase
-                    .from('trainingsplan')
-                    .select('*')
-                    .match({trainingsplanID: id})
-
-
-                if (error) {
-                    setFetchError('Could not fetch the exercises')
-
-                }
-                if (data) {
-                    setUebungen(data)
-                    setFetchError(null)
-                }
-            }
-            fetchUebungen()
-        }, [])
-
-
-        return uebungen
-
-
-
-
-
-    }
 
     getTrainingstag(id){
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -309,14 +276,14 @@ class Data {
     }
 
 
-    async postTrainingsplan(array, trainingsplanname) {
+    async postTrainingsplan(array, trainingsplanname, userID) {
         let uebungsIDs
         let tagesbezeichnung
         let iserror = false
 
         const {data2, error} = await supabase
             .from('trainingsplan')
-            .insert({name: trainingsplanname})
+            .insert({name: trainingsplanname, userID: userID})
             .select()
 
 

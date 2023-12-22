@@ -27,7 +27,7 @@ export default function Login() {
     async function getUser(email, password) {
         const {data, error} = await supabase
             .from('benutzer')
-            .select('Vorname, Nachname')
+            .select('Vorname, Nachname, id')
             .match({Email: email.toLowerCase(), Kennwort: password})
 
         if (error != null || data.length === 0) {
@@ -36,7 +36,8 @@ export default function Login() {
 
         return {
             firstname: data[0].Vorname,
-            lastname: data[0].Nachname
+            lastname: data[0].Nachname,
+            id: data[0].id
         }
     }
 

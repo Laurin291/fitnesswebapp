@@ -81,7 +81,7 @@ export default function SignUp() {
 
         if (firstnameErr == false && lastnameErr == false && emailErr == false && passwordErr == false) {
             data1.postbenutzer(firstname, lastname, passwort, email)
-            navigate("/Login")
+            navigate("/")
 
         } else if (firstnameErr == true || lastnameErr == true || emailErr == true || passwordErr==true) {
             setEmailError(false)

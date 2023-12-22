@@ -58,7 +58,8 @@ export default function Create() {
 
 
     window.onbeforeunload = function () {
-        window.localStorage.clear()
+        clearLocalStorage()
+
         return 'Are you sure you want to leave?';
     };
 
@@ -81,6 +82,8 @@ export default function Create() {
             fontSize: 14,
         },
     }));
+
+    let user=JSON.parse(localStorage.getItem("user"))
 
     // Funktion um die ausgewaehlten Uebungen von Uebungselect.js in ihre Kurzform umzuwandeln und anzuzeigen
     function getUebungText(nummer) {
@@ -180,7 +183,21 @@ export default function Create() {
 
     //Funktion um den LocalStorage zu löschen **************************************************************************
     function clearLocalStorage() {
-        window.localStorage.clear()
+        window.localStorage.removeItem("Name1")
+        window.localStorage.removeItem("Name2")
+        window.localStorage.removeItem("Name3")
+        window.localStorage.removeItem("Name4")
+        window.localStorage.removeItem("Name5")
+        window.localStorage.removeItem("Name6")
+        window.localStorage.removeItem("Name7")
+        window.localStorage.removeItem("1")
+        window.localStorage.removeItem("2")
+        window.localStorage.removeItem("3")
+        window.localStorage.removeItem("4")
+        window.localStorage.removeItem("5")
+        window.localStorage.removeItem("6")
+        window.localStorage.removeItem("7")
+        window.localStorage.removeItem("TrainingsplanName")
     }
 
     //Component der Trainingsplanerstellung um öfter das gleiche Object am Bildschirm anzuzeigen
@@ -320,7 +337,7 @@ export default function Create() {
             }
 
 
-            uebungen = data.postTrainingsplan(tagesbezeichnungUebungen, window.localStorage.getItem("TrainingsplanName"))
+            uebungen = data.postTrainingsplan(tagesbezeichnungUebungen, window.localStorage.getItem("TrainingsplanName"), user.id)
 
             uebungen.then(value => {
                 setError(value)
