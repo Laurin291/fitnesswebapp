@@ -129,6 +129,7 @@ export default function Trainingsplanverwaltung() {
 
 
 
+
         return (
             <React.Fragment>
                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
@@ -174,13 +175,17 @@ export default function Trainingsplanverwaltung() {
 
                                         {row.trainingstage.map((trainingstag) => (
                                             <>
-                                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                                                <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}} >
                                                     <TableCell component="th" scope="row">
                                                         {trainingstag.Tagesbezeichung}
                                                     </TableCell>
                                                     <StyledTableCell align={"right"}>
                                                         <IconButton
                                                             size="small"
+                                                            onClick={ () => {
+                                                                navigate("/EditTrainingstag/" + trainingstag.trainingstagID)
+                                                            }}
+
                                                         >
                                                             <EditTwoToneIcon></EditTwoToneIcon>
                                                         </IconButton>

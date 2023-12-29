@@ -364,6 +364,28 @@ class Data {
 
     }
 
+    async getUebungenfromTrainingstag(trainingstagID){
+
+       // const {data, error} = await supabase
+         //   .from('trainingstag')
+           // .select('uebungIDs')
+            //.match({trainingstagID: trainingstagID})
+
+        //const arrayofIDs = data[0].uebungIDs
+        //console.log(arrayofIDs)
+        const table= "uebungen"
+
+        const {data2, error} = await supabase
+            .from(table)
+            .select()
+
+
+
+
+        //console.log(data2)
+
+    }
+
 
 }
 

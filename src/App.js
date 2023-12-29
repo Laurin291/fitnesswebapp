@@ -24,6 +24,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import avatar from './pictures/avatar.png';
 import Switch from "@mui/material/Switch";
+import EditTrainingstag from "./pages/EditTrainingstag";
 
 
 function App() {
@@ -97,6 +98,7 @@ function App() {
                 <Route path="/Trainingsplanverwaltung" element={[sidebar(), <Trainingsplanverwaltung/>]}/>
                 <Route path="/Gewichtsverlauf" element={[sidebar(), <Gewichtsverlauf/>]}/>
                 <Route path="/Einstellungen" element={[sidebar(), <Einstellungen/>]}/>
+                <Route path="/EditTrainingstag/:trainingstagID" element={[sidebar(), <EditTrainingstag/>]}/>
             </Routes>
         </BrowserRouter>
     )
