@@ -5,6 +5,15 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import {Slider} from "@mui/material";
 import Box from "@mui/material/Box";
+import * as PropTypes from "prop-types";
+import dayjs from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateField } from '@mui/x-date-pickers/DateField';
+
+
+
 
 
 const month = [
@@ -103,8 +112,11 @@ const yearFormater = (date) => {
 }
 
 
+
+
 export default function Gewichtsverlauf() {
     const [yearOrMonth, setYearOrMonth] = React.useState("month")
+    const [value2, setValue2] = React.useState(dayjs('2022-04-17'));
     const ColorToggleButton = () => {
 
         const handleAlignment = (event, newAlignment) => {
@@ -214,6 +226,7 @@ export default function Gewichtsverlauf() {
             </div>
 
             <ColorToggleButton/>
+
 
 
         </div>

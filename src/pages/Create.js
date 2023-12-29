@@ -166,7 +166,6 @@ export default function Create() {
 
         }
     }
-
     //Funktion um die Eingabe des Users (Trainingsplan) zu speichern ***************************************************
     function saveTrainingsplanName(name) {
         if (!validTrainingsplanname.test(name)) {
