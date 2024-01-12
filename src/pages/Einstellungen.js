@@ -18,6 +18,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Button from "@mui/material/Button";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import {CheckBox} from "@mui/icons-material";
 
 
 function createData(name,inhalthistory,text) {
@@ -74,18 +75,18 @@ function Row(props) {
                                 <TableBody>
                                     {row.history.map((trainingstag) => (
                                         <>
-                                        {trainingstag.inhalt != undefined &&
+                                        {trainingstag.inhalt !== undefined &&
                                             <>
                                             <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                                                 <TableCell component="th" scope="row">
                                                     {trainingstag.inhalt[0]}
                                                 </TableCell>
                                                 <StyledTableCell align={"right"}>
-                                                    <IconButton
+                                                    <Button
                                                         size="small"
                                                     >
-                                                        <CheckBoxIcon></CheckBoxIcon>
-                                                    </IconButton>
+                                                        <Checkbox  />
+                                                    </Button>
                                                 </StyledTableCell>
                                             </StyledTableRow>
                                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
@@ -93,11 +94,11 @@ function Row(props) {
                                                             {trainingstag.inhalt[1]}
                                                         </TableCell>
                                                         <StyledTableCell align={"right"}>
-                                                            <IconButton
+                                                            <Button
                                                                 size="small"
                                                             >
-                                                                <CheckBoxIcon></CheckBoxIcon>
-                                                            </IconButton>
+                                                                <Checkbox  />
+                                                            </Button>
                                                         </StyledTableCell>
                                                 </StyledTableRow>
                                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
@@ -105,11 +106,11 @@ function Row(props) {
                                                         {trainingstag.inhalt[2]}
                                                     </TableCell>
                                                     <StyledTableCell align={"right"}>
-                                                        <IconButton
+                                                        <Button
                                                             size="small"
                                                         >
-                                                            <CheckBoxIcon></CheckBoxIcon>
-                                                        </IconButton>
+                                                            <Checkbox/>
+                                                        </Button>
                                                     </StyledTableCell>
                                                 </StyledTableRow>
                                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
@@ -117,11 +118,11 @@ function Row(props) {
                                                         {trainingstag.inhalt[3]}
                                                     </TableCell>
                                                     <StyledTableCell align={"right"}>
-                                                        <IconButton
+                                                        <Button
                                                             size="small"
                                                         >
-                                                            <CheckBoxIcon></CheckBoxIcon>
-                                                        </IconButton>
+                                                            <Checkbox  />
+                                                        </Button>
                                                     </StyledTableCell>
                                                 </StyledTableRow>
                                                 <StyledTableRow sx={{'& > *': {borderBottom: 'unset'}}}>
@@ -129,18 +130,21 @@ function Row(props) {
                                                         {trainingstag.inhalt[4]}
                                                     </TableCell>
                                                     <StyledTableCell align={"right"}>
-                                                        <IconButton
+                                                        <Button
                                                             size="small"
                                                         >
-                                                            <CheckBoxIcon></CheckBoxIcon>
-                                                        </IconButton>
+                                                            <Checkbox  />
+                                                        </Button>
                                                     </StyledTableCell>
                                                 </StyledTableRow>
                                             </>
+
                                         }
                                         </>
                                     ))}
-
+                                    <Button variant="contained" color="success" id="saveButton">
+                                        Save
+                                    </Button>
                                 </TableBody>
                             </Table>
                         </Box>
@@ -148,6 +152,7 @@ function Row(props) {
                 </TableCell>
             </TableRow>
         </React.Fragment>
+
     );
 }
 const array = ["Home","Trainingsplan","HIIT Training","Planken","Gewichtsverlauf"];

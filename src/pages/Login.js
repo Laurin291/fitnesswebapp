@@ -15,6 +15,8 @@ import supabase from "../config/supabaseClient";
 
 
 
+
+
 const defaultTheme = createTheme();
 
 export default function Login() {
@@ -63,10 +65,6 @@ export default function Login() {
         localStorage.setItem("user",JSON.stringify(user));
         navigate("/Home")
     }
-
-
-
-
 
     return (
         <ThemeProvider theme={defaultTheme}>

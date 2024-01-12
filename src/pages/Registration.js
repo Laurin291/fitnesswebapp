@@ -1,26 +1,20 @@
 import * as React from 'react';
+import {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {normalize} from "@testing-library/jest-dom/dist/utils";
 import data1 from "../data.js"
-import {validfirstName, validlastName,validemail,validpassword} from '../Regex.js';
-import {useState} from "react";
+import {validemail, validfirstName, validlastName, validpassword} from '../Regex.js';
 import {Zoom} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
-import {useNavigate} from "react-router-dom";
 import supabase from "../config/supabaseClient";
-
 
 
 function Copyright(props) {
@@ -33,71 +27,68 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
-    const [firstnameErr,setFirstNameErr] = useState(false);
-    const [lastnameErr,setLastNameError] = useState(false);
-    const [emailErr,setEmailError] = useState(false);
-    const [passwordErr,setpasswordErr] = useState(false);
-    const [emailinuse,setemailinuse] = useState(false);
+    const [firstnameErr, setFirstNameErr] = useState(false);
+    const [lastnameErr, setLastNameError] = useState(false);
+    const [emailErr, setEmailError] = useState(false);
+    const [passwordErr, setpasswordErr] = useState(false);
+    const [emailinuse, setemailinuse] = useState(false);
     const navigate = useNavigate();
 
+    const handleSubmit = async () => {
+        setFirstNameErr(false);
+        setLastNameError(false);
+        setEmailError(false);
+        setpasswordErr(false);
+        setemailinuse(false);
 
+        const firstname = document.getElementById("firstName").value;
+        const lastname = document.getElementById("lastName").value;
+        const email = document.getElementById("email").value;
+        const passwort = document.getElementById("password").value;
 
+        const firstNameError = !validfirstName.test(firstname)
+        const lastNameError = !validlastName.test(lastname)
+        const emailError = !validemail.test(email)
+        const passwordError = !validpassword.test(passwort)
 
-    async function handlesubmit() {
-        let firstname;
-        let lastname;
-        let email;
-        let passwort;
-
-        firstname = document.getElementById("firstName").value;
-        lastname = document.getElementById("lastName").value;
-        passwort = document.getElementById("password").value;
-        email = document.getElementById("email").value;
-
-
-        if (!validfirstName.test(firstname)) {
+        if (firstNameError) {
             setFirstNameErr(true);
         }
-        if (!validlastName.test(lastname)) {
+
+        if (lastNameError) {
             setLastNameError(true);
         }
 
-        if (!validemail.test(email)) {
+        if (emailError) {
             setEmailError(true);
         }
-        if (!validpassword.test(passwort)) {
+
+        if (passwordError) {
             setpasswordErr(true);
         }
 
-        const {data, error} = await supabase
+        const {data, error1} = await supabase
             .from('benutzer')
             .select('Email')
             .match({Email: email.toLowerCase()})
 
-        if (error != null || data.length !== 0) {
+        if (error1 != null || data.length !== 0) {
             setemailinuse(true)
-            return null;
+            return;
         }
 
-        if (firstnameErr == false && lastnameErr == false && emailErr == false && passwordErr == false) {
-            data1.postbenutzer(firstname, lastname, passwort, email)
-            navigate("/")
-
-        } else if (firstnameErr == true || lastnameErr == true || emailErr == true || passwordErr==true) {
-            setEmailError(false)
-            setFirstNameErr(false)
-            setLastNameError(false)
-            setpasswordErr(false)
+        if (firstNameError || lastNameError || emailError || passwordError) {
+            return;
         }
 
 
+        await data1.postbenutzer(firstname, lastname, passwort, email)
+        navigate("/")
     }
-
-
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <CssBaseline/>
             <Box
                 sx={{
                     marginTop: 20,
@@ -106,13 +97,13 @@ export default function SignUp() {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
+                <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                    <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <Box component="form" noValidate sx={{ mt: 3 }}>
+                <Box component="form" noValidate sx={{mt: 3}}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -123,6 +114,8 @@ export default function SignUp() {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                error={firstnameErr}
+                                helperText={firstnameErr ? "Nur Buchstaben verwenden" : ""}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -133,6 +126,8 @@ export default function SignUp() {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="family-name"
+                                error={lastnameErr}
+                                helperText={lastnameErr ? "Nur Buchstaben verwenden" : ""}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -144,7 +139,7 @@ export default function SignUp() {
                                 name="email"
                                 autoComplete="email"
                                 error={emailinuse}
-                                helperText={emailinuse? "Email wurde bereits verwendet":""}
+                                helperText={emailinuse ? "Email wurde bereits verwendet" : ""}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -153,8 +148,10 @@ export default function SignUp() {
                                          <>
                                              <Typography color="inherit">Passwort Anforderungen:</Typography>
                                              <Typography color="inherit">-Muss mindestens 8 Zeichen haben</Typography>
-                                             <Typography color="inherit">-Muss einen Großbuchstaben enthalten</Typography>
-                                             <Typography color="inherit">-Muss einen Kleinbuchstaben enthalten</Typography>
+                                             <Typography color="inherit">-Muss einen Großbuchstaben
+                                                 enthalten</Typography>
+                                             <Typography color="inherit">-Muss einen Kleinbuchstaben
+                                                 enthalten</Typography>
                                              <Typography color="inherit">-Muss ein Sonderzeichen enthalten</Typography>
                                          </>
                                      }
@@ -168,12 +165,12 @@ export default function SignUp() {
                                     id="password"
                                     autoComplete="new-password"
                                     error={passwordErr}
-                                    helperText={passwordErr? "Checke die Validations":""}
+                                    helperText={passwordErr ? "Checke die Validations" : ""}
                                 />
                             </Tooltip>
                         </Grid>
                     </Grid>
-                    <Button onClick={handlesubmit}
+                    <Button onClick={handleSubmit}
                             fullWidth
                             variant="contained"
                             sx={{mt: 3, mb: 2}}

@@ -17,6 +17,10 @@ function CyclingAreaPage({expiryTimestamp}) {
         pause,
     } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called')});
 
+    const timeout1 = useRef(null);
+    const timeout2 = useRef(null);
+    const timeout3 = useRef(null);
+
 
     const didSetStartIntervalStyle = useRef(false);
     const latestTotalSecondsRef = useRef(totalSeconds);
@@ -35,18 +39,22 @@ function CyclingAreaPage({expiryTimestamp}) {
     const timeout = 10
     const [countdown, setCountdown] = useState(timeout)
 
+
     const rotation = useRef(0);
     const increase = useRef(0);
 
     const [open, setOpen] = React.useState(false);
+    const [pause1, setpause1] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
-        pause()
+        setpause1(true)
+        pause();
     };
 
     const handleClose = () => {
         setOpen(false);
+        setpause1(false)
         resume()
     };
 
@@ -172,61 +180,68 @@ function CyclingAreaPage({expiryTimestamp}) {
     }, [setCooldownStyle]);
 
 
-    const timeout1 = useRef(setTimeout(()=>{}));
-    const timeout2 = useRef(setTimeout(()=>{}));
-    const timeout3 = useRef(setTimeout(()=>{}));
-
-
     useEffect(() => {
-        if (!isRunning) {
-                clearTimeout(timeout1.current)
-                clearTimeout(timeout2.current);
-                clearTimeout(timeout3.current);
-                return
-        }
-
         if (countdown >= 0) {
             if (latestTotalSecondsRef2.current - totalSeconds >= 1) {
                 latestTotalSecondsRef2.current = totalSeconds;
                 setCountdown(countdown - 1);
             }
         }
+        if(isRunning) {
+            timeout1.current = setTimeout(() => {
+                if (intervalCounter.current > 0 && (!didSetStartIntervalStyle.current || latestTotalSecondsRef.current - totalSeconds >= intervalDuration + cooldownDuration + soonIntervalDuration)) {
+                    didSetStartIntervalStyle.current = true;
+                    latestTotalSecondsRef.current = totalSeconds;
+                    intervalCounter.current--;
 
-        timeout1.current = setTimeout(() => {
-            if (intervalCounter.current > 0 && (!didSetStartIntervalStyle.current || latestTotalSecondsRef.current - totalSeconds >= intervalDuration + cooldownDuration + soonIntervalDuration)) {
-                didSetStartIntervalStyle.current = true;
-                latestTotalSecondsRef.current = totalSeconds;
-                intervalCounter.current--;
+                    setCooldownStyle();
+                    setSoonIntervalStyle();
+                    setIntervalStyle();
+                    setCountdown(intervalDuration);
+                    increase.current = 1
+                    clearTimeout(timeout1.current);
+                    timeout2.current = null;
 
-                setCooldownStyle();
-                setSoonIntervalStyle();
-                setIntervalStyle();
-                setCountdown(intervalDuration);
-                increase.current = 1
-                console.log(isRunning)
+                    console.log("timeout1" + isRunning)
 
-               timeout2.current = setTimeout(() => {
-                        console.log(isRunning)
+                    timeout2.current = setTimeout(() => {
+                        console.log("timeout2" + isRunning)
                         resetSoonIntervalStyle();
                         resetIntervalStyle();
                         setCooldownStyle()
                         increase.current = 0.5
                         setCountdown(cooldownDuration);
-                }, intervalDuration * 1000);
+                        clearTimeout(timeout2.current);
+                        timeout2.current = null;
+                    }, intervalDuration * 1000);
 
-                timeout3.current = setTimeout(() => {
-                    console.log(isRunning)
-                    setSoonIntervalStyle();
-                    setCountdown(soonIntervalDuration);
-                    increase.current = 0.8
-                }, (intervalDuration + cooldownDuration) * 1000);
-            }
-        }, 10000);
 
+                    timeout3.current = setTimeout(() => {
+                        console.log("timeout3" + isRunning)
+                        setSoonIntervalStyle();
+                        setCountdown(soonIntervalDuration);
+                        increase.current = 0.8
+                        clearTimeout(timeout3.current);
+                        timeout3.current = null;
+                    }, (intervalDuration + cooldownDuration) * 1000);
+                }
+            }, 10000);
+        }
+
+        if(!isRunning){
+            clearTimeout(timeout1.current)
+            console.log("1")
+            clearTimeout(timeout2.current);
+            console.log("2")
+            clearTimeout(timeout3.current);
+            console.log("3")
+            return (
+                console.log("Otto")
+            )
+        }
 
         if (intervalCounter.current >= 10) {
             warmup()
-
         }
 
         if (intervalCounter.current <= 0) {
@@ -235,15 +250,15 @@ function CyclingAreaPage({expiryTimestamp}) {
             increase.current = 0.5
             setCountdown(0)
         }
-
-
         const kurbelRotation = setInterval(() => {
             const kurbel = document.getElementById("kurbel");
             rotation.current += increase.current
             kurbel.style.transform = `rotate(${rotation.current}deg)`;
         });
+        return () => {
+            clearInterval(kurbelRotation)
+        };
 
-        return () => clearInterval(kurbelRotation);
     }, [cooldownDuration, countdown, intervalDuration, isRunning, resetIntervalStyle, resetSoonIntervalStyle, setCooldownStyle, setIntervalStyle, setSoonIntervalStyle, soonIntervalDuration, totalSeconds, warmup]);
 
 
