@@ -5,7 +5,6 @@ import uebungenCard from "./components/UebungenCard.js";
 class Data {
 
 
-
     getImagesfromStorage(table) {
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -35,6 +34,66 @@ class Data {
         return image
 
     }
+    getTrainingstageSorted(table) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [fetchError, setFetchError] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [uebungen, setUebungen] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+            const fetchUebungen = async () => {
+                const {data, error} = await supabase
+                    .from(table)
+                    .select()
+                    .order("trainingstagID")
+
+
+                if (error) {
+                    setFetchError('Could not fetch the exercises')
+
+                }
+                if (data) {
+                    setUebungen(data)
+                    setFetchError(null)
+                }
+            }
+            fetchUebungen()
+        }, [])
+
+
+        return uebungen
+    }
+
+    getAllUebungenSorted(table) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [fetchError, setFetchError] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [uebungen, setUebungen] = useState(null)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+            const fetchUebungen = async () => {
+                const {data, error} = await supabase
+                    .from(table)
+                    .select()
+                    .order("Kategorie")
+
+
+                if (error) {
+                    setFetchError('Could not fetch the exercises')
+
+                }
+                if (data) {
+                    setUebungen(data)
+                    setFetchError(null)
+                }
+            }
+            fetchUebungen()
+        }, [])
+
+
+        return uebungen
+    }
+
 
     //Liefert alle Übungen
     get(table) {
@@ -48,7 +107,6 @@ class Data {
                 const {data, error} = await supabase
                     .from(table)
                     .select()
-
 
 
                 if (error) {
@@ -80,7 +138,6 @@ class Data {
                     .from("trainingsplan")
                     .select()
                     .match({userID: id})
-
 
 
                 if (error) {
@@ -214,8 +271,7 @@ class Data {
     }
 
 
-
-    getTrainingstag(id){
+    getTrainingstag(id) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const [fetchError, setFetchError] = useState(null)
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -245,7 +301,7 @@ class Data {
         return uebungen
     }
 
-    getUebungen(id){
+    getUebungen(id) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const [fetchError, setFetchError] = useState(null)
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -322,14 +378,12 @@ class Data {
 
     }
 
-    async postbenutzer(firstname, lastname,passwort, email ) {
+    async postbenutzer(firstname, lastname, passwort, email) {
         const {data2, error} = await supabase
             .from('benutzer')
-            .insert({Vorname: firstname,Nachname:lastname,Kennwort:passwort,Email:email})
+            .insert({Vorname: firstname, Nachname: lastname, Kennwort: passwort, Email: email})
             .select()
     }
-
-
 
 
     async update(Name, update) {
@@ -337,7 +391,7 @@ class Data {
         const {data2, error2} = await supabase
             .from("trainingsplan")
             .update([{selected: 'FALSE'}])
-            .eq('selected','TRUE')
+            .eq('selected', 'TRUE')
 
         const {data, error} = await supabase
             .from("trainingsplan")
@@ -360,30 +414,50 @@ class Data {
             .eq('trainingsplanID', id)
 
 
+    }
 
+    async getUebungsIDsfromTrainingstag(trainingstagID) {
+
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+
+        const {data, error} = await supabase
+            .from('trainingstag')
+            .select('uebungIDs')
+            .match({trainingstagID: trainingstagID})
+
+
+        return data[0].uebungIDs
+    }
+
+    async getUebungenfromTrainingstag(ids) {
+
+
+        const {data, error} = await supabase
+            .from('uebungen')
+            .select()
+            .in('uebungID', ids)
+
+
+        return data
 
     }
 
-    async getUebungenfromTrainingstag(trainingstagID){
+    async updateTrainingstagUebungen(namenArray, trainingstagID){
 
-       // const {data, error} = await supabase
-         //   .from('trainingstag')
-           // .select('uebungIDs')
-            //.match({trainingstagID: trainingstagID})
+        const {data, error} = await supabase
+            .from('uebungen')
+            .select('uebungID')
+            .in('Name', namenArray)
 
-        //const arrayofIDs = data[0].uebungIDs
-        //console.log(arrayofIDs)
-        const table= "uebungen"
+        let idArray = data.map( (id) => id.uebungID)
 
-        const {data2, error} = await supabase
-            .from(table)
-            .select()
+        console.log(idArray)
 
-
-
-
-        //console.log(data2)
-
+        const {data2, error2} = await supabase
+            .from("trainingstag")
+            .update([{uebungIDs: idArray}])
+            .eq('trainingstagID', trainingstagID)
     }
 
 

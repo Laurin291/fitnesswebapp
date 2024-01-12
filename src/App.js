@@ -98,7 +98,7 @@ function App() {
                 <Route path="/Trainingsplanverwaltung" element={[sidebar(), <Trainingsplanverwaltung/>]}/>
                 <Route path="/Gewichtsverlauf" element={[sidebar(), <Gewichtsverlauf/>]}/>
                 <Route path="/Einstellungen" element={[sidebar(), <Einstellungen/>]}/>
-                <Route path="/EditTrainingstag/:trainingstagID" element={[sidebar(), <EditTrainingstag/>]}/>
+                <Route path="/EditTrainingstag/:uebungArray/:trainingstagID" element={[sidebar(), <EditTrainingstag/>]}/>
             </Routes>
         </BrowserRouter>
     )

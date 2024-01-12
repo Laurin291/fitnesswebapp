@@ -32,7 +32,7 @@ export default function Uebungstabelle() {
     const [severity, setSeverity] = useState("")
     const {number} = useParams()
     const [isloaded, setIsLoaded] = useState(false)
-    const uebungen = data.get('uebungen')
+    const uebungen = data.getAllUebungenSorted('uebungen')
     const navigate = useNavigate();
 
 

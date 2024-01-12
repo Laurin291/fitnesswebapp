@@ -25,8 +25,7 @@ import supabase from "../config/supabaseClient";
 
 
 export default function EditTrainingstag() {
-    const trainingstagID = useParams();
-    const id = trainingstagID.trainingstagID
+    const {uebungArray, trainingstagID} = useParams();
 
 
     let selectedItems = []
@@ -35,8 +34,10 @@ export default function EditTrainingstag() {
     const [severity, setSeverity] = useState("")
     const {number} = useParams()
     const [isloaded, setIsLoaded] = useState(false)
-    const uebungen = data.get('uebungen')
+    const uebungen = data.getAllUebungenSorted('uebungen')
     const navigate = useNavigate();
+    const [selUeIds, setSelUeIds] = useState(null)
+    const [selUe, setSelUe] = useState(null)
 
 
     const Alert = React.forwardRef(function Alert(props, ref) {
@@ -77,22 +78,19 @@ export default function EditTrainingstag() {
         };
     }
 
+
 // Funktion mit der die Reihen der Tabelle mit Daten gefühlt und zusammengesetzt werden, um sie anschließend
     function Row(props) {
         const {number} = useParams()
         const {row} = props;
         const [open, setOpen] = React.useState(false);
         const labelId = `enhanced-table-checkbox-1`;
-        data.getUebungenfromTrainingstag(id)
-        otto()
 
-        async function otto() {
-            const {data2, error} = await supabase
-                .from("trainingsplan")
-                .select()
-            console.log(data2)
-        }
 
+        let selUebungen = uebungArray ? JSON.parse(decodeURIComponent(uebungArray)) : [];
+
+
+        const namen = selUebungen.map((uebung) => uebung.Name)
 
 
 
@@ -100,27 +98,26 @@ export default function EditTrainingstag() {
 
         const [checked, setChecked] = React.useState(() => {
 
+
             let check = false
-            if (window.localStorage.getItem(number) != null) {
-                const text = window.localStorage.getItem(number).split(',')
 
-                for (let i = 0; i < text.length; i++) {
-                    if (text[i] == row.name) {
-                        check = true
-                        break;
-                    } else {
-                        check = false
-                    }
+
+            for (let i = 0; i < namen.length; i++) {
+                if (namen[i] == row.name) {
+                    check = true
+                    break;
+                } else {
+                    check = false
                 }
-                if (selectedItems.length < 1) {
-                    let itemsfromlocalstorage = window.localStorage.getItem(number).split(',')
-                    for (let i = 0; i < itemsfromlocalstorage.length; i++) {
-                        selectedItems.push(itemsfromlocalstorage[i])
-                    }
-
+            }
+            if (selectedItems.length < 1) {
+                for (let i = 0; i < namen.length; i++) {
+                    selectedItems.push(namen[i])
                 }
 
             }
+
+
             return check
         });
 
@@ -229,26 +226,10 @@ export default function EditTrainingstag() {
 
     //Funktion um zu erkennen, wann der SaveButton gedrückt wird und um die ausgewählten Uebungen im localStorage zu speichern
     function saveAction() {
+        data.updateTrainingstagUebungen(selectedItems,trainingstagID)
+        navigate('/trainingsplanverwaltung')
 
 
-        window.localStorage.removeItem(number)
-        if (window.localStorage.getItem(number) == null) {
-            window.localStorage.setItem(number, selectedItems)
-        } else {
-            window.localStorage.setItem(number, selectedItems + ',' + window.localStorage.getItem(number))
-        }
-
-
-        if (localStorage.getItem(number) === '') {
-            handleClick("Bitte etwas auswählen")
-            setSeverity('error')
-        } else {
-            handleClick("Saved successfully")
-            setSeverity('success')
-            selectedItems = []
-            navigate('/create')
-
-        }
 
 
 
@@ -268,8 +249,6 @@ export default function EditTrainingstag() {
     };
 
     //Funktion um den Zwischenspeicher zu leeren wenn man die Seite verlässt
-
-
 
 
     return (
@@ -298,53 +277,60 @@ export default function EditTrainingstag() {
                                     <>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}} width={150}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}}
+                                                                 width={90}/></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}} width={150}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}}
+                                                                 width={90}/></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}} width={150}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}}
+                                                                 width={90}/></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}} width={150}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}}
+                                                                 width={90}/></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}} width={150}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}}
+                                                                 width={90}/></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}} width={150}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}}
+                                                                 width={90}/></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}} width={150}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}}
+                                                                 width={90}/></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}} width={150}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}}
+                                                                 width={90}/></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell><Skeleton variant="circular" width={40} height={40}/></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={150} /></TableCell>
-                                            <TableCell><Skeleton variant="text" sx={{ fontSize: '1.5rem' }} width={90} /></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}} width={150}/></TableCell>
+                                            <TableCell><Skeleton variant="text" sx={{fontSize: '1.5rem'}}
+                                                                 width={90}/></TableCell>
                                         </TableRow>
                                     </>
                                 }
-
-
 
 
                             </TableBody>
@@ -355,9 +341,6 @@ export default function EditTrainingstag() {
                             Save
                         </Button>
                     </div>
-
-
-
 
 
                     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

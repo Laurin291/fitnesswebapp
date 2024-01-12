@@ -22,7 +22,7 @@ const Update = () => {
                 const fetchUebungen = async () => {
                     const {data, error} = await supabase
                         .from("trainingstag")
-                        .select()
+                        .select('uebungIDs')
                         .in('trainingstagID', [3, 2])
 
 

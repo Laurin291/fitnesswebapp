@@ -250,7 +250,7 @@ export default function Create() {
     const DayShowComponent = ({tag}) => {
 
         const trainingspläne = data.get("trainingsplan")
-        const trainingstagtabelle = data.get("trainingstag")
+        const trainingstagtabelle = data.getTrainingstageSorted("trainingstag")
         let trainingstage = []
         if (trainingspläne != null && trainingstagtabelle != null) {
             const selected = trainingspläne.filter((trainingsplan) => trainingsplan.selected == true)
@@ -453,7 +453,7 @@ export default function Create() {
                                             <TableCell>REST</TableCell>
                                             <TableCell>REST</TableCell>
                                             <TableCell>REST</TableCell>
-f
+
                                         </>
                                     }
                                 </>

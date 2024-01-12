@@ -56,7 +56,7 @@ export default function Trainingsplanverwaltung() {
     const uebungen = data.get('uebungen')
     const trainingsplan = data.getTrainingsplan(user.id)
     console.log(trainingsplan)
-    const trainingstage = data.get('trainingstag')
+    const trainingstage = data.getTrainingstageSorted('trainingstag')
 
 // Funktion um einen Datensatz in der Tabelle zu erstellen
     function createData(id, name, trainingstage, selected) {
@@ -182,8 +182,13 @@ export default function Trainingsplanverwaltung() {
                                                     <StyledTableCell align={"right"}>
                                                         <IconButton
                                                             size="small"
-                                                            onClick={ () => {
-                                                                navigate("/EditTrainingstag/" + trainingstag.trainingstagID)
+                                                            onClick={ async () => {
+
+                                                                const uebungen = await data.getUebungenfromTrainingstag(await data.getUebungsIDsfromTrainingstag(trainingstag.trainingstagID))
+                                                                console.log(uebungen)
+                                                                const jsonString = JSON.stringify(uebungen)
+                                                                const encodedParam = encodeURIComponent(jsonString);
+                                                                navigate("/EditTrainingstag/" + encodedParam + "/" + trainingstag.trainingstagID)
                                                             }}
 
                                                         >
@@ -232,7 +237,6 @@ export default function Trainingsplanverwaltung() {
     function rows() {
 
 
-        let numzeilen = 0;
         const zeile = []
 
 
