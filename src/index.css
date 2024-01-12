@@ -713,6 +713,15 @@ Plank
     display: flex;
     justify-content: center
 }
+.button {
+    display: grid !important;
+    width: 200px !important;
+    height: 70px !important;
+    background-color: white !important;
+    font-size: 28px !important;
+    border-radius: 20px !important;
+}
+
 
 /*
  */
