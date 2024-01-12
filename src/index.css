@@ -596,6 +596,16 @@ a {
 
 /* Trainingsplanverwaltung */
 
+#backIcon{
+   margin-top: 3%;
+    height: 40px;
+    width: 40px;
+}
+
+#headlineTr{
+    display: flex;
+}
+
 #tableContainer {
     margin: 2em;
     width: 95%;

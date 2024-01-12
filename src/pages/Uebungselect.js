@@ -24,6 +24,7 @@ import {useState} from "react";
 import {styled} from "@mui/material/styles";
 import {Skeleton, tableCellClasses, Zoom} from "@mui/material";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export default function Uebungstabelle() {
     let selectedItems = []
@@ -260,8 +261,18 @@ export default function Uebungstabelle() {
         <>
             <Zoom in={true}>
                 <div id="content">
-                    <Typography ml={3} mt={3} variant='h2'
-                                sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Übungen</Typography>
+                    <div id={"headlineTr"}>
+                        <IconButton
+                            id={"backIcon"}
+                            fontSize="large"
+                            onClick={() => navigate("/create")}
+                        >
+                            <ArrowBackIosIcon></ArrowBackIosIcon>
+                        </IconButton>
+                        <Typography ml={3} mt={3} variant='h2'
+                                    sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Übungen</Typography>
+                    </div>
+
                     <TableContainer component={Paper} id="tableContainer2">
                         <Table stickyHeader size="small">
                             <TableHead>

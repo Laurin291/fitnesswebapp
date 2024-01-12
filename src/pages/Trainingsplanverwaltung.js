@@ -22,6 +22,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from '@mui/material/Alert';
 import {useState} from "react";
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import KeyboardDoubleArrowRightTwoToneIcon from '@mui/icons-material/KeyboardDoubleArrowRightTwoTone';
 import {
     Dialog, DialogActions,
@@ -262,6 +263,7 @@ export default function Trainingsplanverwaltung() {
     const [alertinhalt, setAlertInhalt] = useState("")
     const [severity, setSeverity] = useState("")
     const {number} = useParams()
+    const navigate = useNavigate();
 
 
 
@@ -282,8 +284,20 @@ export default function Trainingsplanverwaltung() {
 
     return (
         <div id="content">
-            <Zoom in={true}><Typography m={3} variant='h2'
-                                        sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Deine Trainingspläne</Typography></Zoom>
+
+            <Zoom in={true}>
+                <div id={"headlineTr"}>
+                    <IconButton
+                        id={"backIcon"}
+                        fontSize="large"
+                        onClick={() => navigate("/create")}
+                    >
+                        <ArrowBackIosIcon></ArrowBackIosIcon>
+                    </IconButton>
+                    <Typography m={3} variant='h2' sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Deine Trainingspläne</Typography>
+                </div>
+
+            </Zoom>
             <Zoom in={true}><TableContainer component={Paper} id="tableContainer">
                 <Table stickyHeader size="small" id={"table"}>
                     <TableHead>

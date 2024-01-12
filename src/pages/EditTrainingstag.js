@@ -22,6 +22,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import supabase from "../config/supabaseClient";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 
 export default function EditTrainingstag() {
@@ -255,8 +256,17 @@ export default function EditTrainingstag() {
         <>
             <Zoom in={true}>
                 <div id="content">
+                    <div id={"headlineTr"}>
+                        <IconButton
+                            id={"backIcon"}
+                            fontSize="large"
+                            onClick={() => navigate("/trainingsplanverwaltung")}
+                        >
+                            <ArrowBackIosIcon></ArrowBackIosIcon>
+                        </IconButton>
                     <Typography ml={3} mt={3} variant='h2'
                                 sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Bearbeitung</Typography>
+                    </div>
                     <TableContainer component={Paper} id="tableContainer2">
                         <Table stickyHeader size="small">
                             <TableHead>
