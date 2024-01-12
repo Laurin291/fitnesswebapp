@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useTimer} from 'react-timer-hook';
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import Beinheben from '../animations/BeinhebenAnimation.gif';
 import Spideranimation from '../animations/SpiderAnimation.gif'
 import Plank from '../animations/Plank.gif'
 import PlankHaende from '../animations/HaendeAnimation.gif'
 import HaendeBeinheben from '../animations/HaendeBeinheben.gif'
+import ToggleButton from "@mui/material/ToggleButton";
 
 function MyTimer({expiryTimestamp, setIsTimer2Running}) {
 
@@ -27,7 +28,7 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
             setTimeout(() => {
                 resume();
                 setIsTimer2Running(false);
-            }, 10200);
+            }, 10000);
 
         }
     }, [pause, resume, totalSeconds, setIsTimer2Running,]);
@@ -111,31 +112,54 @@ export default function App() {
 
     useEffect(() => {
         if (parseInt(time) === 60) {
-            setpause(10);
+            setpause(20);
         }else if (parseInt(time)=== 90){
-            setpause(20)
-        }else if (parseInt(time)=== 120){
             setpause(30)
-        }else if (parseInt(time) === 150){
+        }else if (parseInt(time)=== 120){
             setpause(40)
-        }else if (parseInt(time) === 180){
+        }else if (parseInt(time) === 150){
             setpause(50)
+        }else if (parseInt(time) === 180){
+            setpause(60)
         }
     }, [time]);
-    let isTimer1Expired = new Date().getSeconds() >= timer1.getSeconds()+pause;
+    let timer1sec = new Date();
+    timer1sec.setSeconds(0)
+    timer1sec.setMinutes(0)
+    timer1sec.setHours(0)
+
+    let otto = timer1.getSeconds() + pause
+    timer1sec.setSeconds(otto);
+    console.log("Timer "+timer1sec.getSeconds())
+    console.log("Datum "+new Date().getSeconds())
+    let isTimer1Expired = new Date() === timer1sec;
+    console.log(timer1sec)
     console.log(isTimer1Expired)
+    console.log(new Date().getSeconds(),new Date().getMinutes())
+    console.log(timer1sec.getSeconds(),timer1sec.getMinutes())
+
     return (
         <div id="content">
             <div className="timer">
-                <MyTimer expiryTimestamp={timer1} setIsTimer2Running={setIsTimer2Running}/>
+                <MyTimer expiryTimestamp={timer1} setIsTimer2Running={setIsTimer2Running} />
             </div>
-            {isTimer2Running && <MyTimer2 expiryTimestamp={timer2} isRunning={isTimer2Running}/>}
+            {isTimer2Running && <MyTimer2 expiryTimestamp={timer2} isRunning={isTimer2Running} />}
             <div className="container">
                 {!isTimer2Running && !isTimer1Expired && (
-                    <img src={gifsList[currentGifIndex]} className="gif"/>
+                    <img src={gifsList[currentGifIndex]} className="gif" alt="Gif" />
+                )}
+                {isTimer1Expired === true && !isTimer2Running && (
+                    <div>
+                        <p>Dein Training ist zu Ende</p>
+                        <Link to={'/Plank'}>
+                            <ToggleButton className="button" style={{ color: "black" }}>Zum Plank</ToggleButton>
+                        </Link>
+                        <Link to={'/Home'}>
+                            <ToggleButton className="button" style={{ color: "black" }}>Zur Startseite</ToggleButton>
+                        </Link>
+                    </div>
                 )}
             </div>
-
         </div>
     );
 }
