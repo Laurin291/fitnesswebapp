@@ -381,7 +381,7 @@ class Data {
     async postbenutzer(firstname, lastname, passwort, email) {
         const {data2, error} = await supabase
             .from('benutzer')
-            .insert({Vorname: firstname, Nachname: lastname, Kennwort: passwort, Email: email})
+            .insert({Vorname: firstname, Nachname: lastname, Kennwort: passwort, Email: email,Verified: false})
             .select()
     }
 

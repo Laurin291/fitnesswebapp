@@ -15,6 +15,8 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Gewichtsverlauf from "./pages/Gewichtsverlauf";
 import Einstellungen from "./pages/Einstellungen"
+import ResetPassword from "./pages/ResetPassword"
+import Verifyemail from "./pages/Verifyemail"
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
@@ -87,6 +89,8 @@ function App() {
             <Routes>
                 <Route path="/" element={<Login/>}/>
                 <Route path="/Registration" element={<Registration/>}/>
+                <Route path="/ResetPassword/:email" element={<ResetPassword/>}/>
+                <Route path="/Verifyemail/:email" element={<Verifyemail/>}/>
                 <Route path="/Home" element={[sidebar(), <Home/>]}></Route>
                 <Route path="/create" element={[sidebar(), <Create/>]}/>
                 <Route path="/:id" element={[sidebar(), <Update/>]}/>

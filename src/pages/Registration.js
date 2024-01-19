@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,16 +15,8 @@ import {validemail, validfirstName, validlastName, validpassword} from '../Regex
 import {Zoom} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import supabase from "../config/supabaseClient";
+import * as emailjs from "@emailjs/browser";
 
-
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
 
 export default function SignUp() {
     const [firstnameErr, setFirstNameErr] = useState(false);
@@ -32,7 +24,24 @@ export default function SignUp() {
     const [emailErr, setEmailError] = useState(false);
     const [passwordErr, setpasswordErr] = useState(false);
     const [emailinuse, setemailinuse] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const emailRef = useRef();
+
+    function stringToHash(string) {
+        let hash = 0;
+
+        if (string.length === 0) return hash;
+
+        for (let i = 0; i < string.length; i++) {
+            const char = string.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+
+        return hash;
+    }
+
 
     const handleSubmit = async () => {
         setFirstNameErr(false);
@@ -45,6 +54,7 @@ export default function SignUp() {
         const lastname = document.getElementById("lastName").value;
         const email = document.getElementById("email").value;
         const passwort = document.getElementById("password").value;
+
 
         const firstNameError = !validfirstName.test(firstname)
         const lastNameError = !validlastName.test(lastname)
@@ -67,6 +77,7 @@ export default function SignUp() {
             setpasswordErr(true);
         }
 
+
         const {data, error1} = await supabase
             .from('benutzer')
             .select('Email')
@@ -77,13 +88,45 @@ export default function SignUp() {
             return;
         }
 
+
         if (firstNameError || lastNameError || emailError || passwordError) {
             return;
         }
 
 
-        await data1.postbenutzer(firstname, lastname, passwort, email)
+        await data1.postbenutzer(firstname, lastname, stringToHash(passwort), email)
+        await handleSubmit1()
         navigate("/")
+
+    }
+
+    useEffect(() => emailjs.init("eLuBMI1Jv0oeM60Z4"), []);
+    const handleSubmit1 = async (e) => {
+        async function getName(email) {
+            const {data, error} = await supabase
+                .from('benutzer')
+                .select('Vorname')
+                .match({Email: email.toLowerCase()})
+
+            return data;
+        }
+
+        const serviceId = "service_3q3xr4z";
+        const templateId = "template_0zc8frq";
+        try {
+            const name = await getName(emailRef.current.value)
+            setLoading(true);
+            await emailjs.send(serviceId, templateId, {
+                name: name[0].Vorname,
+                recipient: emailRef.current.value,
+                message: "http://localhost:3000/Verifyemail/" + encodeURIComponent(emailRef.current.value)
+            });
+            alert("email successfully sent check inbox");
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -138,6 +181,7 @@ export default function SignUp() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                inputRef={emailRef}
                                 error={emailinuse}
                                 helperText={emailinuse ? "Email wurde bereits verwendet" : ""}
                             />
@@ -175,7 +219,7 @@ export default function SignUp() {
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                     >
-                        Sign In
+                        Sign Up
                     </Button>
 
                     <Grid container justifyContent="flex-end">
