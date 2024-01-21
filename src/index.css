@@ -664,7 +664,7 @@ Plank
     justify-content: center;
     align-items: center;
     height: 25vh;
-    margin-top: 130px;
+    margin-top: 150px;
 }
 
 .gif {
@@ -673,7 +673,8 @@ Plank
 }
 
 .timer {
-    margin-top: 20px;
+    margin-top: 10px;
+    font-size: 100px;
 }
 
 .timebuttons {
@@ -693,6 +694,7 @@ Plank
     background-color: white !important;
     font-size: 28px !important;
     border-radius: 20px !important;
+    place-items: center;
 }
 
 #ueberschriftplank {
@@ -713,6 +715,12 @@ Plank
     display: flex;
     justify-content: center
 }
+
+.centerdiv{
+    display: grid;
+    place-items: center;
+
+}
 .button {
     display: grid !important;
     width: 200px !important;
@@ -722,6 +730,19 @@ Plank
     border-radius: 20px !important;
 }
 
+.buttonend{
+    display: grid !important;
+    width: 230px !important;
+    height: 120px !important;
+    background-color: white !important;
+    font-size: 28px !important;
+    border-radius: 20px !important;
+
+}
+.textend{
+    font-size: 50px;
+    text-align: center;
+}
 
 /*
  */

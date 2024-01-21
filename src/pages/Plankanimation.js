@@ -39,7 +39,9 @@ function MyTimer({expiryTimestamp, setIsTimer2Running}) {
             <div style={{fontSize: '100px'}}>
                 <span>{minutes.toString().padStart(2, "0")}</span>:<span>{seconds.toString().padStart(2, "0")}</span>
             </div>
-            <p>{isRunning ? 'Timer läuft' : 'Timer läuft nicht'}</p>
+            {/*
+            <p className="word">{isRunning ? 'Planken' : 'Nicht Planken'}</p>
+            */}
         </div>
     );
 }
@@ -76,6 +78,9 @@ function MyTimer2({expiryTimestamp, isRunning}) {
 export default function App() {
     const {time} = useParams()
     const [pause,setpause] = useState(0)
+    const [minutes,setminutes] = useState(0)
+    let [isTimer1Expired,setisTimer1Expired] = useState(false)
+
     const [timer1] = useState(() => {
         const initialTimer1 = new Date();
         initialTimer1.setSeconds(initialTimer1.getSeconds() + parseInt(time));
@@ -97,19 +102,12 @@ export default function App() {
         } while (newIndex === currentIndex);
         return newIndex;
     };
-    useEffect(() => {
-        let gifInterval;
-
-        if (!isTimer2Running) {
-            gifInterval = setInterval(() => {
-                setCurrentGifIndex(prevIndex => getRandomIndex(prevIndex, gifsList.length));
-            }, 30000);
-        }
-
-        return () => clearInterval(gifInterval);
-    }, [isTimer2Running, gifsList]);
 
 
+    let timer1sec = new Date();
+    timer1sec.setSeconds(0)
+    timer1sec.setMinutes(0)
+    timer1sec.setHours(0)
     useEffect(() => {
         if (parseInt(time) === 60) {
             setpause(20);
@@ -122,21 +120,39 @@ export default function App() {
         }else if (parseInt(time) === 180){
             setpause(60)
         }
-    }, [time]);
-    let timer1sec = new Date();
-    timer1sec.setSeconds(0)
-    timer1sec.setMinutes(0)
-    timer1sec.setHours(0)
+    }, [time,pause]);
 
+
+
+    let minute = timer1.getMinutes()
     let otto = timer1.getSeconds() + pause
+    let hour = timer1.getHours()
+    timer1sec.setHours(hour)
+    timer1sec.setMinutes(minute)
     timer1sec.setSeconds(otto);
-    console.log("Timer "+timer1sec.getSeconds())
-    console.log("Datum "+new Date().getSeconds())
-    let isTimer1Expired = new Date() === timer1sec;
+    timer1sec.setMilliseconds(0)
+
+
+    console.log(new Date())
     console.log(timer1sec)
     console.log(isTimer1Expired)
-    console.log(new Date().getSeconds(),new Date().getMinutes())
-    console.log(timer1sec.getSeconds(),timer1sec.getMinutes())
+
+    useEffect(() => {
+        let date = new Date()
+        let gifInterval;
+        if (date.getMinutes() === timer1sec.getMinutes() && date.getSeconds() === timer1sec.getSeconds()) {
+            setisTimer1Expired(true)
+        }else if (date.getMinutes() > timer1sec.getMinutes() && date.getSeconds() > timer1sec.getSeconds()){
+            setisTimer1Expired(true)
+        }
+        if (!isTimer2Running) {
+            gifInterval = setInterval(() => {
+                setCurrentGifIndex(prevIndex => getRandomIndex(prevIndex, gifsList.length));
+            }, 30000);
+        }
+
+        return () => clearInterval(gifInterval);
+    }, [isTimer2Running, gifsList,isTimer1Expired,timer1sec]);
 
     return (
         <div id="content">
@@ -149,13 +165,13 @@ export default function App() {
                     <img src={gifsList[currentGifIndex]} className="gif" alt="Gif" />
                 )}
                 {isTimer1Expired === true && !isTimer2Running && (
-                    <div>
-                        <p>Dein Training ist zu Ende</p>
+                    <div className="centerdiv">
+                        <p className="textend">Dein Training ist zu Ende</p>
                         <Link to={'/Plank'}>
-                            <ToggleButton className="button" style={{ color: "black" }}>Zum Plank</ToggleButton>
+                            <ToggleButton className="buttonend" style={{ color: "black" }}>Nochmal Planken</ToggleButton>
                         </Link>
                         <Link to={'/Home'}>
-                            <ToggleButton className="button" style={{ color: "black" }}>Zur Startseite</ToggleButton>
+                            <ToggleButton className="buttonend" style={{ color: "black" }}>Zur Startseite</ToggleButton>
                         </Link>
                     </div>
                 )}
