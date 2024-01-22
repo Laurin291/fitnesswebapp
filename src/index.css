@@ -492,6 +492,16 @@ a {
     background: lightgray;
     border-radius: 7px;
 }
+/* EditTrainingsplan ******************************************************* */
+
+#trainingsplaninputfeld{
+    margin-top: 3%;
+    margin-left: 3%;
+    border-radius: 7px;
+    width: 12em;
+    height: 40px;
+    font-size: 40px;
+}
 
 /* App.js ****************************************************************** */
 
@@ -943,15 +953,24 @@ Einstellungen *****************************************************************
 
 /* Gewichtsverlauf */
 
-#chart{
-
-
+.tooltip {
+    border-radius: 0.25rem;
+    background: #26313c;
+    color: #fff;
+    padding: 1rem;
+    box-shadow: 15px 30px 40px 5px rgba(0, 0, 0, 0.5);
+    text-align: center;
 }
 
-#verticalSlider{
-    margin-top: 3em;
-
+#tooltipDate{
+    margin: 0;
 }
+
+#tooltipValue{
+    font-size: 1rem;
+    margin:0
+}
+
 
 #content2{
     display: flex;

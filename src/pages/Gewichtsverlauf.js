@@ -11,225 +11,258 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+import Button from "@mui/material/Button";
+import supabase from "../config/supabaseClient";
+import {validgewicht, validTagesbezeichnung} from "../Regex";
+import {useEffect, useState} from "react";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import { Chart } from "react-google-charts";
+
+import {
+    ResponsiveContainer,
+    AreaChart,
+    XAxis,
+    YAxis,
+    Area,
+    Tooltip,
+    CartesianGrid,
+} from "recharts";
+
+import { format, parseISO, subDays } from "date-fns";
 
 
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
+async function generatedatesandvalues() {
+    let user=JSON.parse(localStorage.getItem("user"))
 
-const month = [
-    new Date(2023, 0, 1),
-    new Date(2023, 0, 2),
-    new Date(2023, 0, 3),
-    new Date(2023, 0, 4),
-    new Date(2023, 0, 5),
-    new Date(2023, 0, 6),
-    new Date(2023, 0, 7),
-    new Date(2023, 0, 8),
-    new Date(2023, 0, 9),
-    new Date(2023, 0, 10),
-    new Date(2023, 0, 11),
-    new Date(2023, 0, 12),
-    new Date(2023, 0, 13),
-    new Date(2023, 0, 14),
-    new Date(2023, 0, 15),
-    new Date(2023, 0, 16),
-    new Date(2023, 0, 17),
-    new Date(2023, 0, 18),
-    new Date(2023, 0, 19),
-    new Date(2023, 0, 20),
-    new Date(2023, 0, 21),
-    new Date(2023, 0, 22),
-    new Date(2023, 0, 23),
-    new Date(2023, 0, 24),
-    new Date(2023, 0, 25),
-    new Date(2023, 0, 26),
-    new Date(2023, 0, 27),
-    new Date(2023, 0, 28),
-    new Date(2023, 0, 29),
-    new Date(2023, 0, 30),
-    new Date(2023, 0, 31)
+    let {data, error2} = await supabase
+        .from("gewicht")
+        .select("date,gewicht")
+        .match({userID: user.id })
+        .order("date")
 
-
-];
-
-const year = [
-    new Date(2023, 0, 1),
-    new Date(2023, 1, 1),
-    new Date(2023, 2, 1),
-    new Date(2023, 3, 1),
-    new Date(2023, 4, 1),
-    new Date(2023, 5, 1),
-    new Date(2023, 6, 1),
-    new Date(2023, 7, 1),
-    new Date(2023, 8, 1),
-    new Date(2023, 9, 1),
-    new Date(2023, 10, 1),
-    new Date(2023, 11, 1),
-    new Date(2023, 12, 1),
-
-]
-
-
-const kgperday = [
-    60, 60.1, 60.2, 60.3, 60.4, 60.5, 60.6, 60.7, 60.8, 60.9, 61, 61.1, 61.2, 61.3, 61.4, 61.5, 61.6, 61.7, 61.8, 61.9, 62, 62.1, 62.2, 62.3,
-    62.4, 62.5, 62.6, 62.7
-];
-
-const kgpermonth = [
-    60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71
-]
-
-const lineChartsParamsday = {
-    series: [
-        {
-            label: 'Gewicht in kg',
-            data: kgperday,
-            showMark: true,
-
-        },
-
-    ],
-    width: 1200,
-    height: 600,
-};
-
-const lineChartsParamsmonth = {
-    series: [
-        {
-            label: 'Gewicht in kg',
-            data: kgpermonth,
-            showMark: true,
-        },
-
-    ],
-    width: 1200,
-    height: 600,
-};
-
-const yearFormater = (date) => {
-    date.getDate().toString();
-    // console.log(date.getDate().toString())
+    return data
 }
 
-
-
-
 export default function Gewichtsverlauf() {
-    const [yearOrMonth, setYearOrMonth] = React.useState("month")
-    const [value2, setValue2] = React.useState(dayjs('2022-04-17'));
-    const ColorToggleButton = () => {
+    const [dataArray, setDataArray] = React.useState()
+    const [isloaded, setIsLoaded] = React.useState(false)
 
-        const handleAlignment = (event, newAlignment) => {
-            if (newAlignment !== null) {
-                setYearOrMonth(newAlignment);
-            }
-        };
+    useEffect(() => {
+        async function fetchData() {
 
-
-        return (
-            <ToggleButtonGroup
-                color="primary"
-                value={yearOrMonth}
-                exclusive
-                onChange={handleAlignment}
-                aria-label="Platform"
-            >
-                <ToggleButton value="month">Month</ToggleButton>
-                <ToggleButton value="year">Year</ToggleButton>
-            </ToggleButtonGroup>
-        );
-    }
-
-
-    const Chart = (monthOrYear) => {
-        console.log(monthOrYear.monthOrYear)
-
-        if (monthOrYear.monthOrYear === "month") {
-            return (
-                <LineChart
-                    {...lineChartsParamsday}
-
-                    xAxis={[{
-                        data: month,
-                        scaleType: 'time',
-                        valueFormatter: yearFormater,
-                        tickMinStep: 3600 * 1000 * 24,
-                        tickMaxStep: 3600 * 1000 * 24
-                    }]}
-                    yAxis={[{max: value[1], min: value[0]}]}
-                    series={lineChartsParamsday.series.map((s) => ({
-                        ...s,
-                    }))}
-                />)
-        } else if (monthOrYear.monthOrYear === "year") {
-            return (
-                <LineChart
-                    {...lineChartsParamsmonth}
-                    orientation="vertical"
-                    xAxis={[{data: year, scaleType: 'time', valueFormatter: yearFormater}]}
-                    yAxis={[{max: value[1], min: value[0]}]}
-                    series={lineChartsParamsmonth.series.map((s) => ({
-                        ...s,
-                    }))}
-                />
-            )
+            let data2 = await generatedatesandvalues().then(setIsLoaded(true))
+            setDataArray(data2)
         }
+        fetchData();
+    }, []);
 
-    }
 
 
-    const [value, setValue] = React.useState([0, 200]);
-    const minDistance = 0;
-    const handleChange = (event, newValue, activeThumb) => {
-        if (!Array.isArray(newValue)) {
-            return;
-        }
-
-        if (newValue[1] - newValue[0] < minDistance) {
-            if (activeThumb === 0) {
-                const clamped = Math.min(newValue[0], 100 - minDistance);
-                setValue([clamped, clamped + minDistance]);
-            } else {
-                const clamped = Math.max(newValue[1], minDistance);
-                setValue([clamped - minDistance, clamped]);
-            }
-        } else {
-            setValue(newValue);
-        }
-    };
+    console.log(isloaded)
+    console.log(dataArray)
 
 
     return (
         <div id={"content"}>
-            <div id={"content2"}>
-                <div id={"verticalSlider"}>
-                    <Box sx={{height: 500}}>
-                        <Slider
-                            sx={{
-                                '& input[type="range"]': {
-                                    WebkitAppearance: 'slider-vertical',
-                                },
-                            }}
-                            orientation="vertical"
-                            value={value}
-                            onChange={handleChange}
-                            valueLabelDisplay="auto"
-                            min={0}
-                            max={200}
+            <Gewichtseingabe/>
+            {isloaded &&
 
-                        />
-                    </Box>
-                </div>
-                <div id={"chart"}>
-                    <Chart monthOrYear={yearOrMonth}/>
-                </div>
-            </div>
+            <ResponsiveContainer width="100%" height={400}>
+                <AreaChart data={dataArray}>
+                    <defs>
+                        <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4} />
+                            <stop offset="75%" stopColor="#2451B7" stopOpacity={0.05} />
+                        </linearGradient>
+                    </defs>
 
-            <ColorToggleButton/>
+                    <Area dataKey="gewicht" stroke="#2451B7" fill="url(#color)" />
 
+                    <XAxis
+                        dataKey="date"
+                        axisLine={false}
+                        tickLine={false}
+                        tickFormatter={(str) => {
+                            const date = parseISO(str);
+                            if (date.getDate() % 7 === 0) {
+                                return format(date, "MMM, d");
+                            }
+                                return ''
 
 
+                        }}
+
+                    />
+
+                    <YAxis
+                        datakey="gewicht"
+                        axisLine={false}
+                        tickLine={false}
+                        tickCount={6}
+                        tickFormatter={number => `${number}kg`}
+
+                    />
+
+                    <Tooltip content={<CustomTooltip />} />
+
+
+
+                    <CartesianGrid opacity={0.4} vertical={false} />
+                </AreaChart>
+            </ResponsiveContainer>
+            }
         </div>
     );
 
 }
+
+function CustomTooltip({ active, payload, label }) {
+    if (active) {
+        return (
+            <div className="tooltip">
+                <h6 id={"tooltipDate"}>{format(parseISO(label), "eeee, d MMM, yyyy")}</h6>
+                <p id={"tooltipValue"}>{payload[0].value} kg</p>
+            </div>
+        );
+    }
+    return null;
+}
+
+
+const Gewichtseingabe = () =>{
+
+    const [valid, setValid] = useState(false);
+    const [openAlert, setOpenAlert] = React.useState(false);
+    let user = JSON.parse(localStorage.getItem("user"))
+
+    async function saveAction() {
+        console.log(user.id)
+        const tagesgewicht = document.getElementById('gewichtsEingabe').value
+
+        let day = new Date().getDate()
+        let month = new Date().getMonth() +1
+        let year = new Date().getFullYear()
+
+        const heutigesDatum = year + "-" + month + "-" + day
+
+        const {data, error2} = await supabase
+            .from("gewicht")
+            .select()
+            .match({date: heutigesDatum})
+
+        console.log( data)
+
+        if (data.length == 0 && valid){
+            generatelatestvalues()
+            const {error} = await supabase
+                .from('gewicht')
+                .insert([{
+                    userID: user.id,
+                    date: new Date(),
+                    gewicht: tagesgewicht
+                }])
+        }else {
+            setOpenAlert(true)
+        }
+
+
+    }
+
+    async function generatelatestvalues(){
+        const {data, error2} = await supabase
+            .from("gewicht")
+            .select()
+            .order('date', { ascending: false })
+            .limit(1)
+
+        if (data != null) {
+
+
+            function dateRange(startDate, endDate, steps = 1) {
+                const dateArray = [];
+                let currentDate = new Date(startDate);
+                currentDate.setDate(currentDate.getDate() + 1)
+                let latestDate = new Date(endDate)
+                latestDate.setDate(latestDate.getDate() - 1)
+                while (currentDate < latestDate) {
+                    dateArray.push(new Date(currentDate));
+                    // Use UTC date to prevent problems with time zones and DST
+                    currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+                }
+
+                return dateArray;
+            }
+
+            console.log(data)
+
+            const dates = dateRange(data[0].date, new Date());
+            console.log(dates)
+
+
+            if (dates.length > 0) {
+                dates.map(async (datum) => {
+                    const {error} = await supabase
+                        .from('gewicht')
+                        .insert([{
+                            userID: user.id,
+                            date: datum,
+                            gewicht: data[0].gewicht
+                        }])
+
+
+                })
+            }
+        }
+
+
+
+
+    }
+
+    function checkvalidation(gewicht){
+        if (!validgewicht.test(gewicht)) {
+            document.getElementById('gewichtsEingabe').style.backgroundColor = 'lightsalmon'
+            setValid(false)
+        } else {
+            document.getElementById('gewichtsEingabe').style.backgroundColor = "lightgreen";
+            setValid(true)
+
+        }
+    }
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
+
+    return(
+        <>
+            <input id={'gewichtsEingabe'} onInput={(e) => checkvalidation(e.target.value)}></input>
+            <Button variant="contained" color="success" id="submitButton"
+                    onClick={saveAction}>
+                Speichern
+            </Button>
+
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+
+                <Alert severity="error" onClose={handleCloseSnackbar} sx={{width: '100%'}}>
+                    Tägliches Gewicht bereits eingegeben oder das Format vom Gewicht ist falsch
+                </Alert>
+
+
+            </Snackbar>
+        </>
+    )
+
+}
+
+

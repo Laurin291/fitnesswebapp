@@ -18,7 +18,7 @@ import {
     ListItemText,
     Slide,
     tableCellClasses,
-    Toolbar,
+    Toolbar, Tooltip,
     useMediaQuery,
     Zoom
 } from "@mui/material";
@@ -36,6 +36,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
+import InfoTwoToneIcon from "@mui/icons-material/InfoTwoTone";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -229,19 +230,39 @@ export default function Create() {
 
         return (
             <li>
+                <Tooltip TransitionComponent={Zoom} disableInteractive arrow placement="top"
+                         title={
+                             <>
+                                 <Typography color="inherit">Erlaubte Zeichen:</Typography>
+                                 <Typography color="inherit">*A-Z und a-z</Typography>
+                                 <Typography color="inherit">*Zahlen</Typography>
+                                 <Typography color="inherit">*Umlaute</Typography>
+                                 <Typography color="inherit">*Sonderzeichen: /, _</Typography>
+                             </>
+                         }
+                >
+                    <input type="text" id={number.number} className="tagesbezeichnung" defaultValue={getNameText(number)}
+                           placeholder={woche[number.number - 1]}
+                           onChange={(e) => saveName(e.target.value, number)}
+                           disabled={checkRESTDAY(number.number)}></input>
+                </Tooltip>
 
-                <input type="text" id={number.number} className="tagesbezeichnung" defaultValue={getNameText(number)}
-                       placeholder={woche[number.number - 1]}
-                       onChange={(e) => saveName(e.target.value, number)}
-                       disabled={checkRESTDAY(number.number)}></input>
 
 
                 <Link to={'/uebungselect/' + number.number}>
                     <input type="text" className="uebungauswählen" id={'uebungauswählen' + number.number} readOnly
                            value={getUebungText(number.number)} disabled={checkRESTDAY(number.number)}></input>
                 </Link>
+                <Tooltip TransitionComponent={Zoom} disableInteractive arrow placement="top"
+                         title={
+                             <>
+                                 <Typography color="inherit">Tag als "REST" Tag kennzeichnen</Typography>
+                             </>
+                         }
+                >
                 <Checkbox id={'restIcon' + number.number} icon={<ChairOutlinedIcon/>} checkedIcon={<ChairIcon/>}
                           onChange={handleChange} defaultChecked={checkRESTDAY(number.number)}/>
+                </Tooltip>
             </li>
         )
     }
@@ -345,6 +366,7 @@ export default function Create() {
                 if (!value) {
                     navigate("/Trainingsplanverwaltung/")
                     clearLocalStorage()
+
 
                 } else {
                     handleClick("Trainingsplanname bereits vorhanden")
@@ -534,8 +556,20 @@ export default function Create() {
 
                             <div className="trainingsplanname">
                                 <label htmlFor="trainingsplanname">Trainingsplan Name:</label>
+                                <Tooltip TransitionComponent={Zoom} disableInteractive arrow placement="top"
+                                         title={
+                                             <>
+                                                 <Typography color="inherit">Erlaubte Zeichen:</Typography>
+                                                 <Typography color="inherit">*A-Z und a-z</Typography>
+                                                 <Typography color="inherit">*Zahlen</Typography>
+                                                 <Typography color="inherit">*Umlaute</Typography>
+                                                 <Typography color="inherit">*Sonderzeichen: /, _</Typography>
+                                             </>
+                                         }
+                                >
                                 <input id="trainingsplanname" type="text" defaultValue={getTrainingsplanNameText()}
                                        onInput={(e) => saveTrainingsplanName(e.target.value)} required></input>
+                                </Tooltip>
                             </div>
 
                             <ul id="createList">
@@ -563,7 +597,7 @@ export default function Create() {
                             </ul>
                             <Button variant="contained" color="success" id="submitButton"
                                     onClick={submitAction}>
-                                Submit
+                                Speichern
                             </Button>
 
 

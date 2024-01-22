@@ -189,7 +189,9 @@ export default function Trainingsplanverwaltung() {
                                                                 console.log(uebungen)
                                                                 const jsonString = JSON.stringify(uebungen)
                                                                 const encodedParam = encodeURIComponent(jsonString);
-                                                                navigate("/EditTrainingstag/" + encodedParam + "/" + trainingstag.trainingstagID)
+                                                                console.log(trainingstag.Tagesbezeichung)
+                                                                const encodedTagesbezeichnung = encodeURIComponent(trainingstag.Tagesbezeichung)
+                                                                navigate("/EditTrainingstag/" + encodedParam + "/" + trainingstag.trainingstagID + "/" + encodedTagesbezeichnung)
                                                             }}
 
                                                         >

@@ -347,7 +347,7 @@ export default function Uebungstabelle() {
                     </TableContainer>
                     <div>
                         <Button variant="contained" color="success" id="saveButton" onClick={saveAction}>
-                            Save
+                            Speichern
                         </Button>
                     </div>
 

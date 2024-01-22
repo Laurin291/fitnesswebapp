@@ -23,14 +23,15 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import supabase from "../config/supabaseClient";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import {validTrainingsplanname} from "../Regex";
 
 
 export default function EditTrainingstag() {
-    const {uebungArray, trainingstagID} = useParams();
+    const {uebungArray, trainingstagID, tagesbezeichnung} = useParams();
 
 
     let selectedItems = []
-    const [open, setOpen] = React.useState(false);
+    const [openAlert, setOpenAlert] = React.useState(false);
     const [alertinhalt, setAlertInhalt] = useState("")
     const [severity, setSeverity] = useState("")
     const {number} = useParams()
@@ -39,6 +40,7 @@ export default function EditTrainingstag() {
     const navigate = useNavigate();
     const [selUeIds, setSelUeIds] = useState(null)
     const [selUe, setSelUe] = useState(null)
+    const [trainingstagNamen, setTrainingstagNamen] = useState(tagesbezeichnung)
 
 
     const Alert = React.forwardRef(function Alert(props, ref) {
@@ -78,6 +80,8 @@ export default function EditTrainingstag() {
             ],
         };
     }
+
+
 
 
 // Funktion mit der die Reihen der Tabelle mit Daten gefühlt und zusammengesetzt werden, um sie anschließend
@@ -226,9 +230,11 @@ export default function EditTrainingstag() {
 
 
     //Funktion um zu erkennen, wann der SaveButton gedrückt wird und um die ausgewählten Uebungen im localStorage zu speichern
-    function saveAction() {
-        data.updateTrainingstagUebungen(selectedItems,trainingstagID)
-        navigate('/trainingsplanverwaltung')
+    async function saveAction() {
+        await data.updateTrainingstagUebungen(selectedItems,trainingstagID, trainingstagNamen)
+        //navigate('/trainingsplanverwaltung')
+        handleClick("Erfolgreich gespeichert")
+
 
 
 
@@ -242,14 +248,23 @@ export default function EditTrainingstag() {
             return;
         }
 
-        setOpen(false);
+        setOpenAlert(false);
     };
     const handleClick = (nachricht) => {
-        setOpen(true);
+        setOpenAlert(true);
         setAlertInhalt(nachricht)
     };
 
-    //Funktion um den Zwischenspeicher zu leeren wenn man die Seite verlässt
+    function setTrainingsTagName(){
+        const inputfield = document.getElementById('trainingsplaninputfeld')
+        console.log(inputfield.value)
+        if (!validTrainingsplanname.test(inputfield.value)) {
+            inputfield.style.backgroundColor = 'lightsalmon'
+        } else {
+            inputfield.style.backgroundColor = "lightgreen";
+            setTrainingstagNamen(inputfield.value)
+    }
+    }
 
 
     return (
@@ -265,7 +280,8 @@ export default function EditTrainingstag() {
                             <ArrowBackIosIcon></ArrowBackIosIcon>
                         </IconButton>
                     <Typography ml={3} mt={3} variant='h2'
-                                sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Bearbeitung</Typography>
+                                sx={{fontFamily: 'Bahnschrift'}}>Bearbeitung von</Typography>
+                        <input id={"trainingsplaninputfeld"}  onInput={(e) => setTrainingsTagName()} defaultValue={tagesbezeichnung}/>
                     </div>
                     <TableContainer component={Paper} id="tableContainer2">
                         <Table stickyHeader size="small">
@@ -348,14 +364,14 @@ export default function EditTrainingstag() {
                     </TableContainer>
                     <div>
                         <Button variant="contained" color="success" id="saveButton" onClick={saveAction}>
-                            Save
+                            Speichern
                         </Button>
                     </div>
 
 
-                    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleClose}>
 
-                        <Alert severity={severity} onClose={handleClose} sx={{width: '100%'}}>
+                        <Alert severity={"success"} onClose={handleClose} sx={{width: '100%'}}>
                             {alertinhalt}
                         </Alert>
 

@@ -138,6 +138,7 @@ class Data {
                     .from("trainingsplan")
                     .select()
                     .match({userID: id})
+                    .order("trainingsplanID")
 
 
                 if (error) {
@@ -443,7 +444,7 @@ class Data {
 
     }
 
-    async updateTrainingstagUebungen(namenArray, trainingstagID){
+    async updateTrainingstagUebungen(namenArray, trainingstagID, trainingsTagNamen){
 
         const {data, error} = await supabase
             .from('uebungen')
@@ -456,7 +457,7 @@ class Data {
 
         const {data2, error2} = await supabase
             .from("trainingstag")
-            .update([{uebungIDs: idArray}])
+            .update([{uebungIDs: idArray, Tagesbezeichung: trainingsTagNamen}])
             .eq('trainingstagID', trainingstagID)
     }
 
