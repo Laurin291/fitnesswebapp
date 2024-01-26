@@ -89,22 +89,19 @@ export default function Gewichtsverlauf() {
     const [dataArray, setDataArray] = React.useState()
     const [isloaded, setIsLoaded] = React.useState(false)
 
-    function loadResources(){
-        useEffect(() => {
-            async function fetchData() {
+    useEffect(() => {
+        async function fetchData() {
 
-                let data2 = await generatedatesandvalues()
-                console.log(data2)
-                if(data2 !== null){
-                    setIsLoaded(true)
-                    setDataArray(data2)
-                }
-
+            let data2 = await generatedatesandvalues()
+            console.log(data2)
+            if(data2 !== null){
+                setIsLoaded(true)
+                setDataArray(data2)
             }
-            fetchData();
-        }, []);
-    }
 
+        }
+        fetchData();
+    }, []);
 
     const [timerange, setTimerange] = React.useState('1M');
 
