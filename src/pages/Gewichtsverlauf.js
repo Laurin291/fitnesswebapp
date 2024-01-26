@@ -17,7 +17,6 @@ import {validgewicht, validTagesbezeichnung} from "../Regex";
 import {useEffect, useState} from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { Chart } from "react-google-charts";
 
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
