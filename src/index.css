@@ -953,6 +953,15 @@ Einstellungen *****************************************************************
 
 /* Gewichtsverlauf */
 
+#graphContainer{
+    margin-top: 2rem;
+}
+
+#customToggleButton{
+    margin-left: 65rem;
+    width: 9rem;
+}
+
 .tooltip {
     border-radius: 0.25rem;
     background: #26313c;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {LineChart} from '@mui/x-charts';
 
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import {Slider} from "@mui/material";
+
+
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slider} from "@mui/material";
 import Box from "@mui/material/Box";
 import * as PropTypes from "prop-types";
 import dayjs from 'dayjs';
@@ -19,6 +19,22 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { Chart } from "react-google-charts";
 
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup, {
+    toggleButtonGroupClasses,
+} from '@mui/material/ToggleButtonGroup';
+
 import {
     ResponsiveContainer,
     AreaChart,
@@ -30,12 +46,32 @@ import {
 } from "recharts";
 
 import { format, parseISO, subDays } from "date-fns";
+import TextField from "@mui/material/TextField";
+import {styled} from "@mui/material/styles";
+
 
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+    [`& .${toggleButtonGroupClasses.grouped}`]: {
+        margin: theme.spacing(0.5),
+        border: 0,
+        borderRadius: theme.shape.borderRadius,
+        [`&.${toggleButtonGroupClasses.disabled}`]: {
+            border: 0,
+        },
+    },
+    [`& .${toggleButtonGroupClasses.middleButton},& .${toggleButtonGroupClasses.lastButton}`]:
+        {
+            marginLeft: -1,
+            borderLeft: '1px solid transparent',
+        },
+}));
 
 async function generatedatesandvalues() {
     let user=JSON.parse(localStorage.getItem("user"))
@@ -53,27 +89,108 @@ export default function Gewichtsverlauf() {
     const [dataArray, setDataArray] = React.useState()
     const [isloaded, setIsLoaded] = React.useState(false)
 
-    useEffect(() => {
-        async function fetchData() {
+    function loadResources(){
+        useEffect(() => {
+            async function fetchData() {
 
-            let data2 = await generatedatesandvalues().then(setIsLoaded(true))
-            setDataArray(data2)
-        }
-        fetchData();
-    }, []);
+                let data2 = await generatedatesandvalues()
+                console.log(data2)
+                if(data2 !== null){
+                    setIsLoaded(true)
+                    setDataArray(data2)
+                }
+
+            }
+            fetchData();
+        }, []);
+    }
+
+
+    const [timerange, setTimerange] = React.useState('1M');
+
+    const CustomToggleButton = () =>{
+
+
+
+        const handleTimeRange = (event, newTimeRange) => {
+            setTimerange(newTimeRange);
+        };
+        return (
+            <div id={"customToggleButton"}>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        border: (theme) => `1px solid ${theme.palette.divider}`,
+                        flexWrap: 'wrap',
+                    }}
+                >
+                    <StyledToggleButtonGroup
+                        size="small"
+                        value={timerange}
+                        exclusive
+                        onChange={handleTimeRange}
+                        aria-label="text alignment"
+                    >
+                        <ToggleButton value="1M" aria-label="left aligned">
+                            1M
+                        </ToggleButton>
+                        <ToggleButton value="3M" aria-label="centered">
+                            3M
+                        </ToggleButton>
+                        <ToggleButton value="1J" aria-label="right aligned">
+                            1J
+                        </ToggleButton>
+                        <ToggleButton value="AT" aria-label="justified">
+                            AT
+                        </ToggleButton>
+                    </StyledToggleButtonGroup>
+                </Paper>
+            </div>
+        )
+    }
 
 
 
     console.log(isloaded)
     console.log(dataArray)
 
+    const formatter = (str) =>{
+        const date = parseISO(str);
+        console.log(timerange)
+
+        if (timerange == "1M"){
+            console.log(date)
+            if (date.getDate() % 2 === 0) {
+                return format(date, "MMM, d");
+            }
+            return ''
+        }else if (timerange == "3M"){
+            console.log("ott")
+            if (date.getDate() % 7 === 0) {
+                return format(date, "MMM, d");
+            }
+            return ''
+        }else if (timerange == "1J"){
+            if (date.getDate() % 15 === 0) {
+                return format(date, "MMM, d");
+            }
+            return ''
+        }else if (timerange == 'AT'){
+
+        }
+
+
+    }
+
 
     return (
         <div id={"content"}>
-            <Gewichtseingabe/>
-            {isloaded &&
+            <h1 id={'ueberschriftfahrrad'}>Gewichtsverlauf</h1>
+            <CustomToggleButton />
 
-            <ResponsiveContainer width="100%" height={400}>
+            {isloaded &&
+            <ResponsiveContainer width="100%" height={400} id={"graphContainer"}>
                 <AreaChart data={dataArray}>
                     <defs>
                         <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
@@ -88,15 +205,7 @@ export default function Gewichtsverlauf() {
                         dataKey="date"
                         axisLine={false}
                         tickLine={false}
-                        tickFormatter={(str) => {
-                            const date = parseISO(str);
-                            if (date.getDate() % 7 === 0) {
-                                return format(date, "MMM, d");
-                            }
-                                return ''
-
-
-                        }}
+                        tickFormatter={(str) => formatter(str)}
 
                     />
 
@@ -117,6 +226,8 @@ export default function Gewichtsverlauf() {
                 </AreaChart>
             </ResponsiveContainer>
             }
+
+            <Gewichtseingabe/>
         </div>
     );
 
@@ -140,10 +251,20 @@ const Gewichtseingabe = () =>{
     const [valid, setValid] = useState(false);
     const [openAlert, setOpenAlert] = React.useState(false);
     let user = JSON.parse(localStorage.getItem("user"))
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     async function saveAction() {
         console.log(user.id)
-        const tagesgewicht = document.getElementById('gewichtsEingabe').value
+        const tagesgewicht = document.getElementById('name').value
+        console.log(tagesgewicht)
 
         let day = new Date().getDate()
         let month = new Date().getMonth() +1
@@ -227,10 +348,10 @@ const Gewichtseingabe = () =>{
 
     function checkvalidation(gewicht){
         if (!validgewicht.test(gewicht)) {
-            document.getElementById('gewichtsEingabe').style.backgroundColor = 'lightsalmon'
+            document.getElementById('name').style.backgroundColor = 'lightsalmon'
             setValid(false)
         } else {
-            document.getElementById('gewichtsEingabe').style.backgroundColor = "lightgreen";
+            document.getElementById('name').style.backgroundColor = "lightgreen";
             setValid(true)
 
         }
@@ -246,11 +367,46 @@ const Gewichtseingabe = () =>{
 
     return(
         <>
-            <input id={'gewichtsEingabe'} onInput={(e) => checkvalidation(e.target.value)}></input>
-            <Button variant="contained" color="success" id="submitButton"
-                    onClick={saveAction}>
-                Speichern
-            </Button>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                    component: 'form',
+                    onSubmit: (event) => {
+                        event.preventDefault();
+                        const formData = new FormData(event.currentTarget);
+                        const formJson = Object.fromEntries(formData.entries());
+                        const email = formJson.email;
+                        console.log(email);
+                        handleClose();
+                    },
+                }}
+            >
+                <DialogTitle>Tägliches Gewicht</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Geben Sie ihr Tagesgewicht ein.
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        required
+                        margin="dense"
+                        id="name"
+                        type="number"
+                        fullWidth
+                        variant="standard"
+                        onInput={(e) => checkvalidation(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Abbrechen</Button>
+                    <Button type="submit" onClick={saveAction}>Speichern</Button>
+                </DialogActions>
+            </Dialog>
+            <Button onClick={handleClickOpen}>Heutiges Gewicht eintragen</Button>
+
+
+
 
             <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseSnackbar}>
 
