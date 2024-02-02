@@ -280,7 +280,7 @@ export default function EditTrainingstag() {
                             <ArrowBackIosIcon></ArrowBackIosIcon>
                         </IconButton>
                     <Typography ml={3} mt={3} variant='h2'
-                                sx={{fontFamily: 'Bahnschrift'}}>Bearbeitung von</Typography>
+                                sx={{fontWeight: 'bold',fontFamily: 'Bahnschrift'}}>Bearbeitung von</Typography>
                         <input id={"trainingsplaninputfeld"}  onInput={(e) => setTrainingsTagName()} defaultValue={tagesbezeichnung}/>
                     </div>
                     <TableContainer component={Paper} id="tableContainer2">

@@ -75,6 +75,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 async function generatedatesandvalues() {
     let user=JSON.parse(localStorage.getItem("user"))
 
+
     let {data, error2} = await supabase
         .from("gewicht")
         .select("date,gewicht")
@@ -88,18 +89,22 @@ export default function Gewichtsverlauf() {
     const [dataArray, setDataArray] = React.useState()
     const [isloaded, setIsLoaded] = React.useState(false)
 
-    useEffect(() => {
+    function loadResources(){
         async function fetchData() {
 
             let data2 = await generatedatesandvalues()
             console.log(data2)
-            if(data2 !== null){
+            if(data2.length > 0){
                 setIsLoaded(true)
                 setDataArray(data2)
             }
 
         }
         fetchData();
+    }
+
+    useEffect(() => {
+        loadResources()
     }, []);
 
     const [timerange, setTimerange] = React.useState('1M');
@@ -154,36 +159,261 @@ export default function Gewichtsverlauf() {
     const formatter = (str) =>{
         const date = parseISO(str);
         console.log(timerange)
-
-        if (timerange == "1M"){
-            console.log(date)
             if (date.getDate() % 2 === 0) {
                 return format(date, "MMM, d");
+            }else{
+                return ''
             }
-            return ''
-        }else if (timerange == "3M"){
-            console.log("ott")
-            if (date.getDate() % 7 === 0) {
-                return format(date, "MMM, d");
-            }
-            return ''
-        }else if (timerange == "1J"){
-            if (date.getDate() % 15 === 0) {
-                return format(date, "MMM, d");
-            }
-            return ''
-        }else if (timerange == 'AT'){
-
-        }
 
 
     }
+
+    const Gewichtseingabe = () =>{
+
+        const [valid, setValid] = useState(false);
+        const [openAlert, setOpenAlert] = React.useState(false);
+        let user = JSON.parse(localStorage.getItem("user"))
+        const [openEingabe, setOpenEingabe] = React.useState(false);
+        const [openSecond, setOpenSecond] = React.useState(false);
+        const [tagesgewicht, setTagesgewicht] = React.useState();
+        
+
+        const handleClickOpenEingabe = () => {
+            setOpenEingabe(true);
+        };
+
+        const handleCloseEingabe = () => {
+            setOpenEingabe(false);
+        };
+
+        const handleClickOpenSecond = () => {
+            setOpenSecond(true);
+            setTagesgewicht(document.getElementById('name').value)
+        };
+
+        const handleCloseSecond = () => {
+            setOpenSecond(false);
+        };
+
+
+
+        async function saveAction() {
+            handleCloseSecond()
+
+
+            let day = new Date().getDate()
+            let month = new Date().getMonth() +1
+            let year = new Date().getFullYear()
+
+            const heutigesDatum = year + "-" + month + "-" + day
+
+            const {data, error2} = await supabase
+                .from("gewicht")
+                .select()
+                .match({date: heutigesDatum})
+
+            console.log( data)
+
+            if (data.length == 0 && valid){
+               await generatelatestvalues()
+                const {error} = await supabase
+                    .from('gewicht')
+                    .insert([{
+                        userID: user.id,
+                        date: new Date(),
+                        gewicht: tagesgewicht
+                    }])
+                loadResources()
+            }else {
+                setOpenAlert(true)
+            }
+
+
+        }
+
+        async function generatelatestvalues(){
+            const {data, error2} = await supabase
+                .from("gewicht")
+                .select()
+                .order('date', { ascending: false })
+                .limit(1)
+
+            if (data != null) {
+
+
+                function dateRange(startDate, endDate, steps = 1) {
+                    const dateArray = [];
+                    let currentDate = new Date(startDate);
+                    currentDate.setDate(currentDate.getDate() + 1)
+                    let latestDate = new Date(endDate)
+                    latestDate.setDate(latestDate.getDate() - 1)
+                    while (currentDate < latestDate) {
+                        dateArray.push(new Date(currentDate));
+                        // Use UTC date to prevent problems with time zones and DST
+                        currentDate.setUTCDate(currentDate.getUTCDate() + steps);
+                    }
+
+                    return dateArray;
+                }
+
+                console.log(data)
+
+                const dates = dateRange(data[0].date, new Date());
+                console.log(dates)
+
+
+                if (dates.length > 0) {
+                    dates.map(async (datum) => {
+                        const {error} = await supabase
+                            .from('gewicht')
+                            .insert([{
+                                userID: user.id,
+                                date: datum,
+                                gewicht: data[0].gewicht
+                            }])
+
+
+                    })
+                }
+            }
+
+
+
+
+        }
+
+        function checkvalidation(gewicht){
+            if (!validgewicht.test(gewicht)) {
+                document.getElementById('name').style.backgroundColor = 'lightsalmon'
+                setValid(false)
+            } else {
+                document.getElementById('name').style.backgroundColor = "lightgreen";
+                setValid(true)
+
+            }
+        }
+
+        const handleCloseSnackbar = (event, reason) => {
+            if (reason === 'clickaway') {
+                return;
+            }
+
+            setOpenAlert(false);
+        };
+
+
+
+        return(
+            <>
+                <Dialog
+                    open={openEingabe}
+                    onClose={handleCloseEingabe}
+                    PaperProps={{
+                        component: 'form',
+                        onSubmit: (event) => {
+                            event.preventDefault();
+                            const formData = new FormData(event.currentTarget);
+                            const formJson = Object.fromEntries(formData.entries());
+                            const email = formJson.email;
+                            console.log(email);
+                            handleCloseEingabe();
+                        },
+                    }}
+                >
+                    <DialogTitle>Tägliches Gewicht</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Geben Sie ihr Tagesgewicht ein.
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            required
+                            margin="dense"
+                            id="name"
+                            type="number"
+                            fullWidth
+                            variant="standard"
+                            onInput={(e) => checkvalidation(e.target.value)}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseEingabe}>Abbrechen</Button>
+                        <Button type="submit" onClick={handleClickOpenSecond}>Speichern</Button>
+                    </DialogActions>
+                </Dialog>
+                <Button onClick={handleClickOpenEingabe}>Heutiges Gewicht eintragen</Button>
+
+                <Dialog
+                    open={openSecond}
+                    onClose={handleCloseSecond}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Wollen Sie dieses Tagesgewicht speichern?"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {tagesgewicht +" kg"}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseSecond}>Nein</Button>
+                        <Button onClick={saveAction} autoFocus>
+                            Ja
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+
+
+
+                <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+
+                    <Alert severity="error" onClose={handleCloseSnackbar} sx={{width: '100%'}}>
+                        Tägliches Gewicht bereits eingegeben oder das Format vom Gewicht ist falsch
+                    </Alert>
+
+
+                </Snackbar>
+            </>
+        )
+
+    }
+
+    const skeletonData= [
+        {
+            date: '2024-01-01',
+            gewicht: 70,
+        },
+        {
+            date: '2024-02-01',
+            gewicht: 80,
+        },
+        {
+            date: '2024-03-01',
+            gewicht: 50,
+        },
+        {
+            date: '2024-04-01',
+            gewicht: 60,
+        },
+        {
+            date: '2024-05-01',
+            gewicht: 100,
+        },
+        {
+            date: '2024-06-01',
+            gewicht: 60,
+        },
+    ];
+    console.log(skeletonData)
 
 
     return (
         <div id={"content"}>
             <h1 id={'ueberschriftfahrrad'}>Gewichtsverlauf</h1>
-            <CustomToggleButton />
+
 
             {isloaded &&
             <ResponsiveContainer width="100%" height={400} id={"graphContainer"}>
@@ -195,7 +425,7 @@ export default function Gewichtsverlauf() {
                         </linearGradient>
                     </defs>
 
-                    <Area dataKey="gewicht" stroke="#2451B7" fill="url(#color)" />
+                    <Area type="monotone" dataKey="gewicht" stroke="#2451B7" fill="url(#color)" />
 
                     <XAxis
                         dataKey="date"
@@ -222,6 +452,45 @@ export default function Gewichtsverlauf() {
                 </AreaChart>
             </ResponsiveContainer>
             }
+            {isloaded == false &&
+
+                <ResponsiveContainer width="100%" height={400} id={"graphContainer"}>
+                    <AreaChart data={skeletonData}>
+                        <defs>
+                            <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4} />
+                                <stop offset="75%" stopColor="#2451B7" stopOpacity={0.05} />
+                            </linearGradient>
+                        </defs>
+
+                        <Area type="monotone" dataKey="uv" stroke="#2451B7" fill="url(#color)" />
+
+                        <XAxis
+                            dataKey="date"
+                            axisLine={false}
+                            tickLine={false}
+                            tickFormatter={(str) => formatter(str)}
+
+                        />
+
+                        <YAxis
+                            datakey="gewicht"
+                            axisLine={false}
+                            tickLine={false}
+                            tickCount={6}
+                            tickFormatter={number => `${number}kg`}
+
+                        />
+
+
+
+
+
+                        <CartesianGrid opacity={0.4} vertical={false} />
+                    </AreaChart>
+                </ResponsiveContainer>
+
+            }
 
             <Gewichtseingabe/>
         </div>
@@ -242,179 +511,6 @@ function CustomTooltip({ active, payload, label }) {
 }
 
 
-const Gewichtseingabe = () =>{
 
-    const [valid, setValid] = useState(false);
-    const [openAlert, setOpenAlert] = React.useState(false);
-    let user = JSON.parse(localStorage.getItem("user"))
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    async function saveAction() {
-        console.log(user.id)
-        const tagesgewicht = document.getElementById('name').value
-        console.log(tagesgewicht)
-
-        let day = new Date().getDate()
-        let month = new Date().getMonth() +1
-        let year = new Date().getFullYear()
-
-        const heutigesDatum = year + "-" + month + "-" + day
-
-        const {data, error2} = await supabase
-            .from("gewicht")
-            .select()
-            .match({date: heutigesDatum})
-
-        console.log( data)
-
-        if (data.length == 0 && valid){
-            generatelatestvalues()
-            const {error} = await supabase
-                .from('gewicht')
-                .insert([{
-                    userID: user.id,
-                    date: new Date(),
-                    gewicht: tagesgewicht
-                }])
-        }else {
-            setOpenAlert(true)
-        }
-
-
-    }
-
-    async function generatelatestvalues(){
-        const {data, error2} = await supabase
-            .from("gewicht")
-            .select()
-            .order('date', { ascending: false })
-            .limit(1)
-
-        if (data != null) {
-
-
-            function dateRange(startDate, endDate, steps = 1) {
-                const dateArray = [];
-                let currentDate = new Date(startDate);
-                currentDate.setDate(currentDate.getDate() + 1)
-                let latestDate = new Date(endDate)
-                latestDate.setDate(latestDate.getDate() - 1)
-                while (currentDate < latestDate) {
-                    dateArray.push(new Date(currentDate));
-                    // Use UTC date to prevent problems with time zones and DST
-                    currentDate.setUTCDate(currentDate.getUTCDate() + steps);
-                }
-
-                return dateArray;
-            }
-
-            console.log(data)
-
-            const dates = dateRange(data[0].date, new Date());
-            console.log(dates)
-
-
-            if (dates.length > 0) {
-                dates.map(async (datum) => {
-                    const {error} = await supabase
-                        .from('gewicht')
-                        .insert([{
-                            userID: user.id,
-                            date: datum,
-                            gewicht: data[0].gewicht
-                        }])
-
-
-                })
-            }
-        }
-
-
-
-
-    }
-
-    function checkvalidation(gewicht){
-        if (!validgewicht.test(gewicht)) {
-            document.getElementById('name').style.backgroundColor = 'lightsalmon'
-            setValid(false)
-        } else {
-            document.getElementById('name').style.backgroundColor = "lightgreen";
-            setValid(true)
-
-        }
-    }
-
-    const handleCloseSnackbar = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpenAlert(false);
-    };
-
-    return(
-        <>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                PaperProps={{
-                    component: 'form',
-                    onSubmit: (event) => {
-                        event.preventDefault();
-                        const formData = new FormData(event.currentTarget);
-                        const formJson = Object.fromEntries(formData.entries());
-                        const email = formJson.email;
-                        console.log(email);
-                        handleClose();
-                    },
-                }}
-            >
-                <DialogTitle>Tägliches Gewicht</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Geben Sie ihr Tagesgewicht ein.
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        required
-                        margin="dense"
-                        id="name"
-                        type="number"
-                        fullWidth
-                        variant="standard"
-                        onInput={(e) => checkvalidation(e.target.value)}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Abbrechen</Button>
-                    <Button type="submit" onClick={saveAction}>Speichern</Button>
-                </DialogActions>
-            </Dialog>
-            <Button onClick={handleClickOpen}>Heutiges Gewicht eintragen</Button>
-
-
-
-
-            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-
-                <Alert severity="error" onClose={handleCloseSnackbar} sx={{width: '100%'}}>
-                    Tägliches Gewicht bereits eingegeben oder das Format vom Gewicht ist falsch
-                </Alert>
-
-
-            </Snackbar>
-        </>
-    )
-
-}
 
 
