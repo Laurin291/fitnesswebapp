@@ -43,7 +43,9 @@ function App() {
             }
         })
     };
-
+    const handleonClick = () => {
+        localStorage.clear()
+    }
     const sidebar =() =>{
         return(
             <nav className="sidenavbar">
@@ -78,7 +80,7 @@ function App() {
                     <SettingsIcon id="icon"></SettingsIcon>
                     <Link to="/Einstellungen" className="text ">Einstellungen</Link>
                 </div>
-                <div className="wrapper" onClick={e => handleClick(e)}>
+                <div className="wrapper" onClick={e => handleonClick(e)}>
                     <LogoutIcon id="icon"></LogoutIcon>
                     <Link to="/" className="text">Ausloggen</Link>
                 </div>
