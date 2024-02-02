@@ -210,9 +210,9 @@ export default function Gewichtsverlauf() {
             const {data, error2} = await supabase
                 .from("gewicht")
                 .select()
-                .match({date: heutigesDatum})
+                .match({date: heutigesDatum, userID: user.id})
 
-            console.log( data)
+            console.log(data)
 
             if (data.length == 0 && valid){
                await generatelatestvalues()
