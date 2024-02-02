@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/fitnesswebapp/static/css/main.ef18e8ad.css",
+    "main.js": "/fitnesswebapp/static/js/main.5ce98fd3.js",
+    "static/media/HaendeBeinheben.gif": "/fitnesswebapp/static/media/HaendeBeinheben.f4f3b0f043bf4e7ae3bf.gif",
+    "static/media/BeinhebenAnimation.gif": "/fitnesswebapp/static/media/BeinhebenAnimation.e1c1de2d018dee8b13a0.gif",
+    "static/media/SpiderAnimation.gif": "/fitnesswebapp/static/media/SpiderAnimation.baa66c9016fcc083cc31.gif",
+    "static/media/Plank.gif": "/fitnesswebapp/static/media/Plank.6b9b6900d6de72dc5587.gif",
+    "static/media/HaendeAnimation.gif": "/fitnesswebapp/static/media/HaendeAnimation.a0f65c130aaafbcd7938.gif",
+    "index.html": "/fitnesswebapp/index.html",
+    "main.ef18e8ad.css.map": "/fitnesswebapp/static/css/main.ef18e8ad.css.map",
+    "main.5ce98fd3.js.map": "/fitnesswebapp/static/js/main.5ce98fd3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ef18e8ad.css",
+    "static/js/main.5ce98fd3.js"
+  ]
+}
