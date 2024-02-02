@@ -53,34 +53,34 @@ function App() {
 
                 <div className="wrapper" onClick={e => handleClick(e)}>
                     <HomeIcon id="icon"></HomeIcon>
-                    <Link to="/Home" className="text" >Home</Link>
+                    <Link to="/fitnesswebapp/Home" className="text" >Home</Link>
                 </div>
                 <div className="wrapper " onClick={e => handleClick(e)}>
                     <AddCircleOutlineIcon id="icon"></AddCircleOutlineIcon>
-                    <Link to="/create" className="text ">Trainingsplan</Link>
+                    <Link to="/fitnesswebapp/create" className="text ">Trainingsplan</Link>
                 </div>
 
                 <div className="wrapper " onClick={e => handleClick(e)}>
                     <DirectionsBikeIcon id="icon"></DirectionsBikeIcon>
-                    <Link to="/Fahrrad" className="text ">HIIT Training</Link>
+                    <Link to="/fitnesswebapp/Fahrrad" className="text ">HIIT Training</Link>
                 </div>
 
                 <div className="wrapper "  onClick={e => handleClick(e)}>
                     <PlayArrowIcon id="icon"></PlayArrowIcon>
-                    <Link to="/Plank" className="text ">Planken</Link>
+                    <Link to="/fitnesswebapp/Plank" className="text ">Planken</Link>
                 </div>
                 <div className="wrapper"  onClick={e => handleClick(e)}>
                     <BarChartIcon id="icon"></BarChartIcon>
-                    <Link to="/Gewichtsverlauf" className="text ">Gewicht</Link>
+                    <Link to="/fitnesswebapp/Gewichtsverlauf" className="text ">Gewicht</Link>
                 </div>
 
                 <div className="wrapper" id="textdown" onClick={e => handleClick(e)}>
                     <SettingsIcon id="icon"></SettingsIcon>
-                    <Link to="/Einstellungen" className="text ">Einstellungen</Link>
+                    <Link to="/fitnesswebapp/Einstellungen" className="text ">Einstellungen</Link>
                 </div>
                 <div className="wrapper" onClick={e => handleClick(e)}>
                     <LogoutIcon id="icon"></LogoutIcon>
-                    <Link to="/" className="text">Ausloggen</Link>
+                    <Link to="/fitnesswebapp/" className="text">Ausloggen</Link>
                 </div>
             </nav>
         )
@@ -89,23 +89,23 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Login/>}/>
-                <Route path="/Registration" element={<Registration/>}/>
-                <Route path="/ResetPassword/:email" element={<ResetPassword/>}/>
-                <Route path="/Verifyemail/:email" element={<Verifyemail/>}/>
-                <Route path="/Home" element={[sidebar(), <Home/>]}></Route>
-                <Route path="/create" element={[sidebar(), <Create/>]}/>
-                <Route path="/:id" element={[sidebar(), <Update/>]}/>
-                <Route path="/uebungselect/:number" element={[sidebar(), <Uebungselect/>]}/>
-                <Route path="/Fahrrad" element={[sidebar(), <Fahrrad/>]}/>
-                <Route path="/CyclingArea/:difficulty" element={[sidebar(), <CyclingArea/>]}/>
-                <Route path="/Plank" element={[sidebar(), <Plank/>]}/>
-                <Route path="/Plankanimation/:time" element={[sidebar(), <Plankanimation/>]}/>
-                <Route path="/Trainingsplanverwaltung" element={[sidebar(), <Trainingsplanverwaltung/>]}/>
-                <Route path="/Gewichtsverlauf" element={[sidebar(), <Gewichtsverlauf/>]}/>
-                <Route path="/Einstellungen" element={[sidebar(), <Einstellungen/>]}/>
-                <Route path="/Chart" element={[sidebar(), <Chartgoogle/>]}/>
-                <Route path="/EditTrainingstag/:uebungArray/:trainingstagID/:tagesbezeichnung" element={[sidebar(), <EditTrainingstag/>]}/>
+                <Route path="/fitnesswebapp/" element={<Login/>}/>
+                <Route path="/fitnesswebapp/Registration" element={<Registration/>}/>
+                <Route path="/fitnesswebapp/ResetPassword/:email" element={<ResetPassword/>}/>
+                <Route path="/fitnesswebapp/Verifyemail/:email" element={<Verifyemail/>}/>
+                <Route path="/fitnesswebapp/Home" element={[sidebar(), <Home/>]}></Route>
+                <Route path="/fitnesswebapp/create" element={[sidebar(), <Create/>]}/>
+                <Route path="/fitnesswebapp/:id" element={[sidebar(), <Update/>]}/>
+                <Route path="/fitnesswebapp/uebungselect/:number" element={[sidebar(), <Uebungselect/>]}/>
+                <Route path="/fitnesswebapp/Fahrrad" element={[sidebar(), <Fahrrad/>]}/>
+                <Route path="/fitnesswebapp/CyclingArea/:difficulty" element={[sidebar(), <CyclingArea/>]}/>
+                <Route path="/fitnesswebapp/Plank" element={[sidebar(), <Plank/>]}/>
+                <Route path="/fitnesswebapp/Plankanimation/:time" element={[sidebar(), <Plankanimation/>]}/>
+                <Route path="/fitnesswebapp/Trainingsplanverwaltung" element={[sidebar(), <Trainingsplanverwaltung/>]}/>
+                <Route path="/fitnesswebapp/Gewichtsverlauf" element={[sidebar(), <Gewichtsverlauf/>]}/>
+                <Route path="/fitnesswebapp/Einstellungen" element={[sidebar(), <Einstellungen/>]}/>
+                <Route path="/fitnesswebapp/Chart" element={[sidebar(), <Chartgoogle/>]}/>
+                <Route path="/fitnesswebapp/EditTrainingstag/:uebungArray/:trainingstagID/:tagesbezeichnung" element={[sidebar(), <EditTrainingstag/>]}/>
             </Routes>
         </BrowserRouter>
     )
