@@ -13,7 +13,7 @@ import {
     FormControl,
     FormControlLabel,
     FormGroup,
-    FormLabel
+    FormLabel, Radio, RadioGroup
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import {useState} from "react";
@@ -24,6 +24,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import {validemail, validfirstName, validpassword} from "../Regex";
 import supabase from "../config/supabaseClient";
 import {useNavigate} from "react-router-dom";
+import MuiAlert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import data from "../data";
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -61,8 +64,8 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
     const [value, setValue] = React.useState(0);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    let [firstName, setFirstName] = useState('');
+    let [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [open, setOpen] = React.useState(false);
@@ -73,10 +76,15 @@ export default function BasicTabs() {
     const [emailError, setemailError] = useState(false);
     const [firstnameError, setfirstnameError] = useState(false);
     const [lastnameError, setlastnameError] = useState(false);
+    const [severity, setSeverity] = useState("")
+    const [alertinhalt, setAlertInhalt] = useState("")
+    const [openalert, setOpenalert] = React.useState(false);
     const navigate = useNavigate();
 
 
-
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -110,6 +118,19 @@ export default function BasicTabs() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+
+    const handleClosealert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenalert(false);
+    };
+    const handleClickalert = (nachricht) => {
+        setOpenalert(true);
+        setAlertInhalt(nachricht)
+    };
+
 
     let user=JSON.parse(localStorage.getItem("user"))
 
@@ -212,8 +233,24 @@ export default function BasicTabs() {
         }
     }
 
+    const [valueprio, setValueprio] = React.useState('Home');
+
+    const handleChangeprio = (event) => {
+        setValueprio(event.target.value);
+    };
 
 
+   async function saveAction(){
+                const {data, error} = await supabase
+                    .from("benutzer")
+                    .update([{Priorisiert: valueprio}])
+                    .eq('id', user.id)
+
+                    handleClickalert("Erfolgreich gespeichert")
+
+                if(data!==0){
+                }
+        }
 
 
     return (
@@ -230,46 +267,44 @@ export default function BasicTabs() {
                 <div style={{fontSize:40}}>Priorisierte Startseite</div>
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Bitte wähle deine Priorisierte Startseite</FormLabel>
-                    <FormGroup aria-label="position" column>
-                        <FormControlLabel
-                    value="end"
-                    control={<Checkbox style={{ transform: 'scale(1.3)' }} />}
-                    label={<Typography variant="h6">Home</Typography>}
-                    labelPlacement="end"
-                    style={{ marginTop: 10 }}
-                />
-                <FormControlLabel
-                    value="end"
-                    control={<Checkbox style={{ transform: 'scale(1.3)' }} />}
-                    label={<Typography variant="h6">Trainingsplan</Typography>}
-                    labelPlacement="end"
-                    style={{ marginTop: 10 }}
-                />
-                <FormControlLabel
-                    value="end"
-                    control={<Checkbox style={{ transform: 'scale(1.3)' }} />}
-                    label={<Typography variant="h6">Cycling</Typography>}
-                    labelPlacement="end"
-                    style={{ marginTop: 10 }}
-                />
-                <FormControlLabel
-                    value="end"
-                    control={<Checkbox style={{ transform: 'scale(1.3)' }} />}
-                    label={<Typography variant="h6">Plank</Typography>}
-                    labelPlacement="end"
-                    style={{ marginTop: 10 }}
-                />
-                <FormControlLabel
-                    value="end"
-                    control={<Checkbox style={{ transform: 'scale(1.3)' }} />}
-                    label={<Typography variant="h6">Gewichtsverlauf</Typography>}
-                    labelPlacement="end"
-                    style={{ marginTop: 10 }}
-                />
-                        <Button variant="contained" color="success" style={{marginTop:20}}>
-                            Speichern
-                        </Button>
-                    </FormGroup>
+                    <FormControl>
+                        <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue="female"
+                            name="radio-buttons-group"
+                            value={valueprio}
+                            onChange={handleChangeprio}
+                        >
+
+                            <FormControlLabel value="Home" control={<Radio style={{ transform: 'scale(1.2)' }}/>}
+                                              label={<Typography variant="h6">Home</Typography>}
+                                              style={{ marginTop: 10 }}
+
+                            />
+                            <FormControlLabel value="Trainingsplanverwaltung" control={<Radio style={{ transform: 'scale(1.2)' }}/>}
+                                              label={<Typography variant="h6">Trainingsplanverwaltung</Typography>}
+                                              style={{ marginTop: 10 }}
+                            />
+                            <FormControlLabel value="Planken" control={<Radio style={{ transform: 'scale(1.2)' }}/>}
+                                              label={<Typography variant="h6">Planken</Typography>}
+
+                                              style={{ marginTop: 10 }}
+                            />
+                            <FormControlLabel value="HIIT Training" control={<Radio style={{ transform: 'scale(1.2)' }} />}
+                                              label={<Typography variant="h6">HIIT Training</Typography>}
+                                              style={{ marginTop: 10 }}
+                            />
+                            <FormControlLabel value="Gewichtsverlauf" control={<Radio style={{ transform: 'scale(1.2)' }} />}
+                                              label={<Typography variant="h6">Gewichtsverlauf</Typography>}
+                                              style={{ marginTop: 10 }}
+                            />
+                        </RadioGroup>
+                        <div>
+                            <Button variant="contained" color="success" id="saveButton" style={{float:"left", marginTop:25}} onClick={saveAction}>
+                                Speichern
+                            </Button>
+                        </div>
+                    </FormControl>
                 </FormControl>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
@@ -282,6 +317,7 @@ export default function BasicTabs() {
                                <TextField
                                     label="Vorname"
                                     variant="outlined"
+                                    id="Vornamea"
                                     fullWidth
                                     value={user.firstname}
                                     onChange={(e) => setFirstName(e.target.value)}
@@ -322,9 +358,12 @@ export default function BasicTabs() {
                                     </DialogContent>
                                     <DialogActions>
                                         <Button onClick={handleClose3}>Abbrechen</Button>
-                                        <Button onClick={async () => {
-                                            const vor = document.getElementById("vorname").value
-                                            await updateUserVor(vor)
+                                        <Button onClick={async key => {
+                                            firstName = document.getElementById("vorname").value
+                                            await updateUserVor(firstName)
+                                            user.firstname=firstName
+                                            localStorage.setItem("user", JSON.stringify(user));
+
                                         }}
                                         >OK</Button>
                                     </DialogActions>
@@ -376,6 +415,8 @@ export default function BasicTabs() {
                                         <Button onClick={async () => {
                                             const last = document.getElementById("lastname").value
                                             await updateUserNach(last)
+                                            user.lastname=last
+                                            localStorage.setItem("user", JSON.stringify(user));
                                         }}
                                         >OK</Button>                                    </DialogActions>
                                 </Dialog>
@@ -425,8 +466,10 @@ export default function BasicTabs() {
                                     <DialogActions>
                                         <Button onClick={handleClose}>Abbrechen</Button>
                                         <Button onClick={async () => {
-                                            const email = document.getElementById("email").value
-                                            await updateUserEmail(email)
+                                            const email1 = document.getElementById("email").value
+                                            await updateUserEmail(email1)
+                                            user.emailUser=email1
+                                            localStorage.setItem("user", JSON.stringify(user));
                                         }}
                                         >OK</Button>
                                     </DialogActions>
@@ -481,6 +524,8 @@ export default function BasicTabs() {
                                         <Button onClick={async () => {
                                             const pass = document.getElementById("password").value
                                             await updateUserPassword(pass)
+                                            user.passwort=pass
+                                            localStorage.setItem("user", JSON.stringify(user));
                                         }}
                                         >OK</Button>
                                     </DialogActions>
@@ -492,6 +537,11 @@ export default function BasicTabs() {
 
             </CustomTabPanel>
         </Box>
+            <Snackbar open={openalert} autoHideDuration={6000} onClose={handleClosealert}>
+                <Alert severity={"success"} onClose={handleClosealert} sx={{width: '100%'}}>
+                    {alertinhalt}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

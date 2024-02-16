@@ -16,6 +16,12 @@ import {Zoom} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import supabase from "../config/supabaseClient";
 import * as emailjs from "@emailjs/browser";
+import md5 from 'md5-hash'
+import {Alert} from "@supabase/ui";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+
 
 
 export default function SignUp() {
@@ -25,23 +31,14 @@ export default function SignUp() {
     const [passwordErr, setpasswordErr] = useState(false);
     const [emailinuse, setemailinuse] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [alertinhalt, setAlertInhalt] = useState("")
     const navigate = useNavigate();
     const emailRef = useRef();
 
-    function stringToHash(string) {
-        let hash = 0;
-
-        if (string.length === 0) return hash;
-
-        for (let i = 0; i < string.length; i++) {
-            const char = string.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
-
-        return hash;
-    }
-
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
     const handleSubmit = async () => {
         setFirstNameErr(false);
@@ -94,11 +91,24 @@ export default function SignUp() {
         }
 
 
-        await data1.postbenutzer(firstname, lastname, stringToHash(passwort), email)
+        const { sha256 } = require('js-sha256');
+
+        await data1.postbenutzer(firstname, lastname, sha256(passwort), email)
         await handleSubmit1()
         navigate("/")
 
     }
+    const handleClosealert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenAlert(false);
+    };
+    const handleClickalert = (nachricht) => {
+        setOpenAlert(true);
+        setAlertInhalt(nachricht)
+    };
+
 
     useEffect(() => emailjs.init("eLuBMI1Jv0oeM60Z4"), []);
     const handleSubmit1 = async (e) => {
@@ -119,9 +129,10 @@ export default function SignUp() {
             await emailjs.send(serviceId, templateId, {
                 name: name[0].Vorname,
                 recipient: emailRef.current.value,
-                message: "http://localhost:3000/Verifyemail/" + encodeURIComponent(emailRef.current.value)
+                message: "https://laurin291.github.io/fitnesswebapp//Verifyemail/" + encodeURIComponent(emailRef.current.value)
             });
             alert("email successfully sent check inbox");
+            handleClickalert("Checke deine Emails und Verifiziere deinen Acoount")
         } catch (error) {
             console.log(error)
         } finally {
@@ -221,7 +232,6 @@ export default function SignUp() {
                     >
                         Sign Up
                     </Button>
-
                     <Grid container justifyContent="flex-end">
                         <Grid item>
                             <Link to="/" variant="body2">
@@ -231,6 +241,12 @@ export default function SignUp() {
                     </Grid>
                 </Box>
             </Box>
+            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleClosealert}>
+                <Alert severity={"success"} onClose={handleClosealert} sx={{width: '100%'}}>
+                    {alertinhalt}
+                </Alert>
+            </Snackbar>
         </Container>
+
     );
 }

@@ -214,8 +214,6 @@ export default function Uebungstabelle() {
 
     //Funktion um zu erkennen, wann der SaveButton gedrückt wird und um die ausgewählten Uebungen im localStorage zu speichern
     function saveAction() {
-
-
         window.localStorage.removeItem(number)
         if (window.localStorage.getItem(number) == null) {
             window.localStorage.setItem(number, selectedItems)
@@ -234,9 +232,6 @@ export default function Uebungstabelle() {
             navigate('/create')
 
         }
-
-
-
 
     }
 

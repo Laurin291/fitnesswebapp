@@ -15,6 +15,8 @@ import {useState} from "react";
 import Tooltip from "@mui/material/Tooltip";
 import {Zoom} from "@mui/material";
 import * as React from "react";
+import md5 from 'md5-hash'
+
 
 
 const defaultTheme = createTheme();
@@ -23,21 +25,6 @@ export default function ResetPassword() {
     const [passwordError, setPasswordError] = useState(false);
     const email1=useParams()
     const navigate = useNavigate();
-
-    function stringToHash(string) {
-
-        let hash = 0;
-
-        if (string.length === 0) return hash;
-
-        for (let i = 0; i < string.length; i++) {
-            const  char = string.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
-
-        return hash;
-    }
 
     async function updateUser(password) {
         setPasswordError(false)
@@ -49,6 +36,8 @@ export default function ResetPassword() {
         }
 
 
+        const { sha256 } = require('js-sha256');
+
         if(passwordError){
             return;
         }
@@ -56,7 +45,7 @@ export default function ResetPassword() {
         if(!passwordErr) {
             const {data, error} = await supabase
                 .from("benutzer")
-                .update([{Kennwort: stringToHash(password)}])
+                .update([{Kennwort: sha256(password)}])
                 .eq('Email', email1.email.toLowerCase())
 
 

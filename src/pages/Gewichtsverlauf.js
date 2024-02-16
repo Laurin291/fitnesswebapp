@@ -365,16 +365,10 @@ export default function Gewichtsverlauf() {
                     </DialogActions>
                 </Dialog>
 
-
-
-
                 <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-
                     <Alert severity="error" onClose={handleCloseSnackbar} sx={{width: '100%'}}>
                         Tägliches Gewicht bereits eingegeben oder das Format vom Gewicht ist falsch
                     </Alert>
-
-
                 </Snackbar>
             </>
         )

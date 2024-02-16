@@ -14,6 +14,8 @@ import TextField from "@mui/material/TextField";
 import {Button} from "@material-ui/core";
 import * as emailjs from "@emailjs/browser";
 import * as React from "react";
+import md5 from 'md5-hash'
+
 
 
 const defaultTheme = createTheme();
@@ -30,7 +32,7 @@ export default function Login() {
     async function getUser(email, password) {
         const {data, error} = await supabase
             .from('benutzer')
-            .select('Vorname, Nachname, id,Email,Kennwort,Verified')
+            .select('Vorname, Nachname, id,Email,Kennwort,Verified,Priorisiert')
             .match({Email: email.toLowerCase(), Kennwort: password})
 
         if (error != null || data.length === 0) {
@@ -43,25 +45,11 @@ export default function Login() {
             id: data[0].id,
             emailUser:data[0].Email,
             passwortUser:data[0].Kennwort,
-            verifiedUser:data[0].Verified
+            verifiedUser:data[0].Verified,
+            prioUser:data[0].Priorisiert
+
         }
     }
-
-    function stringToHash(string) {
-
-        let hash = 0;
-
-        if (string.length === 0) return hash;
-
-        for (let i = 0; i < string.length; i++) {
-            const  char = string.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
-
-        return hash;
-    }
-
 
     async function handleSubmit() {
         let email = document.getElementById("email").value;
@@ -75,11 +63,17 @@ export default function Login() {
             setPasswordError(true);
         }
 
-        let user = await getUser(email, stringToHash(password));
+        const { sha256 } = require('js-sha256');
 
-        if(user.verifiedUser===false){
-            alert("Bitte checke deine Emails und Verifiziere deinen Account")
-            return
+
+
+        let user = await getUser(email, sha256(password));
+
+        if (user !== null) {
+            if(user.verifiedUser===false){
+                alert("Bitte checke deine Emails und Verifiziere deinen Account")
+                return
+            }
         }
 
         if (user === null) {
@@ -87,8 +81,29 @@ export default function Login() {
             return
         }
 
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate("/Home")
+            localStorage.setItem("user", JSON.stringify(user));
+
+        if(user.prioUser==="Home"){
+            navigate("/Home")
+        }
+
+        if(user.prioUser==="Trainingsplanverwaltung"){
+            navigate("/create")
+        }
+        if(user.prioUser==="Planken"){
+            navigate("/Plank")
+        }
+        if(user.prioUser==="HIIT Training"){
+            navigate("/Fahrrad")
+        }
+        if(user.prioUser==="Gewichtsverlauf"){
+            navigate("/Gewichtsverlauf")
+        }
+
+
+
+
+
     }
 
     useEffect(() => emailjs.init("eLuBMI1Jv0oeM60Z4"), []);
@@ -110,7 +125,7 @@ export default function Login() {
             await emailjs.send(serviceId, templateId, {
                 name:name[0].Vorname,
                 recipient: emailRef.current.value,
-                message: "http://localhost:3000/ResetPassword/"+encodeURIComponent(emailRef.current.value)
+                message: "https://laurin291.github.io/fitnesswebapp//ResetPassword/"+encodeURIComponent(emailRef.current.value)
             });
             alert("email successfully sent check inbox");
         } catch (error) {
