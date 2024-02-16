@@ -99,11 +99,6 @@ export default function Login() {
         if(user.prioUser==="Gewichtsverlauf"){
             navigate("/Gewichtsverlauf")
         }
-
-
-
-
-
     }
 
     useEffect(() => emailjs.init("eLuBMI1Jv0oeM60Z4"), []);
