@@ -114,7 +114,7 @@ export default function SignUp() {
             await emailjs.send(serviceId, templateId, {
                 name: name[0].Vorname,
                 recipient: emailRef.current.value,
-                message: "http://localhost:3000/fitnesswebapp/Verifyemail/" + encodeURIComponent(emailRef.current.value)
+                message: "https://fitnesswebapp-navy.vercel.app/Verifyemail/" + encodeURIComponent(emailRef.current.value)
             });
             alert("Email successfully sent check inbox");
         } catch (error) {

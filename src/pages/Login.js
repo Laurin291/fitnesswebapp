@@ -118,7 +118,7 @@ export default function Login() {
             await emailjs.send(serviceId, templateId, {
                 name:name[0].Vorname,
                 recipient: emailRef.current.value,
-                message: "http://localhost:3000/fitnesswebapp/ResetPassword/"+encodeURIComponent(emailRef.current.value)
+                message: "https://fitnesswebapp-navy.vercel.app/ResetPassword/"+encodeURIComponent(emailRef.current.value)
             });
             alert("email successfully sent check inbox");
         } catch (error) {
