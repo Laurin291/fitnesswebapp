@@ -97,7 +97,7 @@ function App() {
     }
 
     return (
-        <BrowserRouter  basename="/fitnesswebapp">
+        <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login/>}/>
                 <Route path="/Registration" element={<Registration/>}/>
