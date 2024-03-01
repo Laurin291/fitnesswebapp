@@ -157,14 +157,12 @@ export default function Create() {
 
     //Funktion um die Eingabe des Users (Trainingstagsbezeichnung) zu speichern
     function saveName(name, nummer) {
-
         if (!validTagesbezeichnung.test(name)) {
             document.getElementById(nummer.number).style.backgroundColor = 'lightsalmon'
 
         } else {
             document.getElementById(nummer.number).style.backgroundColor = "lightgreen";
             window.localStorage.setItem("Name" + nummer.number, name)
-
         }
     }
     //Funktion um die Eingabe des Users (Trainingsplan) zu speichern ***************************************************
@@ -175,10 +173,7 @@ export default function Create() {
         } else {
             document.getElementById("trainingsplanname").style.backgroundColor = "lightgreen";
             window.localStorage.setItem("TrainingsplanName", name)
-
         }
-
-
     }
 
     //Funktion um den LocalStorage zu löschen **************************************************************************
@@ -269,13 +264,11 @@ export default function Create() {
 
     //Component der Trainingsplananzeige um öfter das gleiche Object am Bildschirm anzuzeigen
     const DayShowComponent = ({tag}) => {
-
         const trainingspläne = data.get("trainingsplan")
         const trainingstagtabelle = data.getTrainingstageSorted("trainingstag")
         let trainingstage = []
         if (trainingspläne != null && trainingstagtabelle != null) {
             const selected = trainingspläne.filter((trainingsplan) => trainingsplan.selected == true)
-            //console.log(selected)
             if (selected.length > 0) {
                 trainingstage = trainingstagtabelle.filter(tag => tag.trainingsplanID == selected[0].trainingsplanID)
                 setSelectedTrainingsplan(selected[0].name)
@@ -286,12 +279,9 @@ export default function Create() {
                 setTagesbezeichnung5(trainingstage[4].Tagesbezeichung)
                 setTagesbezeichnung6(trainingstage[5].Tagesbezeichung)
                 setTagesbezeichnung7(trainingstage[6].Tagesbezeichung)
-
             }
-
         }
         let trainingstag = ''
-
         if (trainingstage.length > 0) {
             trainingstag = trainingstage[tag.tagesnummer - 1]
         }
@@ -301,15 +291,11 @@ export default function Create() {
         }else if (tag.tagesbezeichnung.length > 12){
             fontsize = 14
         }
-
-
         return (
-
             <div className="trtagdivs" onClick={() => handleClickOpenDialog(trainingstag)}>
                 <p className="trtagcontent" id='wochentagAnzeige'>{tag.wochentag}</p>
                 <p className="trtagcontent" id='tagesbezeichnungAnzeige' style={{ fontSize: fontsize }} >{tag.tagesbezeichnung}</p>
             </div>
-
         )
     }
 

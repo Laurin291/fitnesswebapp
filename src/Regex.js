@@ -1,7 +1,10 @@
 export const validTrainingsplanname = new RegExp(
     '^[a-zA-Z0-9üÜäÄöÖ/_ ]+$'
 );
-export const validTagesbezeichnung = new RegExp('^[a-zA-Z0-9üÜäÄöÖ/_ ]+$')
+
+export const validTagesbezeichnung = new RegExp(
+    '^[a-zA-Z0-9üÜäÄöÖ/_ ]+$'
+);
 
 export const validfirstName = new RegExp('^[a-zA-Z]+$')
 export const validlastName = new RegExp('^[a-zA-Z]+$')

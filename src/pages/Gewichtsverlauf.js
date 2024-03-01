@@ -2,15 +2,14 @@ import * as React from 'react';
 import {LineChart} from '@mui/x-charts';
 
 
-
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slider} from "@mui/material";
 import Box from "@mui/material/Box";
 import * as PropTypes from "prop-types";
 import dayjs from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
+import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {DateField} from '@mui/x-date-pickers/DateField';
 import Button from "@mui/material/Button";
 import supabase from "../config/supabaseClient";
 import {validgewicht, validTagesbezeichnung} from "../Regex";
@@ -44,11 +43,9 @@ import {
     CartesianGrid,
 } from "recharts";
 
-import { format, parseISO, subDays } from "date-fns";
+import {format, parseISO, subDays} from "date-fns";
 import TextField from "@mui/material/TextField";
 import {styled} from "@mui/material/styles";
-
-
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -56,7 +53,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
     [`& .${toggleButtonGroupClasses.grouped}`]: {
         margin: theme.spacing(0.5),
         border: 0,
@@ -73,33 +70,62 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 
 async function generatedatesandvalues() {
-    let user=JSON.parse(localStorage.getItem("user"))
+    let user = JSON.parse(localStorage.getItem("user"))
 
 
     let {data, error2} = await supabase
         .from("gewicht")
         .select("date,gewicht")
-        .match({userID: user.id })
+        .match({userID: user.id})
         .order("date")
 
     return data
 }
 
 export default function Gewichtsverlauf() {
-    const [dataArray, setDataArray] = React.useState()
+
+    const skeletonData = [
+        {
+            date: '2024-01-01',
+            gewicht: 70,
+        },
+        {
+            date: '2024-02-01',
+            gewicht: 80,
+        },
+        {
+            date: '2024-03-01',
+            gewicht: 50,
+        },
+        {
+            date: '2024-04-01',
+            gewicht: 60,
+        },
+        {
+            date: '2024-05-01',
+            gewicht: 100,
+        },
+        {
+            date: '2024-06-01',
+            gewicht: 60,
+        },
+    ];
+    const [dataArray, setDataArray] = React.useState(skeletonData)
     const [isloaded, setIsLoaded] = React.useState(false)
 
-    function loadResources(){
+    function loadResources() {
         async function fetchData() {
 
             let data2 = await generatedatesandvalues()
-            console.log(data2)
-            if(data2.length > 0){
+            if (data2.length > 0) {
                 setIsLoaded(true)
                 setDataArray(data2)
+            } else {
+
             }
 
         }
+
         fetchData();
     }
 
@@ -107,68 +133,27 @@ export default function Gewichtsverlauf() {
         loadResources()
     }, []);
 
-    const [timerange, setTimerange] = React.useState('1M');
-
-    const CustomToggleButton = () =>{
 
 
 
-        const handleTimeRange = (event, newTimeRange) => {
-            setTimerange(newTimeRange);
-        };
-        return (
-            <div id={"customToggleButton"}>
-                <Paper
-                    elevation={0}
-                    sx={{
-                        display: 'flex',
-                        border: (theme) => `1px solid ${theme.palette.divider}`,
-                        flexWrap: 'wrap',
-                    }}
-                >
-                    <StyledToggleButtonGroup
-                        size="small"
-                        value={timerange}
-                        exclusive
-                        onChange={handleTimeRange}
-                        aria-label="text alignment"
-                    >
-                        <ToggleButton value="1M" aria-label="left aligned">
-                            1M
-                        </ToggleButton>
-                        <ToggleButton value="3M" aria-label="centered">
-                            3M
-                        </ToggleButton>
-                        <ToggleButton value="1J" aria-label="right aligned">
-                            1J
-                        </ToggleButton>
-                        <ToggleButton value="AT" aria-label="justified">
-                            AT
-                        </ToggleButton>
-                    </StyledToggleButtonGroup>
-                </Paper>
-            </div>
-        )
-    }
 
 
 
-    console.log(isloaded)
-    console.log(dataArray)
-
-    const formatter = (str) =>{
+    const formatter = (str) => {
         const date = parseISO(str);
-        console.log(timerange)
-            if (date.getDate() % 2 === 0) {
-                return format(date, "MMM, d");
-            }else{
-                return ''
-            }
+       if (dataArray.length <1000){
+           if (date.getDate() % 1 === 0) {
+               return format(date, "d.MMM           ");
+           }else{
+               return ''
+           }
+       }
+
 
 
     }
 
-    const Gewichtseingabe = () =>{
+    const Gewichtseingabe = () => {
 
         const [valid, setValid] = useState(false);
         const [openAlert, setOpenAlert] = React.useState(false);
@@ -176,7 +161,7 @@ export default function Gewichtsverlauf() {
         const [openEingabe, setOpenEingabe] = React.useState(false);
         const [openSecond, setOpenSecond] = React.useState(false);
         const [tagesgewicht, setTagesgewicht] = React.useState();
-        
+
 
         const handleClickOpenEingabe = () => {
             setOpenEingabe(true);
@@ -196,13 +181,12 @@ export default function Gewichtsverlauf() {
         };
 
 
-
         async function saveAction() {
             handleCloseSecond()
 
 
             let day = new Date().getDate()
-            let month = new Date().getMonth() +1
+            let month = new Date().getMonth() + 1
             let year = new Date().getFullYear()
 
             const heutigesDatum = year + "-" + month + "-" + day
@@ -214,8 +198,8 @@ export default function Gewichtsverlauf() {
 
             console.log(data)
 
-            if (data.length == 0 && valid){
-               await generatelatestvalues()
+            if (data.length == 0 && valid) {
+                await generatelatestvalues()
                 const {error} = await supabase
                     .from('gewicht')
                     .insert([{
@@ -224,21 +208,24 @@ export default function Gewichtsverlauf() {
                         gewicht: tagesgewicht
                     }])
                 loadResources()
-            }else {
+            } else {
                 setOpenAlert(true)
             }
 
 
         }
 
-        async function generatelatestvalues(){
+        async function generatelatestvalues() {
             const {data, error2} = await supabase
                 .from("gewicht")
                 .select()
-                .order('date', { ascending: false })
+                .match({userID: user.id})
+                .order('date', {ascending: false})
                 .limit(1)
 
-            if (data != null) {
+            console.log(data)
+
+            if (data.length > 0) {
 
 
                 function dateRange(startDate, endDate, steps = 1) {
@@ -278,11 +265,9 @@ export default function Gewichtsverlauf() {
             }
 
 
-
-
         }
 
-        function checkvalidation(gewicht){
+        function checkvalidation(gewicht) {
             if (!validgewicht.test(gewicht)) {
                 document.getElementById('name').style.backgroundColor = 'lightsalmon'
                 setValid(false)
@@ -302,8 +287,7 @@ export default function Gewichtsverlauf() {
         };
 
 
-
-        return(
+        return (
             <>
                 <Dialog
                     open={openEingabe}
@@ -354,7 +338,7 @@ export default function Gewichtsverlauf() {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            {tagesgewicht +" kg"}
+                            {tagesgewicht + " kg"}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -365,42 +349,21 @@ export default function Gewichtsverlauf() {
                     </DialogActions>
                 </Dialog>
 
+
                 <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+
                     <Alert severity="error" onClose={handleCloseSnackbar} sx={{width: '100%'}}>
                         Tägliches Gewicht bereits eingegeben oder das Format vom Gewicht ist falsch
                     </Alert>
+
+
                 </Snackbar>
             </>
         )
 
     }
 
-    const skeletonData= [
-        {
-            date: '2024-01-01',
-            gewicht: 70,
-        },
-        {
-            date: '2024-02-01',
-            gewicht: 80,
-        },
-        {
-            date: '2024-03-01',
-            gewicht: 50,
-        },
-        {
-            date: '2024-04-01',
-            gewicht: 60,
-        },
-        {
-            date: '2024-05-01',
-            gewicht: 100,
-        },
-        {
-            date: '2024-06-01',
-            gewicht: 60,
-        },
-    ];
+
     console.log(skeletonData)
 
 
@@ -409,23 +372,39 @@ export default function Gewichtsverlauf() {
             <h1 id={'ueberschriftfahrrad'}>Gewichtsverlauf</h1>
 
 
-            {isloaded &&
             <ResponsiveContainer width="100%" height={400} id={"graphContainer"}>
                 <AreaChart data={dataArray}>
                     <defs>
                         <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4} />
-                            <stop offset="75%" stopColor="#2451B7" stopOpacity={0.05} />
+                            <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4}/>
+                            <stop offset="75%" stopColor="#2451B7" stopOpacity={0.05}/>
                         </linearGradient>
                     </defs>
 
-                    <Area type="monotone" dataKey="gewicht" stroke="#2451B7" fill="url(#color)" />
+                    {isloaded === false &&
+
+                        <text
+                            x='50%'
+                            y='60%'
+                            style={{fontSize: 68, fontWeight: 'bold', fill: '#777'}}
+                            width={500}
+                            scaleToFit={true}
+                            textAnchor='middle'
+                            verticalAnchor='middle'
+                        >
+                            Bitte geben Sie ihr Startgewicht ein
+                        </text>
+                    }
+
+                    <Area type="monotone" dataKey="gewicht" stroke="#2451B7" fill="url(#color)"/>
 
                     <XAxis
                         dataKey="date"
                         axisLine={false}
                         tickLine={false}
-                        tickFormatter={(str) => formatter(str)}
+
+                        tickFormatter={str => formatter(str)}
+
 
                     />
 
@@ -438,53 +417,13 @@ export default function Gewichtsverlauf() {
 
                     />
 
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip content={<CustomTooltip/>}/>
 
 
-
-                    <CartesianGrid opacity={0.4} vertical={false} />
+                    <CartesianGrid opacity={0.4} vertical={false}/>
                 </AreaChart>
             </ResponsiveContainer>
-            }
-            {isloaded == false &&
 
-                <ResponsiveContainer width="100%" height={400} id={"graphContainer"}>
-                    <AreaChart data={skeletonData}>
-                        <defs>
-                            <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4} />
-                                <stop offset="75%" stopColor="#2451B7" stopOpacity={0.05} />
-                            </linearGradient>
-                        </defs>
-
-                        <Area type="monotone" dataKey="uv" stroke="#2451B7" fill="url(#color)" />
-
-                        <XAxis
-                            dataKey="date"
-                            axisLine={false}
-                            tickLine={false}
-                            tickFormatter={(str) => formatter(str)}
-
-                        />
-
-                        <YAxis
-                            datakey="gewicht"
-                            axisLine={false}
-                            tickLine={false}
-                            tickCount={6}
-                            tickFormatter={number => `${number}kg`}
-
-                        />
-
-
-
-
-
-                        <CartesianGrid opacity={0.4} vertical={false} />
-                    </AreaChart>
-                </ResponsiveContainer>
-
-            }
 
             <Gewichtseingabe/>
         </div>
@@ -492,8 +431,8 @@ export default function Gewichtsverlauf() {
 
 }
 
-function CustomTooltip({ active, payload, label }) {
-    if (active) {
+function CustomTooltip({active, payload, label}) {
+    if (active && payload[0] !== undefined) {
         return (
             <div className="tooltip">
                 <h6 id={"tooltipDate"}>{format(parseISO(label), "eeee, d MMM, yyyy")}</h6>
