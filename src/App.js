@@ -97,7 +97,7 @@ function App() {
     }
 
     return (
-        <BrowserRouter  basename="fitnesswebapp-2t4diirj9-laurin-schrammels-projects.vercel.app/">
+        <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login/>}/>
                 <Route path="/Registration" element={<Registration/>}/>
