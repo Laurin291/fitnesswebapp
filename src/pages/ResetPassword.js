@@ -15,9 +15,6 @@ import {useState} from "react";
 import Tooltip from "@mui/material/Tooltip";
 import {Zoom} from "@mui/material";
 import * as React from "react";
-import md5 from 'md5-hash'
-
-
 
 const defaultTheme = createTheme();
 
@@ -47,13 +44,9 @@ export default function ResetPassword() {
                 .from("benutzer")
                 .update([{Kennwort: sha256(password)}])
                 .eq('Email', email1.email.toLowerCase())
-
-
             navigate("/")
         }
     }
-
-
 
     return (
         <ThemeProvider theme={defaultTheme}>

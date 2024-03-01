@@ -33,6 +33,14 @@ import Chartgoogle from "./pages/Gewichtsverlauf";
 
 function App() {
 
+    const WildcardPath = () => {
+        return (
+            <div>
+                wildcard
+            </div>
+        );
+    }
+
     const handleClick = (event) => {
         const listItems = document.querySelectorAll(".text")
         listItems.forEach(listItem => {
@@ -89,7 +97,7 @@ function App() {
     }
 
     return (
-        <BrowserRouter  basename="/fitnesswebapp">
+        <BrowserRouter  basename="fitnesswebapp-2t4diirj9-laurin-schrammels-projects.vercel.app/">
             <Routes>
                 <Route path="/" element={<Login/>}/>
                 <Route path="/Registration" element={<Registration/>}/>
@@ -108,6 +116,7 @@ function App() {
                 <Route path="/Einstellungen" element={[sidebar(), <Einstellungen/>]}/>
                 <Route path="/Chart" element={[sidebar(), <Chartgoogle/>]}/>
                 <Route path="/EditTrainingstag/:uebungArray/:trainingstagID/:tagesbezeichnung" element={[sidebar(), <EditTrainingstag/>]}/>
+                <Route path="*" element={<WildcardPath/>}/>
             </Routes>
         </BrowserRouter>
     )
