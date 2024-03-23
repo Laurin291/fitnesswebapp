@@ -38,14 +38,14 @@ export default function SignUp() {
 
         const firstname = document.getElementById("firstName").value;
         const lastname = document.getElementById("lastName").value;
-        //const email = document.getElementById("email").value;
-       // const passwort = document.getElementById("password").value;
+        const email = document.getElementById("email").value;
+        const passwort = document.getElementById("password").value;
 
 
         const firstNameError = !validfirstName.test(firstname)
         const lastNameError = !validlastName.test(lastname)
-        //const emailError = !validemail.test(email)
-        //const passwordError = !validpassword.test(passwort)
+        const emailError = !validemail.test(email)
+        const passwordError = !validpassword.test(passwort)
 
 
         if (firstNameError) {
@@ -56,15 +56,10 @@ export default function SignUp() {
             setLastNameError(true);
         }
 
-        const email = document.getElementById("email").value;
-        const emailError = !validemail.test(email)
-
         if (emailError) {
             setEmailError(true);
         }
 
-        const passwort = document.getElementById("password").value;
-        const passwordError = !validpassword.test(passwort)
 
         if (passwordError) {
             setpasswordErr(true);
@@ -177,8 +172,8 @@ export default function SignUp() {
                                 name="email"
                                 autoComplete="email"
                                 inputRef={emailRef}
-                                error={emailErr}
-                                helperText={emailErr ? "Überprüfe deine Eingabe" : ""}
+                                error={emailinuse}
+                                helperText={emailinuse ? "Überprüfe deine Eingabe" : ""}
                             />
                         </Grid>
                         <Grid item xs={12}>

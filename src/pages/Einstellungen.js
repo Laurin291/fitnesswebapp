@@ -1,22 +1,23 @@
 import * as React from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Checkbox from "@mui/material/Checkbox";
 import {
-    Dialog, DialogActions,
+    Dialog,
+    DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
     FormControl,
     FormControlLabel,
-    FormGroup,
-    FormLabel, Radio, RadioGroup
+    FormLabel,
+    Radio,
+    RadioGroup
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import {useState} from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
@@ -26,10 +27,9 @@ import supabase from "../config/supabaseClient";
 import {useNavigate} from "react-router-dom";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import data from "../data";
 
 function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const {children, value, index, ...other} = props;
 
 
     return (
@@ -41,7 +41,7 @@ function CustomTabPanel(props) {
             {...other}
         >
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{p: 3}}>
                     <Typography>{children}</Typography>
                 </Box>
             )}
@@ -126,15 +126,10 @@ export default function BasicTabs() {
         }
         setOpenalert(false);
     };
-    const handleClickalert = (nachricht) => {
-        setOpenalert(true);
-        setAlertInhalt(nachricht)
-    };
 
+    let user = JSON.parse(localStorage.getItem("user"))
 
-    let user=JSON.parse(localStorage.getItem("user"))
-
-    const { sha256 } = require('js-sha256');
+    const {sha256} = require('js-sha256');
 
     async function updateUserPassword(password) {
         setPasswordError(false)
@@ -142,17 +137,18 @@ export default function BasicTabs() {
         if (passwordErr) {
             setPasswordError(true);
         }
-        if(passwordError){
-            return;
+        if (passwordError) {
+            return true;
         }
-        if(!passwordErr) {
+        if (!passwordErr) {
             const {data, error} = await supabase
                 .from("benutzer")
                 .update([{Kennwort: sha256(password)}])
                 .eq('id', user.id)
 
-            if(data!==0){
+            if (data !== 0) {
                 handleClose1()
+                return false
             }
         }
     }
@@ -163,38 +159,40 @@ export default function BasicTabs() {
         if (emailErr) {
             setemailError(true);
         }
-        if(emailError){
-            return;
+        if (emailError) {
+            return true;
         }
-        if(!emailErr) {
+        if (!emailErr) {
             const {data, error} = await supabase
                 .from("benutzer")
                 .update([{Email: email.toLowerCase()}])
                 .eq('id', user.id)
 
-            if(data!==0){
+            if (data !== 0) {
                 handleClose()
+                return false
             }
         }
     }
 
-    async function updateUserVor(first) {
+    async function updateUserVorname(first) {
         setfirstnameError(false)
         const firstnameErr = !validfirstName.test(first)
         if (firstnameErr) {
             setfirstnameError(true);
         }
-        if(firstnameErr){
-            return;
+        if (firstnameErr) {
+            return true;
         }
-        if(!firstnameErr) {
+        if (!firstnameErr) {
             const {data, error} = await supabase
                 .from("benutzer")
                 .update([{Vorname: first}])
                 .eq('id', user.id)
 
-            if(data!==0){
+            if (data !== 0) {
                 handleClose3()
+                return false
             }
         }
     }
@@ -205,17 +203,18 @@ export default function BasicTabs() {
         if (lastnameErr) {
             setlastnameError(true);
         }
-        if(lastnameErr){
-            return;
+        if (lastnameErr) {
+            return true;
         }
-        if(!lastnameErr) {
+        if (!lastnameErr) {
             const {data, error} = await supabase
                 .from("benutzer")
                 .update([{Nachname: last}])
                 .eq('id', user.id)
 
-            if(data!==0){
+            if (data !== 0) {
                 handleClose2()
+                return false
             }
         }
     }
@@ -227,303 +226,319 @@ export default function BasicTabs() {
     };
 
 
-   async function saveAction(){
-                const {data, error} = await supabase
-                    .from("benutzer")
-                    .update([{Priorisiert: valueprio}])
-                    .eq('id', user.id)
+    async function saveAction() {
+        const {data, error} = await supabase
+            .from("benutzer")
+            .update([{Priorisiert: valueprio}])
+            .eq('id', user.id)
 
-                    handleClickalert("Erfolgreich gespeichert")
-
-                if(data!==0){
-                }
+        if (data !== 0) {
         }
+    }
 
 
     return (
         <div id="content">
             <div id="ueberschriftfahrrad">Einstellungen</div>
-            <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Priorisierte Startseite" {...a11yProps(0)} />
-                    <Tab label="Kontoübersicht" {...a11yProps(1)} />
-                </Tabs>
-            </Box>
-            <CustomTabPanel value={value} index={0}>
-                <div style={{fontSize:40}}>Priorisierte Startseite</div>
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Bitte wähle deine Priorisierte Startseite</FormLabel>
-                    <FormControl>
-                        <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            defaultValue="female"
-                            name="radio-buttons-group"
-                            value={valueprio}
-                            onChange={handleChangeprio}
-                        >
+            <Box sx={{width: '100%'}}>
+                <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Tab label="Priorisierte Startseite" {...a11yProps(0)} />
+                        <Tab label="Kontoübersicht" {...a11yProps(1)} />
+                    </Tabs>
+                </Box>
+                <CustomTabPanel value={value} index={0}>
+                    <div style={{fontSize: 40}}>Priorisierte Startseite</div>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Bitte wähle deine Priorisierte Startseite</FormLabel>
+                        <FormControl>
+                            <RadioGroup
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                defaultValue="female"
+                                name="radio-buttons-group"
+                                value={valueprio}
+                                onChange={handleChangeprio}
+                            >
 
-                            <FormControlLabel value="Home" control={<Radio style={{ transform: 'scale(1.2)' }}/>}
-                                              label={<Typography variant="h6">Home</Typography>}
-                                              style={{ marginTop: 10 }}
+                                <FormControlLabel value="Home" control={<Radio style={{transform: 'scale(1.2)'}}/>}
+                                                  label={<Typography variant="h6">Home</Typography>}
+                                                  style={{marginTop: 10}}
 
-                            />
-                            <FormControlLabel value="Trainingsplanverwaltung" control={<Radio style={{ transform: 'scale(1.2)' }}/>}
-                                              label={<Typography variant="h6">Trainingsplanverwaltung</Typography>}
-                                              style={{ marginTop: 10 }}
-                            />
-                            <FormControlLabel value="Planken" control={<Radio style={{ transform: 'scale(1.2)' }}/>}
-                                              label={<Typography variant="h6">Planken</Typography>}
+                                />
+                                <FormControlLabel value="Trainingsplanverwaltung"
+                                                  control={<Radio style={{transform: 'scale(1.2)'}}/>}
+                                                  label={<Typography variant="h6">Trainingsplanverwaltung</Typography>}
+                                                  style={{marginTop: 10}}
+                                />
+                                <FormControlLabel value="Planken" control={<Radio style={{transform: 'scale(1.2)'}}/>}
+                                                  label={<Typography variant="h6">Planken</Typography>}
 
-                                              style={{ marginTop: 10 }}
-                            />
-                            <FormControlLabel value="HIIT Training" control={<Radio style={{ transform: 'scale(1.2)' }} />}
-                                              label={<Typography variant="h6">HIIT Training</Typography>}
-                                              style={{ marginTop: 10 }}
-                            />
-                            <FormControlLabel value="Gewichtsverlauf" control={<Radio style={{ transform: 'scale(1.2)' }} />}
-                                              label={<Typography variant="h6">Gewichtsverlauf</Typography>}
-                                              style={{ marginTop: 10 }}
-                            />
-                        </RadioGroup>
-                        <div>
-                            <Button variant="contained" color="success" id="saveButton" style={{float:"left", marginTop:25}} onClick={saveAction}>
-                                Speichern
-                            </Button>
-                        </div>
+                                                  style={{marginTop: 10}}
+                                />
+                                <FormControlLabel value="HIIT Training"
+                                                  control={<Radio style={{transform: 'scale(1.2)'}}/>}
+                                                  label={<Typography variant="h6">HIIT Training</Typography>}
+                                                  style={{marginTop: 10}}
+                                />
+                                <FormControlLabel value="Gewichtsverlauf"
+                                                  control={<Radio style={{transform: 'scale(1.2)'}}/>}
+                                                  label={<Typography variant="h6">Gewichtsverlauf</Typography>}
+                                                  style={{marginTop: 10}}
+                                />
+                            </RadioGroup>
+                            <div>
+                                <Button variant="contained" color="success" id="saveButton"
+                                        style={{float: "left", marginTop: 25}} onClick={saveAction}>
+                                    Speichern
+                                </Button>
+                            </div>
+                        </FormControl>
                     </FormControl>
-                </FormControl>
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-                <div style={{fontSize:40}}>Kontoübersicht</div>
-                <FormLabel component="legend">Hier siehst du deine Kontoübersicht</FormLabel>
-                <Container maxWidth="sm" style={{marginLeft:-30}}>
-                    <form>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} style={{display:"flex", alignItems: "center"}}>
-                               <TextField
-                                    label="Vorname"
-                                    variant="outlined"
-                                    id="Vornamea"
-                                    fullWidth
-                                    value={user.firstname}
-                                    onChange={(e) => setFirstName(e.target.value)}
-                                    style={{marginTop:20}}
-                                />
-                            <EditIcon style={{margin: "10 0 0 10"}} onClick={handleClickOpen3}></EditIcon>
-                                <Dialog
-                                    open={open3}
-                                    onClose={handleClose3}
-                                    PaperProps={{
-                                        component: 'form',
-                                        onSubmit: (event) => {
-                                            event.preventDefault();
-                                            const formData = new FormData(event.currentTarget);
-                                            const formJson = Object.fromEntries(formData.entries());
-                                            const email = formJson.email;
-                                            console.log(email);
-                                            handleClose3();
-                                        },
-                                    }}
-                                >
-                                    <DialogTitle>Ändere deinen Vornamen</DialogTitle>
-                                    <DialogContent>
-                                        <DialogContentText>
-                                            Fülle deinen neunen Vornamen aus.
-                                        </DialogContentText>
-                                        <TextField
-                                            autoFocus
-                                            required
-                                            margin="dense"
-                                            id="vorname"
-                                            name="vorname"
-                                            label="Vorname"
-                                            type="vorname"
-                                            fullWidth
-                                            variant="standard"
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleClose3}>Abbrechen</Button>
-                                        <Button onClick={async key => {
-                                            firstName = document.getElementById("vorname").value
-                                            await updateUserVor(firstName)
-                                            user.firstname=firstName
-                                            localStorage.setItem("user", JSON.stringify(user));
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={1}>
+                    <div style={{fontSize: 40}}>Kontoübersicht</div>
+                    <FormLabel component="legend">Hier siehst du deine Kontoübersicht</FormLabel>
+                    <Container maxWidth="sm" style={{marginLeft: -30}}>
+                        <form>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} style={{display: "flex", alignItems: "center"}}>
+                                    <TextField
+                                        label="Vorname"
+                                        variant="outlined"
+                                        id="Vorname"
+                                        fullWidth
+                                        value={user.firstname}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                        style={{marginTop: 20}}
+                                    />
+                                    <EditIcon style={{margin: "10 0 0 10"}} onClick={handleClickOpen3}></EditIcon>
+                                    <Dialog
+                                        open={open3}
+                                        onClose={handleClose3}
+                                        PaperProps={{
+                                            component: 'form',
+                                            onSubmit: (event) => {
+                                                event.preventDefault();
+                                                const formData = new FormData(event.currentTarget);
+                                                const formJson = Object.fromEntries(formData.entries());
+                                                const email = formJson.email;
+                                                console.log(email);
+                                                handleClose3();
+                                            },
+                                        }}
+                                    >
+                                        <DialogTitle>Ändere deinen Vornamen</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+                                                Fülle deinen neunen Vornamen aus.
+                                            </DialogContentText>
+                                            <TextField
+                                                autoFocus
+                                                required
+                                                margin="dense"
+                                                id="vorname"
+                                                name="vorname"
+                                                label="Vorname"
+                                                type="vorname"
+                                                fullWidth
+                                                variant="standard"
+                                                error={firstnameError}
+                                                helperText={firstnameError ? "Nur Buchstaben verwenden" : ""}
+                                            />
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleClose3}>Abbrechen</Button>
+                                            <Button onClick={async key => {
+                                                firstName = document.getElementById("vorname").value
+                                                const iserror = await updateUserVorname(firstName)
+                                                if (!iserror) {
+                                                    user.firstname = firstName
+                                                    localStorage.setItem("user", JSON.stringify(user));
+                                                }
+                                            }}
+                                            >OK</Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </Grid>
+                                <Grid item xs={12} style={{display: "flex", alignItems: "center"}}>
+                                    <TextField
+                                        label="Nachname"
+                                        variant="outlined"
+                                        fullWidth
+                                        value={user.lastname}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                    />
+                                    <EditIcon style={{margin: "5 0 0 10"}} onClick={handleClickOpen2}></EditIcon>
+                                    <Dialog
+                                        open={open2}
+                                        onClose={handleClose2}
+                                        PaperProps={{
+                                            component: 'form',
+                                            onSubmit: (event) => {
+                                                event.preventDefault();
+                                                const formData = new FormData(event.currentTarget);
+                                                const formJson = Object.fromEntries(formData.entries());
+                                                const email = formJson.email;
+                                                console.log(email);
+                                                handleClose2();
+                                            },
+                                        }}
+                                    >
+                                        <DialogTitle>Ändere deinen Nachname</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+                                                Fülle deinen neunen Nachnamen aus.
+                                            </DialogContentText>
+                                            <TextField
+                                                autoFocus
+                                                required
+                                                margin="dense"
+                                                id="lastname"
+                                                name="lastname"
+                                                label="Nachname"
+                                                type="lastname"
+                                                fullWidth
+                                                variant="standard"
+                                                error={lastnameError}
+                                                helperText={lastnameError ? "Nur Buchstaben verwenden" : ""}
+                                            />
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleClose2}>Abbrechen</Button>
+                                            <Button onClick={async () => {
+                                                const last = document.getElementById("lastname").value
+                                                const iserror = await updateUserNach(last)
+                                                if (!iserror) {
+                                                    user.lastname = last
+                                                    localStorage.setItem("user", JSON.stringify(user));
+                                                }
 
+                                            }}
+                                            >OK</Button> </DialogActions>
+                                    </Dialog>
+                                </Grid>
+                                <Grid item xs={12} style={{display: "flex", alignItems: "center"}}>
+                                    <TextField
+                                        label="E-Mail"
+                                        type="email"
+                                        variant="outlined"
+                                        fullWidth
+                                        value={user.emailUser}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                    <EditIcon style={{margin: "0 0 0 10"}} onClick={handleClickOpen}></EditIcon>
+                                    <Dialog
+                                        open={open}
+                                        onClose={handleClose}
+                                        PaperProps={{
+                                            component: 'form',
+                                            onSubmit: (event) => {
+                                                event.preventDefault();
+                                                const formData = new FormData(event.currentTarget);
+                                                const formJson = Object.fromEntries(formData.entries());
+                                                const email = formJson.email;
+                                                console.log(email);
+                                                handleClose();
+                                            },
                                         }}
-                                        >OK</Button>
-                                    </DialogActions>
-                                </Dialog>
-                            </Grid>
-                            <Grid item xs={12}  style={{display:"flex", alignItems: "center"}}>
-                                <TextField
-                                    label="Nachname"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={user.lastname}
-                                    onChange={(e) => setLastName(e.target.value)}
-                                />
-                                <EditIcon style={{margin: "5 0 0 10"}} onClick={handleClickOpen2}></EditIcon>
-                                <Dialog
-                                    open={open2}
-                                    onClose={handleClose2}
-                                    PaperProps={{
-                                        component: 'form',
-                                        onSubmit: (event) => {
-                                            event.preventDefault();
-                                            const formData = new FormData(event.currentTarget);
-                                            const formJson = Object.fromEntries(formData.entries());
-                                            const email = formJson.email;
-                                            console.log(email);
-                                            handleClose2();
-                                        },
-                                    }}
-                                >
-                                    <DialogTitle>Ändere deinen Nachname</DialogTitle>
-                                    <DialogContent>
-                                        <DialogContentText>
-                                            Fülle deinen neunen Nachnamen aus.
-                                        </DialogContentText>
-                                        <TextField
-                                            autoFocus
-                                            required
-                                            margin="dense"
-                                            id="lastname"
-                                            name="lastname"
-                                            label="Nachname"
-                                            type="lastname"
-                                            fullWidth
-                                            variant="standard"
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleClose2}>Abbrechen</Button>
-                                        <Button onClick={async () => {
-                                            const last = document.getElementById("lastname").value
-                                            await updateUserNach(last)
-                                            user.lastname=last
-                                            localStorage.setItem("user", JSON.stringify(user));
+                                    >
+                                        <DialogTitle>Ändere deine Email</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+                                                Fülle deine neue Email aus.
+                                            </DialogContentText>
+                                            <TextField
+                                                autoFocus
+                                                required
+                                                margin="dense"
+                                                id="email"
+                                                name="email"
+                                                label="email"
+                                                type="email"
+                                                fullWidth
+                                                variant="standard"
+                                                error={emailError}
+                                                helperText={emailError ? "Validierungen beachten" : ""}
+                                            />
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleClose}>Abbrechen</Button>
+                                            <Button onClick={async () => {
+                                                const email1 = document.getElementById("email").value
+                                                const iserror = await updateUserEmail(email1)
+                                                if (!iserror) {
+                                                    user.emailUser = email1
+                                                    localStorage.setItem("user", JSON.stringify(user));
+                                                }
+                                            }}
+                                            >OK</Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </Grid>
+                                <Grid item xs={12} style={{display: "flex", alignItems: "center"}}>
+                                    <TextField
+                                        label="Passwort"
+                                        type="password"
+                                        variant="outlined"
+                                        fullWidth
+                                        value={"********"}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                    <EditIcon style={{margin: "5 0 0 10"}} onClick={handleClickOpen1}></EditIcon>
+                                    <Dialog
+                                        open={open1}
+                                        onClose={handleClose1}
+                                        PaperProps={{
+                                            component: 'form',
+                                            onSubmit: (event) => {
+                                                event.preventDefault();
+                                                const formData = new FormData(event.currentTarget);
+                                                const formJson = Object.fromEntries(formData.entries());
+                                                const email = formJson.email;
+                                                console.log(email);
+                                                handleClose1();
+                                            },
                                         }}
-                                        >OK</Button>                                    </DialogActions>
-                                </Dialog>
+                                    >
+                                        <DialogTitle>Ändere dein Passwort</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+                                                Fülle dein neues Passwort aus.
+                                            </DialogContentText>
+                                            <TextField
+                                                autoFocus
+                                                required
+                                                margin="dense"
+                                                id="password"
+                                                name="password"
+                                                label="password"
+                                                type="password"
+                                                fullWidth
+                                                variant="standard"
+                                                error={passwordError}
+                                                helperText={passwordError ? "Checke die Validations" : ""}
+                                            />
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleClose1}>Abbrechen</Button>
+                                            <Button onClick={async () => {
+                                                const pass = document.getElementById("password").value
+                                               const iserror= await updateUserPassword(pass)
+                                                if(!iserror) {
+                                                    user.passwort = pass
+                                                    localStorage.setItem("user", JSON.stringify(user));
+                                                }
+                                            }}
+                                            >OK</Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} style={{display:"flex", alignItems: "center"}}>
-                                <TextField
-                                    label="E-Mail"
-                                    type="email"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={user.emailUser}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <EditIcon style={{margin: "0 0 0 10"}} onClick={handleClickOpen}></EditIcon>
-                                <Dialog
-                                    open={open}
-                                    onClose={handleClose}
-                                    PaperProps={{
-                                        component: 'form',
-                                        onSubmit: (event) => {
-                                            event.preventDefault();
-                                            const formData = new FormData(event.currentTarget);
-                                            const formJson = Object.fromEntries(formData.entries());
-                                            const email = formJson.email;
-                                            console.log(email);
-                                            handleClose();
-                                        },
-                                    }}
-                                >
-                                    <DialogTitle>Ändere deine Email</DialogTitle>
-                                    <DialogContent>
-                                        <DialogContentText>
-                                            Fülle deine neue Email aus.
-                                        </DialogContentText>
-                                        <TextField
-                                            autoFocus
-                                            required
-                                            margin="dense"
-                                            id="email"
-                                            name="email"
-                                            label="email"
-                                            type="email"
-                                            fullWidth
-                                            variant="standard"
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleClose}>Abbrechen</Button>
-                                        <Button onClick={async () => {
-                                            const email1 = document.getElementById("email").value
-                                            await updateUserEmail(email1)
-                                            user.emailUser=email1
-                                            localStorage.setItem("user", JSON.stringify(user));
-                                        }}
-                                        >OK</Button>
-                                    </DialogActions>
-                                </Dialog>
-                            </Grid>
-                            <Grid item xs={12} style={{display:"flex", alignItems: "center"}}>
-                                <TextField
-                                    label="Passwort"
-                                    type="password"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={"********"}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                                <EditIcon style={{margin: "5 0 0 10"}} onClick={handleClickOpen1}></EditIcon>
-                                <Dialog
-                                    open={open1}
-                                    onClose={handleClose1}
-                                    PaperProps={{
-                                        component: 'form',
-                                        onSubmit: (event) => {
-                                            event.preventDefault();
-                                            const formData = new FormData(event.currentTarget);
-                                            const formJson = Object.fromEntries(formData.entries());
-                                            const email = formJson.email;
-                                            console.log(email);
-                                            handleClose1();
-                                        },
-                                    }}
-                                >
-                                    <DialogTitle>Ändere dein Passwort</DialogTitle>
-                                    <DialogContent>
-                                        <DialogContentText>
-                                           Fülle dein neues Passwort aus.
-                                        </DialogContentText>
-                                        <TextField
-                                            autoFocus
-                                            required
-                                            margin="dense"
-                                            id="password"
-                                            name="password"
-                                            label="password"
-                                            type="password"
-                                            fullWidth
-                                            variant="standard"
-                                            error={passwordError}
-                                            helperText={passwordError ? "Checke die Validations" : ""}
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleClose1}>Abbrechen</Button>
-                                        <Button onClick={async () => {
-                                            const pass = document.getElementById("password").value
-                                            await updateUserPassword(pass)
-                                            user.passwort=pass
-                                            localStorage.setItem("user", JSON.stringify(user));
-                                        }}
-                                        >OK</Button>
-                                    </DialogActions>
-                                </Dialog>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </Container>
+                        </form>
+                    </Container>
 
-            </CustomTabPanel>
-        </Box>
+                </CustomTabPanel>
+            </Box>
             <Snackbar open={openalert} autoHideDuration={6000} onClose={handleClosealert}>
                 <Alert severity={"success"} onClose={handleClosealert} sx={{width: '100%'}}>
                     {alertinhalt}

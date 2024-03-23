@@ -168,7 +168,7 @@ export default function App() {
                     <div className="centerdiv">
                         <p className="textend">Dein Training ist zu Ende</p>
                         <Link to={'/Plank'}>
-                            <ToggleButton className="buttonend" style={{ color: "black" }}>Nochmal Planken</ToggleButton>
+                            <ToggleButton className="buttonend" style={{ color: "black" }}>Neues Training starten</ToggleButton>
                         </Link>
                         <Link to={'/Home'}>
                             <ToggleButton className="buttonend" style={{ color: "black" }}>Zur Startseite</ToggleButton>
