@@ -46,7 +46,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Create() {
     const navigate = useNavigate();
     const [alertinhalt, setAlertInhalt] = useState("")
-    const [error, setError] = useState(true)
+
     const [tagesbezeichnung1, setTagesbezeichnung1] = useState("--")
     const [tagesbezeichnung2, setTagesbezeichnung2] = useState("--")
     const [tagesbezeichnung3, setTagesbezeichnung3] = useState("--")
@@ -84,7 +84,7 @@ export default function Create() {
         },
     }));
 
-    let user=JSON.parse(localStorage.getItem("user"))
+    let user = JSON.parse(localStorage.getItem("user"))
 
     // Funktion um die ausgewaehlten Uebungen von Uebungselect.js in ihre Kurzform umzuwandeln und anzuzeigen
     function getUebungText(nummer) {
@@ -147,7 +147,6 @@ export default function Create() {
     // Funktion um den bereits eingegeben Namen der Trainingstage aus dem Localstorage zu bekommen
     function getNameText(nummer) {
         return window.localStorage.getItem("Name" + nummer.number)
-
     }
 
     // Funktion um den bereits eingegeben Namen des Trainingsplans aus dem Localstorage zu bekommen ********************
@@ -165,6 +164,7 @@ export default function Create() {
             window.localStorage.setItem("Name" + nummer.number, name)
         }
     }
+
     //Funktion um die Eingabe des Users (Trainingsplan) zu speichern ***************************************************
     function saveTrainingsplanName(name) {
         if (!validTrainingsplanname.test(name)) {
@@ -195,11 +195,9 @@ export default function Create() {
         window.localStorage.removeItem("TrainingsplanName")
     }
 
-    //Component der Trainingsplanerstellung um öfter das gleiche Object am Bildschirm anzuzeigen
+    //Component der Trainingsplanerstellung um öfter das gleiche Objekt am Bildschirm anzuzeigen
     const DayCreateComponent = (number) => {
-
         const woche = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
-
         const handleChange = (event) => {
             if (document.getElementById(number.number).disabled === false) {
                 document.getElementById(number.number).disabled = true
@@ -219,31 +217,36 @@ export default function Create() {
                 document.getElementById('uebungauswählen' + number.number).disabled = false
                 document.getElementById('restIcon' + number.number).checked = false
             }
-
-
         };
-
         return (
             <li>
                 <Tooltip TransitionComponent={Zoom} disableInteractive arrow placement="top"
                          title={
                              <>
-                                 <Typography color="inherit">Erlaubte Zeichen:</Typography>
-                                 <Typography color="inherit">*A-Z und a-z</Typography>
-                                 <Typography color="inherit">*Zahlen</Typography>
-                                 <Typography color="inherit">*Umlaute</Typography>
-                                 <Typography color="inherit">*Sonderzeichen: /, _</Typography>
+                                 <Typography color="inherit">
+                                     Erlaubte Zeichen:
+                                 </Typography>
+                                 <Typography color="inherit">
+                                     *A-Z und a-z
+                                 </Typography>
+                                 <Typography color="inherit">
+                                     *Zahlen
+                                 </Typography>
+                                 <Typography color="inherit">
+                                     *Umlaute
+                                 </Typography>
+                                 <Typography color="inherit">
+                                     *Sonderzeichen: /, _
+                                 </Typography>
                              </>
                          }
                 >
-                    <input type="text" id={number.number} className="tagesbezeichnung" defaultValue={getNameText(number)}
+                    <input type="text" id={number.number} className="tagesbezeichnung"
+                           defaultValue={getNameText(number)}
                            placeholder={woche[number.number - 1]}
                            onChange={(e) => saveName(e.target.value, number)}
                            disabled={checkRESTDAY(number.number)}></input>
                 </Tooltip>
-
-
-
                 <Link to={'/uebungselect/' + number.number}>
                     <input type="text" className="uebungauswählen" id={'uebungauswählen' + number.number} readOnly
                            value={getUebungText(number.number)} disabled={checkRESTDAY(number.number)}></input>
@@ -255,8 +258,8 @@ export default function Create() {
                              </>
                          }
                 >
-                <Checkbox id={'restIcon' + number.number} icon={<ChairOutlinedIcon/>} checkedIcon={<ChairIcon/>}
-                          onChange={handleChange} defaultChecked={checkRESTDAY(number.number)}/>
+                    <Checkbox id={'restIcon' + number.number} icon={<ChairOutlinedIcon/>} checkedIcon={<ChairIcon/>}
+                              onChange={handleChange} defaultChecked={checkRESTDAY(number.number)}/>
                 </Tooltip>
             </li>
         )
@@ -286,15 +289,16 @@ export default function Create() {
             trainingstag = trainingstage[tag.tagesnummer - 1]
         }
         let fontsize = 20;
-        if (tag.tagesbezeichnung.length > 10){
+        if (tag.tagesbezeichnung.length > 10) {
             fontsize = 17
-        }else if (tag.tagesbezeichnung.length > 12){
+        } else if (tag.tagesbezeichnung.length > 12) {
             fontsize = 14
         }
         return (
             <div className="trtagdivs" onClick={() => handleClickOpenDialog(trainingstag)}>
                 <p className="trtagcontent" id='wochentagAnzeige'>{tag.wochentag}</p>
-                <p className="trtagcontent" id='tagesbezeichnungAnzeige' style={{ fontSize: fontsize }} >{tag.tagesbezeichnung}</p>
+                <p className="trtagcontent" id='tagesbezeichnungAnzeige'
+                   style={{fontSize: fontsize}}>{tag.tagesbezeichnung}</p>
             </div>
         )
     }
@@ -303,7 +307,7 @@ export default function Create() {
     // Funktion um den ganzen Trainingsplan zu speichern **********************
     async function submitAction() {
         setOpenAlert(false)
-        setError(false)
+
 
         let tagesbezeichnungUebungen = []
         let uebungen = []
@@ -312,20 +316,16 @@ export default function Create() {
 
 
             for (let i = 1; i <= 7; i++) {
-
                 uebungen.push(window.localStorage.getItem(i).split(','))
             }
 
 
             for (let i = 0; i < uebungen.length; i++) {
                 for (let j = 0; j < uebungen[i].length; j++) {
-
-
                     const {data, error} = await supabase
                         .from("uebungen")
                         .select("uebungID")
                         .match({Name: uebungen[i][j]})
-
                     if (data[0] == undefined) {
                         uebungen[i][j] = 0
                     } else {
@@ -339,29 +339,20 @@ export default function Create() {
                 let b = "Name" + a
                 let newItems = [window.localStorage.getItem(b), uebungen[i]];
                 tagesbezeichnungUebungen.push(newItems);
-
             }
 
 
-            uebungen = data.postTrainingsplan(tagesbezeichnungUebungen, window.localStorage.getItem("TrainingsplanName"), user.id)
+            const error = data.postTrainingsplan(tagesbezeichnungUebungen, window.localStorage.getItem("TrainingsplanName"), user.id)
 
-            uebungen.then(value => {
-                setError(value)
-
-
+            error.then(value => {
                 if (!value) {
                     navigate("/Trainingsplanverwaltung/")
                     clearLocalStorage()
-
-
                 } else {
                     handleClick("Trainingsplanname bereits vorhanden")
                 }
             })
-
-
         } catch (e) {
-            setError(true)
             console.log(e.message)
             handleClick('Bitte alles ausfüllen')
         }
@@ -449,8 +440,10 @@ export default function Create() {
                                             <TableCell></TableCell>
                                             <TableCell>{uebung[0].Name}</TableCell>
                                             <TableCell>{uebung[0].Kategorie}</TableCell>
-                                            <TableCell>{uebung[0].Beschreibung}</TableCell>
                                             <TableCell></TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell>{uebung[0].Beschreibung}</TableCell>
+
 
                                         </>
                                     }
@@ -459,8 +452,10 @@ export default function Create() {
                                             <TableCell></TableCell>
                                             <TableCell>REST</TableCell>
                                             <TableCell>REST</TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell></TableCell>
                                             <TableCell>REST</TableCell>
-                                            <TableCell>REST</TableCell>
+
 
                                         </>
                                     }
@@ -486,11 +481,10 @@ export default function Create() {
                             <h1 className="ueberschrift">{selectedTrainingsplan} ausgewählt</h1>
 
                             <Link to={"/trainingsplanverwaltung"} id="verwaltungsButton"><IconButton>
-                                <EditNoteOutlinedIcon sx={{ height: '40px', width: '40px' }}></EditNoteOutlinedIcon>
+                                <EditNoteOutlinedIcon sx={{height: '40px', width: '40px'}}></EditNoteOutlinedIcon>
                             </IconButton>
                             </Link>
                         </div>
-
 
 
                         <div id="divs">
@@ -553,8 +547,8 @@ export default function Create() {
                                              </>
                                          }
                                 >
-                                <input id="trainingsplanname" type="text" defaultValue={getTrainingsplanNameText()}
-                                       onInput={(e) => saveTrainingsplanName(e.target.value)} required></input>
+                                    <input id="trainingsplanname" type="text" defaultValue={getTrainingsplanNameText()}
+                                           onInput={(e) => saveTrainingsplanName(e.target.value)} required></input>
                                 </Tooltip>
                             </div>
 
@@ -577,7 +571,6 @@ export default function Create() {
                                 <DayCreateComponent number={6} id='6'/>
                                 {/* day7 *********************************************** */}
                                 <DayCreateComponent number={7} id='7'/>
-
 
 
                             </ul>
@@ -614,7 +607,7 @@ export default function Create() {
                 TransitionComponent={Transition}
             >
 
-                <AppBar sx={{position: 'relative', background: '#06367A'}} >
+                <AppBar sx={{position: 'relative', background: '#06367A'}}>
                     <Toolbar id={'toolbar'}>
                         <Typography sx={{ml: 2, flex: 1}} variant="h6" component="div">
                             {selectedTrainingstag.Tagesbezeichung}
@@ -627,21 +620,19 @@ export default function Create() {
                         >
                             <CloseIcon/>
                         </IconButton>
-
-
                     </Toolbar>
                 </AppBar>
 
                 <TableContainer component={Paper} id="tableContaineruebungen">
-                    <Table sx={{minWidth: 650}} aria-label="simple table" stickyHeader >
+                    <Table sx={{minWidth: 650}} aria-label="simple table" stickyHeader>
                         <TableHead>
                             <StyledTableRow>
                                 <StyledTableCell></StyledTableCell>
                                 <StyledTableCell>Name</StyledTableCell>
                                 <StyledTableCell>Kategorie</StyledTableCell>
+                                <StyledTableCell></StyledTableCell>
+                                <StyledTableCell></StyledTableCell>
                                 <StyledTableCell>Beschreibung</StyledTableCell>
-                                <StyledTableCell>Bild</StyledTableCell>
-
                             </StyledTableRow>
                         </TableHead>
                         <TableBody>
@@ -651,7 +642,6 @@ export default function Create() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-
             </Dialog>
         </>
 

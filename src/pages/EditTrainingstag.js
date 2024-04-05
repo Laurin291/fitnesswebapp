@@ -82,8 +82,6 @@ export default function EditTrainingstag() {
     }
 
 
-
-
 // Funktion mit der die Reihen der Tabelle mit Daten gefühlt und zusammengesetzt werden, um sie anschließend
     function Row(props) {
         const {number} = useParams()
@@ -96,9 +94,6 @@ export default function EditTrainingstag() {
 
 
         const namen = selUebungen.map((uebung) => uebung.Name)
-
-
-
 
 
         const [checked, setChecked] = React.useState(() => {
@@ -181,14 +176,10 @@ export default function EditTrainingstag() {
                     <StyledTableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                         <Collapse in={open} timeout="auto" unmountOnExit>
                             <Box sx={{margin: 1}}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    Beschreibung
-                                </Typography>
                                 <Table size="small" aria-label="purchases">
                                     <TableHead>
                                         <StyledTableRow>
                                             <StyledTableCell>Beschreibung</StyledTableCell>
-                                            <StyledTableCell align="right">Bild</StyledTableCell>
                                         </StyledTableRow>
                                     </TableHead>
                                     <TableBody>
@@ -231,16 +222,9 @@ export default function EditTrainingstag() {
 
     //Funktion um zu erkennen, wann der SaveButton gedrückt wird und um die ausgewählten Uebungen im localStorage zu speichern
     async function saveAction() {
-        await data.updateTrainingstagUebungen(selectedItems,trainingstagID, trainingstagNamen)
-        //navigate('/trainingsplanverwaltung')
+        await data.updateTrainingstagUebungen(selectedItems, trainingstagID, trainingstagNamen)
         handleClick("Erfolgreich gespeichert")
-
-
-
-
-
-
-
+        navigate("/trainingsplanverwaltung")
     }
 
     const handleClose = (event, reason) => {
@@ -255,7 +239,7 @@ export default function EditTrainingstag() {
         setAlertInhalt(nachricht)
     };
 
-    function setTrainingsTagName(){
+    function setTrainingsTagName() {
         const inputfield = document.getElementById('trainingsplaninputfeld')
         console.log(inputfield.value)
         if (!validTrainingsplanname.test(inputfield.value)) {
@@ -263,7 +247,7 @@ export default function EditTrainingstag() {
         } else {
             inputfield.style.backgroundColor = "lightgreen";
             setTrainingstagNamen(inputfield.value)
-    }
+        }
     }
 
 
@@ -279,9 +263,10 @@ export default function EditTrainingstag() {
                         >
                             <ArrowBackIosIcon></ArrowBackIosIcon>
                         </IconButton>
-                    <Typography ml={3} mt={3} variant='h2'
-                                sx={{fontWeight: 'bold',fontFamily: 'Bahnschrift'}}>Bearbeitung von</Typography>
-                        <input id={"trainingsplaninputfeld"}  onInput={(e) => setTrainingsTagName()} defaultValue={tagesbezeichnung}/>
+                        <Typography ml={3} mt={3} variant='h2'
+                                    sx={{fontWeight: 'bold', fontFamily: 'Bahnschrift'}}>Bearbeitung von</Typography>
+                        <input id={"trainingsplaninputfeld"} onInput={(e) => setTrainingsTagName()}
+                               defaultValue={tagesbezeichnung}/>
                     </div>
                     <TableContainer component={Paper} id="tableContainer2">
                         <Table stickyHeader size="small">

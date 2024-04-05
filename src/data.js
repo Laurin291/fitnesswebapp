@@ -343,10 +343,6 @@ class Data {
             .insert({name: trainingsplanname, userID: userID})
             .select()
 
-
-        console.log(data2)
-
-
         if (error == null) {
             const {data, error2} = await supabase
                 .from("trainingsplan")
@@ -357,8 +353,6 @@ class Data {
                 for (let i = 0; i < array.length; i++) {
                     uebungsIDs = array[i][1]
                     tagesbezeichnung = array[i][0]
-
-
                     const {error} = await supabase
                         .from('trainingstag')
                         .insert([{
@@ -370,13 +364,10 @@ class Data {
             } else {
                 iserror = true
             }
-
-
         } else {
             iserror = true
         }
         return iserror
-
     }
 
     async postbenutzer(firstname, lastname, passwort, email) {
@@ -388,33 +379,25 @@ class Data {
 
 
     async update(Name, update) {
-
         const {data2, error2} = await supabase
             .from("trainingsplan")
             .update([{selected: 'FALSE'}])
             .eq('selected', 'TRUE')
-
         const {data, error} = await supabase
             .from("trainingsplan")
             .update([{selected: update}])
             .eq('name', Name)
-
-
     }
 
     async deleteTrainingsplan(id) {
-
         const {error2} = await supabase
             .from('trainingstag')
             .delete()
             .eq('trainingsplanID', id)
-
         const {error} = await supabase
             .from('trainingsplan')
             .delete()
             .eq('trainingsplanID', id)
-
-
     }
 
     async getUebungsIDsfromTrainingstag(trainingstagID) {
@@ -445,15 +428,12 @@ class Data {
     }
 
     async updateTrainingstagUebungen(namenArray, trainingstagID, trainingsTagNamen){
-
         const {data, error} = await supabase
             .from('uebungen')
             .select('uebungID')
             .in('Name', namenArray)
 
         let idArray = data.map( (id) => id.uebungID)
-
-        console.log(idArray)
 
         const {data2, error2} = await supabase
             .from("trainingstag")

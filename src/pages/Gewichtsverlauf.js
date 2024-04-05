@@ -115,17 +115,12 @@ export default function Gewichtsverlauf() {
 
     function loadResources() {
         async function fetchData() {
-
             let data2 = await generatedatesandvalues()
             if (data2.length > 0) {
                 setIsLoaded(true)
                 setDataArray(data2)
-            } else {
-
             }
-
         }
-
         fetchData();
     }
 
@@ -148,9 +143,6 @@ export default function Gewichtsverlauf() {
                return ''
            }
        }
-
-
-
     }
 
     const Gewichtseingabe = () => {
@@ -183,20 +175,15 @@ export default function Gewichtsverlauf() {
 
         async function saveAction() {
             handleCloseSecond()
-
-
             let day = new Date().getDate()
             let month = new Date().getMonth() + 1
             let year = new Date().getFullYear()
-
             const heutigesDatum = year + "-" + month + "-" + day
 
             const {data, error2} = await supabase
                 .from("gewicht")
                 .select()
                 .match({date: heutigesDatum, userID: user.id})
-
-            console.log(data)
 
             if (data.length == 0 && valid) {
                 await generatelatestvalues()
@@ -211,8 +198,6 @@ export default function Gewichtsverlauf() {
             } else {
                 setOpenAlert(true)
             }
-
-
         }
 
         async function generatelatestvalues() {
@@ -222,12 +207,7 @@ export default function Gewichtsverlauf() {
                 .match({userID: user.id})
                 .order('date', {ascending: false})
                 .limit(1)
-
-            console.log(data)
-
             if (data.length > 0) {
-
-
                 function dateRange(startDate, endDate, steps = 1) {
                     const dateArray = [];
                     let currentDate = new Date(startDate);
@@ -239,16 +219,9 @@ export default function Gewichtsverlauf() {
                         // Use UTC date to prevent problems with time zones and DST
                         currentDate.setUTCDate(currentDate.getUTCDate() + steps);
                     }
-
                     return dateArray;
                 }
-
-                console.log(data)
-
                 const dates = dateRange(data[0].date, new Date());
-                console.log(dates)
-
-
                 if (dates.length > 0) {
                     dates.map(async (datum) => {
                         const {error} = await supabase
@@ -258,13 +231,9 @@ export default function Gewichtsverlauf() {
                                 date: datum,
                                 gewicht: data[0].gewicht
                             }])
-
-
                     })
                 }
             }
-
-
         }
 
         function checkvalidation(gewicht) {
@@ -274,7 +243,6 @@ export default function Gewichtsverlauf() {
             } else {
                 document.getElementById('name').style.backgroundColor = "lightgreen";
                 setValid(true)
-
             }
         }
 
@@ -289,6 +257,7 @@ export default function Gewichtsverlauf() {
 
         return (
             <>
+                <Button onClick={handleClickOpenEingabe}>Heutiges Gewicht eintragen</Button>
                 <Dialog
                     open={openEingabe}
                     onClose={handleCloseEingabe}
@@ -325,7 +294,6 @@ export default function Gewichtsverlauf() {
                         <Button type="submit" onClick={handleClickOpenSecond}>Speichern</Button>
                     </DialogActions>
                 </Dialog>
-                <Button onClick={handleClickOpenEingabe}>Heutiges Gewicht eintragen</Button>
 
                 <Dialog
                     open={openSecond}
@@ -364,9 +332,6 @@ export default function Gewichtsverlauf() {
     }
 
 
-    console.log(skeletonData)
-
-
     return (
         <div id={"content"}>
             <h1 id={'ueberschriftfahrrad'}>Gewichtsverlauf</h1>
@@ -380,9 +345,7 @@ export default function Gewichtsverlauf() {
                             <stop offset="75%" stopColor="#2451B7" stopOpacity={0.05}/>
                         </linearGradient>
                     </defs>
-
                     {isloaded === false &&
-
                         <text
                             x='50%'
                             y='60%'
@@ -395,26 +358,20 @@ export default function Gewichtsverlauf() {
                             Bitte geben Sie ihr Startgewicht ein
                         </text>
                     }
-
                     <Area type="monotone" dataKey="gewicht" stroke="#2451B7" fill="url(#color)"/>
 
                     <XAxis
                         dataKey="date"
                         axisLine={false}
                         tickLine={false}
-
                         tickFormatter={str => formatter(str)}
-
-
                     />
-
                     <YAxis
                         datakey="gewicht"
                         axisLine={false}
                         tickLine={false}
                         tickCount={6}
                         tickFormatter={number => `${number}kg`}
-
                     />
 
                     <Tooltip content={<CustomTooltip/>}/>

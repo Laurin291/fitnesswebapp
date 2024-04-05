@@ -108,23 +108,13 @@ export default function Trainingsplanverwaltung() {
 
 
         const selectTrainingsplan = (e) => {
-
-
                 data.update(row.name, 'TRUE')
                 navigate('/create')
-
-
         }
 
         const deleteTrainingsplan = () =>{
             setOpenDialog(false);
             data.deleteTrainingsplan(row.id).then(navigate('/create'))
-
-
-
-            //document.getElementById('table').deleteRow(selectedrow.rowIndex)
-
-
         }
 
 
@@ -147,22 +137,14 @@ export default function Trainingsplanverwaltung() {
                         <div id='namediv'>
                         {row.name}
                         </div>
-
-
-
                             <IconButton className={row.name} onClick={selectTrainingsplan}>
                                 {row.selected ? <CheckBoxIcon id={'trvcheckbox'}> </CheckBoxIcon> : <CheckBoxOutlineBlankIcon id={'trvcheckbox'}></CheckBoxOutlineBlankIcon>}
-
                             </IconButton>
                         <IconButton className={row.name} onClick={handleClickOpen} >
                             {row.selected ? <ClearIcon > </ClearIcon> : <ClearIcon ></ClearIcon>}
 
                         </IconButton>
-
-
-
                     </StyledTableCell>
-
                 </StyledTableRow>
                 <StyledTableRow>
                     <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
@@ -184,16 +166,12 @@ export default function Trainingsplanverwaltung() {
                                                         <IconButton
                                                             size="small"
                                                             onClick={ async () => {
-
                                                                 const uebungen = await data.getUebungenfromTrainingstag(await data.getUebungsIDsfromTrainingstag(trainingstag.trainingstagID))
-                                                                console.log(uebungen)
                                                                 const jsonString = JSON.stringify(uebungen)
                                                                 const encodedParam = encodeURIComponent(jsonString);
-                                                                console.log(trainingstag.Tagesbezeichung)
                                                                 const encodedTagesbezeichnung = encodeURIComponent(trainingstag.Tagesbezeichung)
                                                                 navigate("/EditTrainingstag/" + encodedParam + "/" + trainingstag.trainingstagID + "/" + encodedTagesbezeichnung)
                                                             }}
-
                                                         >
                                                             <EditTwoToneIcon></EditTwoToneIcon>
                                                         </IconButton>

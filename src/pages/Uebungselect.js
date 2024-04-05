@@ -84,7 +84,6 @@ export default function Uebungstabelle() {
 
 
         const [checked, setChecked] = React.useState(() => {
-
             let check = false
             if (window.localStorage.getItem(number) != null) {
                 const text = window.localStorage.getItem(number).split(',')
@@ -164,14 +163,10 @@ export default function Uebungstabelle() {
                     <StyledTableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                         <Collapse in={open} timeout="auto" unmountOnExit>
                             <Box sx={{margin: 1}}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    Beschreibung
-                                </Typography>
                                 <Table size="small" aria-label="purchases">
                                     <TableHead>
                                         <StyledTableRow>
                                             <StyledTableCell>Beschreibung</StyledTableCell>
-                                            <StyledTableCell align="right">Bild</StyledTableCell>
                                         </StyledTableRow>
                                     </TableHead>
                                     <TableBody>
@@ -197,17 +192,12 @@ export default function Uebungstabelle() {
 
 //Funktion um mit den Daten aus der Datenbank die Datensätze für die Tabelle zu erstellen
     function rows() {
-
         const zeile = []
-
-
         if (uebungen != null) {
-
             for (let i = 0; i < uebungen.length; i++) {
                 zeile.push(createData(uebungen[i].Name, uebungen[i].Kategorie, uebungen[i].Beschreibung))
             }
         }
-
         return zeile
     }
 
@@ -220,8 +210,6 @@ export default function Uebungstabelle() {
         } else {
             window.localStorage.setItem(number, selectedItems + ',' + window.localStorage.getItem(number))
         }
-
-
         if (localStorage.getItem(number) === '') {
             handleClick("Bitte etwas auswählen")
             setSeverity('error')
@@ -230,9 +218,7 @@ export default function Uebungstabelle() {
             setSeverity('success')
             selectedItems = []
             navigate('/create')
-
         }
-
     }
 
     const handleClose = (event, reason) => {
