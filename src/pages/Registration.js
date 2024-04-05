@@ -16,13 +16,6 @@ import {Zoom} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import supabase from "../config/supabaseClient";
 import * as emailjs from "@emailjs/browser";
-import md5 from 'md5-hash'
-import {Alert} from "@supabase/ui";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-
-
-
 
 export default function SignUp() {
     const [firstnameErr, setFirstNameErr] = useState(false);
@@ -35,10 +28,6 @@ export default function SignUp() {
     const [alertinhalt, setAlertInhalt] = useState("")
     const navigate = useNavigate();
     const emailRef = useRef();
-
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
 
     const handleSubmit = async () => {
         setFirstNameErr(false);
@@ -58,6 +47,7 @@ export default function SignUp() {
         const emailError = !validemail.test(email)
         const passwordError = !validpassword.test(passwort)
 
+
         if (firstNameError) {
             setFirstNameErr(true);
         }
@@ -69,6 +59,7 @@ export default function SignUp() {
         if (emailError) {
             setEmailError(true);
         }
+
 
         if (passwordError) {
             setpasswordErr(true);
@@ -98,17 +89,6 @@ export default function SignUp() {
         navigate("/")
 
     }
-    const handleClosealert = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenAlert(false);
-    };
-    const handleClickalert = (nachricht) => {
-        setOpenAlert(true);
-        setAlertInhalt(nachricht)
-    };
-
 
     useEffect(() => emailjs.init("eLuBMI1Jv0oeM60Z4"), []);
     const handleSubmit1 = async (e) => {
@@ -129,10 +109,9 @@ export default function SignUp() {
             await emailjs.send(serviceId, templateId, {
                 name: name[0].Vorname,
                 recipient: emailRef.current.value,
-                message: "https://laurin291.github.io/fitnesswebapp//Verifyemail/" + encodeURIComponent(emailRef.current.value)
+                message: "https://fitnesswebapp-navy.vercel.app/Verifyemail/" + encodeURIComponent(emailRef.current.value)
             });
-            alert("email successfully sent check inbox");
-            handleClickalert("Checke deine Emails und Verifiziere deinen Acoount")
+            alert("Email successfully sent check inbox");
         } catch (error) {
             console.log(error)
         } finally {
@@ -194,7 +173,7 @@ export default function SignUp() {
                                 autoComplete="email"
                                 inputRef={emailRef}
                                 error={emailinuse}
-                                helperText={emailinuse ? "Email wurde bereits verwendet" : ""}
+                                helperText={emailinuse ? "Überprüfe deine Eingabe" : ""}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -220,7 +199,7 @@ export default function SignUp() {
                                     id="password"
                                     autoComplete="new-password"
                                     error={passwordErr}
-                                    helperText={passwordErr ? "Checke die Validations" : ""}
+                                    helperText={passwordErr ? "Überprüfe die Validations" : ""}
                                 />
                             </Tooltip>
                         </Grid>
@@ -229,6 +208,7 @@ export default function SignUp() {
                             fullWidth
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
+                            style={{backgroundColor:"#076BF3",color:"white"}}
                     >
                         Sign Up
                     </Button>
@@ -241,11 +221,6 @@ export default function SignUp() {
                     </Grid>
                 </Box>
             </Box>
-            <Snackbar open={openAlert} autoHideDuration={6000} onClose={handleClosealert}>
-                <Alert severity={"success"} onClose={handleClosealert} sx={{width: '100%'}}>
-                    {alertinhalt}
-                </Alert>
-            </Snackbar>
         </Container>
 
     );

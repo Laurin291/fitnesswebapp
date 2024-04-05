@@ -65,8 +65,6 @@ export default function Login() {
 
         const { sha256 } = require('js-sha256');
 
-
-
         let user = await getUser(email, sha256(password));
 
         if (user !== null) {
@@ -120,7 +118,7 @@ export default function Login() {
             await emailjs.send(serviceId, templateId, {
                 name:name[0].Vorname,
                 recipient: emailRef.current.value,
-                message: "https://laurin291.github.io/fitnesswebapp//ResetPassword/"+encodeURIComponent(emailRef.current.value)
+                message: "https://fitnesswebapp-navy.vercel.app/ResetPassword/"+encodeURIComponent(emailRef.current.value)
             });
             alert("email successfully sent check inbox");
         } catch (error) {
@@ -181,6 +179,7 @@ export default function Login() {
                             fullWidth
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
+                            style={{backgroundColor:"#076BF3",color:"white"}}
                     >
                         Sign In
                     </Button>

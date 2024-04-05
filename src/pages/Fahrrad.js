@@ -27,7 +27,7 @@ export default function Fahrradseite() {
 
         const children = [
             <div className="diffibuttons">
-                <Link to={'/CyclingArea/Leicht'}> <ToggleButton value="Leicht" key="Leicht" className="diffibutton">
+                <Link to={'/CyclingArea/easy'}> <ToggleButton value="Leicht" key="Leicht" className="diffibutton">
                     <div>
                         <Tooltip TransitionComponent={Zoom}
                                  title={
@@ -52,10 +52,9 @@ export default function Fahrradseite() {
                         </div>
                     </div>
                     <span style={{color:"black"}}>Leicht</span>
-
                 </ToggleButton> </Link>
 
-                <Link to={'/CyclingArea/Mittel'}>  <ToggleButton value="Mittel" key="Mittel" className="diffibutton">
+                <Link to={'/CyclingArea/medium'}>  <ToggleButton value="Mittel" key="Mittel" className="diffibutton">
                     <div>
                         <Tooltip TransitionComponent={Zoom}
                                  title={
@@ -77,19 +76,16 @@ export default function Fahrradseite() {
                             </div>
                             <div className="square square-yellow">
                             </div>
-
                             <div className="square">
                             </div>
-
                             <div className="square square-rounded-right">
                             </div>
                         </div>
                     </div>
                     <span style={{color:"black"}}>Mittel</span>
-
                 </ToggleButton> </Link>
 
-                <Link to={'/CyclingArea/Schwer'}> <ToggleButton value="Schwer" key="Schwer" className="diffibutton">
+                <Link to={'/CyclingArea/hard'}> <ToggleButton value="Schwer" key="Schwer" className="diffibutton">
                     <div>
                         <Tooltip TransitionComponent={Zoom}
                                  title={
@@ -111,19 +107,16 @@ export default function Fahrradseite() {
                             </div>
                             <div className="square square-yellow">
                             </div>
-
                             <div className="square square-orange">
                             </div>
-
                             <div className="square square-rounded-right">
                             </div>
                         </div>
-                        <span style={{color:"black"}}>Schwer</span>
-
                     </div>
+                    <span style={{color:"black"}}>Schwer</span>
                 </ToggleButton></Link>
 
-                <Link to={'/CyclingArea/Alternative'}><ToggleButton value="Alternative" key="Alternative" className="diffibutton">
+                <Link to={'/CyclingArea/alternative'}><ToggleButton value="Alternative" key="Alternative" className="diffibutton">
                     <div>
                         <Tooltip TransitionComponent={Zoom}
                                  title={
@@ -145,10 +138,8 @@ export default function Fahrradseite() {
                             </div>
                             <div className="square square-yellow">
                             </div>
-
                             <div className="square square-orange">
                             </div>
-
                             <div className="square square-red square-rounded-right">
                             </div>
                         </div>
