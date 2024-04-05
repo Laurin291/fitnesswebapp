@@ -143,7 +143,7 @@ const CyclingArea = ({duration, runs}) => {
                 setHighIntensityStyle()
                 return Intensity.HIGH;
             case Intensity.HIGH:
-                setCountdown(countdown-1)
+                setCountdown(countdown)
                 setLowIntensityStyle()
                 return Intensity.LOW;
             default:
@@ -214,7 +214,7 @@ const CyclingArea = ({duration, runs}) => {
         setIsPaused(false)
         resume();
         const passedTime = Math.floor((pauseStartTimeRef.current - startTimeRef.current) / 1000);
-        const remainingTime = Durations[difficulty][intensityRef.current] - passedTime;
+        const remainingTime = Durations[difficulty][intensityRef.current] - passedTime-1;
         remaining.current = remainingTime
 
         setNewTimeout(remainingTime);
