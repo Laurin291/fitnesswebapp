@@ -24,23 +24,23 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
     {
-        label: 'Plank',
+        label: 'Klassisch',
         imgPath: Plank
     },
     {
-        label: 'Plank mit Hände ausgestreckt',
+        label: 'Hände ausstrecken',
         imgPath: PlankHaende,
     },
     {
-        label: 'Plank mit Hände ausgestreckt und Bein heben',
+        label: 'Hände ausstrecken und Beine heben',
         imgPath: HaendeBeinheben,
     },
     {
-        label: 'Plank mit Bein heben',
+        label: 'Beine heben',
         imgPath:Beinheben,
     },
     {
-        label: 'Plank mit Spider',
+        label: 'Beine bis zum Bauch vorstrecken',
         imgPath:Spideranimation,
     },
 ];
