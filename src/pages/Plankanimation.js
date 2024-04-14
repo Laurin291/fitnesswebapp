@@ -125,17 +125,13 @@ export default function App() {
 
 
     let minute = timer1.getMinutes()
-    let otto = timer1.getSeconds() + pause
+    let secpause = timer1.getSeconds() + pause
     let hour = timer1.getHours()
     timer1sec.setHours(hour)
     timer1sec.setMinutes(minute)
-    timer1sec.setSeconds(otto);
+    timer1sec.setSeconds(secpause);
     timer1sec.setMilliseconds(0)
 
-
-    console.log(new Date())
-    console.log(timer1sec)
-    console.log(isTimer1Expired)
 
     useEffect(() => {
         let date = new Date()
