@@ -12,7 +12,7 @@ export const validemail = new RegExp('^\\b[A-Za-z0-9._%+-]+@[A-Za-z.-]+\\.[A-Za-
 
 export const validpassword=new RegExp('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$')
 
-export const validgewicht = new RegExp('^[0-9]{1,2}[.]?[0-9]?$')
+export const validgewicht = new RegExp('^[0-9]{1,4}[.]?[0-9]?$')
 
 
 
