@@ -61,7 +61,7 @@ function SwipeableTextMobileStepper() {
     };
 
     return (
-        <Box sx={{ flexGrow: 1 , maxWidth: 750,}}>
+        <Box sx={{ flexGrow: 1 , maxWidth: 730,}}>
             <AutoPlaySwipeableViews
                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                 index={activeStep}
