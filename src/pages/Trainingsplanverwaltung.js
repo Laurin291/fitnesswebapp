@@ -198,7 +198,7 @@ export default function Trainingsplanverwaltung() {
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
                             Wenn Sie diesen Trainingsplan löschen gehen alle Daten von diesem verloren.
-                            Sie können diese Action nicht rückgängig machen.
+                            Sie können diese Aktion nicht rückgängig machen.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>

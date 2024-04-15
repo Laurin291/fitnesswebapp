@@ -136,13 +136,13 @@ export default function Gewichtsverlauf() {
 
     const formatter = (str) => {
         const date = parseISO(str);
-       if (dataArray.length <1000){
-           if (date.getDate() % 1 === 0) {
-               return format(date, "d.MMM           ");
-           }else{
-               return ''
-           }
-       }
+        if (dataArray.length <1000){
+            if (date.getDate() % 1 === 0) {
+                return format(date, "d.MMM           ");
+            }else{
+                return ''
+            }
+        }
     }
 
     const Gewichtseingabe = () => {
@@ -283,7 +283,6 @@ export default function Gewichtsverlauf() {
                             required
                             margin="dense"
                             id="name"
-                            type="number"
                             fullWidth
                             variant="standard"
                             onInput={(e) => checkvalidation(e.target.value)}
