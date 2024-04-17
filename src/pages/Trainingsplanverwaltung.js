@@ -112,9 +112,10 @@ export default function Trainingsplanverwaltung() {
                 navigate('/create')
         }
 
-        const deleteTrainingsplan = () =>{
+        const deleteTrainingsplan = async () => {
             setOpenDialog(false);
-            data.deleteTrainingsplan(row.id).then(navigate('/create'))
+            await data.deleteTrainingsplan(row.id)
+            navigate('/create')
         }
 
 
